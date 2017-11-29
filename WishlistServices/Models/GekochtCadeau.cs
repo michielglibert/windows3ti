@@ -10,5 +10,11 @@ namespace WishlistServices.Models
         public int Id { get; set; }
         public string Wat { get; set; }
         public double Prijs { get; set; }
+
+        public Gebruiker Koper { get; set; }
+
+        public GekochtCadeau()
+        {
+        }
     }
 }

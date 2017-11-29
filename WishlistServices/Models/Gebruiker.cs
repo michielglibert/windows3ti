@@ -16,6 +16,10 @@ namespace WishlistServices.Models
         public List<Request> Uitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
 
+        public Gebruiker()
+        {
+        }
+
         public void WishlistMaken()
         {
             throw new NotImplementedException();
