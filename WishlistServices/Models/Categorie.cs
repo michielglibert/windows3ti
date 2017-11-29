@@ -7,8 +7,23 @@ namespace WishlistServices.Models
 {
     public enum Categorie
     {
+        MuziekEnFilms,
+        Games,
+        Meubilair,
+        ComputerEnElektronica,
+        Boeken,
+        Speelgoed,
+        BabyEnKind,
+        JuwelenEnAccesoires,
+        Sport,
+        HobbyEnVrijeTijd,
+        Dier,
+        Tuin,
+        KantoorEnSchool,
+        Schoonheid,
+        Voeding,
         Keuken,
-        Piemel,
-        Kaas
+        Kledij,
+        Andere
     }
 }
