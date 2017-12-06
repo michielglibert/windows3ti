@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WishlistServices.Models
 {
-    public class Request
+    public class Uitnodiging
     {
         public int Id { get; set; }
         public string Bericht { get; set; }
@@ -13,27 +13,25 @@ namespace WishlistServices.Models
         public Gebruiker Gebruiker { get; set; }
         public Wishlist Wishlist { get; set; }
 
-        public Request()
+        public Uitnodiging()
         {
         }
 
-        public Request(Gebruiker gebruiker, Wishlist wishlist)
+        public Uitnodiging(Gebruiker gebruiker, Wishlist wishlist)
         {
             Gebruiker = gebruiker;
             Wishlist = wishlist;
         }
 
-        public void AccepteerRequest()
+        public void AccepteerUitnodiging()
         {
             Gebruiker.WishlistJoinen(Wishlist);
         }
 
-        public void WijsRequestAf()
+        public void WijsUitnodigingAf()
         {
-            Gebruiker.RequestVerwijderen(this);
-            Wishlist.RequestVerwijderen(this);
+            Gebruiker.UitnodigingVerwijderen(this);
+            Wishlist.UitnodigingVerwijderen(this);
         }
-
-
     }
 }

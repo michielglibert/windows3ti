@@ -38,7 +38,7 @@ namespace WishlistServices
                 c.SwaggerDoc("v1", new Info { Title = "Wishlist app API", Version = "v1" });
 
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var xmlPath = Path.Combine(basePath, "TodoApi.xml");
+                var xmlPath = Path.Combine(basePath, "WishlistServices.xml");
                 c.IncludeXmlComments(xmlPath);
             });
 

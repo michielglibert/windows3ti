@@ -24,7 +24,7 @@ namespace WishlistServices.Controllers
         [HttpGet]
         public IEnumerable<Gebruiker> GetGebruiker()
         {
-            return _context.Gebruiker;
+            return _context.Gebruikers;
         }
 
         // GET: api/Gebruikers/5
@@ -36,7 +36,7 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var gebruiker = await _context.Gebruiker.SingleOrDefaultAsync(m => m.Id == id);
+            var gebruiker = await _context.Gebruikers.SingleOrDefaultAsync(m => m.Id == id);
 
             if (gebruiker == null)
             {
@@ -90,7 +90,7 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Gebruiker.Add(gebruiker);
+            _context.Gebruikers.Add(gebruiker);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetGebruiker", new { id = gebruiker.Id }, gebruiker);
@@ -105,13 +105,13 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var gebruiker = await _context.Gebruiker.SingleOrDefaultAsync(m => m.Id == id);
+            var gebruiker = await _context.Gebruikers.SingleOrDefaultAsync(m => m.Id == id);
             if (gebruiker == null)
             {
                 return NotFound();
             }
 
-            _context.Gebruiker.Remove(gebruiker);
+            _context.Gebruikers.Remove(gebruiker);
             await _context.SaveChangesAsync();
 
             return Ok(gebruiker);
@@ -119,7 +119,7 @@ namespace WishlistServices.Controllers
 
         private bool GebruikerExists(int id)
         {
-            return _context.Gebruiker.Any(e => e.Id == id);
+            return _context.Gebruikers.Any(e => e.Id == id);
         }
     }
 }

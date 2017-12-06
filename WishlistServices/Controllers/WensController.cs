@@ -10,57 +10,57 @@ using WishlistServices.Models;
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Requests")]
-    public class RequestController : Controller
+    [Route("api/Wensen")]
+    public class WensController : Controller
     {
         private readonly WishlistDbContext _context;
 
-        public RequestController(WishlistDbContext context)
+        public WensController(WishlistDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Request
+        // GET: api/Wens
         [HttpGet]
-        public IEnumerable<Request> GetRequests()
+        public IEnumerable<Wens> GetWensen()
         {
-            return _context.Requests;
+            return _context.Wensen;
         }
 
-        // GET: api/Request/5
+        // GET: api/Wens/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRequest([FromRoute] int id)
+        public async Task<IActionResult> GetWens([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
+            var wens = await _context.Wensen.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (request == null)
+            if (wens == null)
             {
                 return NotFound();
             }
 
-            return Ok(request);
+            return Ok(wens);
         }
 
-        // PUT: api/Requests/5
+        // PUT: api/Wensen/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRequest([FromRoute] int id, [FromBody] Request request)
+        public async Task<IActionResult> PutWens([FromRoute] int id, [FromBody] Wens wens)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != request.Id)
+            if (id != wens.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(request).State = EntityState.Modified;
+            _context.Entry(wens).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace WishlistServices.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RequestExists(id))
+                if (!WensExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
-        // POST: api/Requests
+        // POST: api/Wensen
         [HttpPost]
-        public async Task<IActionResult> PostRequest([FromBody] Request request)
+        public async Task<IActionResult> PostWens([FromBody] Wens wens)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Requests.Add(request);
+            _context.Wensen.Add(wens);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRequest", new { id = request.Id }, request);
+            return CreatedAtAction("GetWens", new { id = wens.Id }, wens);
         }
 
-        // DELETE: api/Requests/5
+        // DELETE: api/Wensen/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRequest([FromRoute] int id)
+        public async Task<IActionResult> DeleteWens([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
-            if (request == null)
+            var wens = await _context.Wensen.SingleOrDefaultAsync(m => m.Id == id);
+            if (wens == null)
             {
                 return NotFound();
             }
 
-            _context.Requests.Remove(request);
+            _context.Wensen.Remove(wens);
             await _context.SaveChangesAsync();
 
-            return Ok(request);
+            return Ok(wens);
         }
 
-        private bool RequestExists(int id)
+        private bool WensExists(int id)
         {
-            return _context.Requests.Any(e => e.Id == id);
+            return _context.Wensen.Any(e => e.Id == id);
         }
     }
 }

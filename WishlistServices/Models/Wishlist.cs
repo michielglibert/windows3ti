@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace WishlistServices.Models
 {
@@ -13,41 +14,69 @@ namespace WishlistServices.Models
         public List<Gebruiker> Kopers { get; set; }
         public List<Wens> Wensen { get; set; }
         public List<GekochtCadeau> GekochtCadeaus { get; set; }
-        public List<Request> VerzondenUitnodigingen { get; set; }
+        public List<Uitnodiging> VerzondenUitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
 
         public Wishlist()
         {
         }
 
+        public void KoperToevoegen(Gebruiker gebruiker)
+        {
+            Kopers.Add(gebruiker);
+        }
+
+        public void KoperVerwijderen(Gebruiker gebruiker)
+        {
+            Kopers.Remove(gebruiker);
+        }
+
         public void WensToevoegen(Wens wens)
         {
-            throw new NotImplementedException();
+            Wensen.Add(wens);
         }
 
         public void WensVerwijderen(Wens wens)
         {
-            throw new NotImplementedException();
+            Wensen.Remove(wens);
         }
 
-        public void UitnodigingToevoegen(Request uitnodiging)
+        public void UitnodigingToevoegen(Gebruiker gebruiker)
         {
-            throw new NotImplementedException();
+            VerzondenUitnodigingen.Add(new Uitnodiging(gebruiker, this));
+        }
+        public void UitnodigingVerwijderen(Uitnodiging uitnodiging)
+        {
+            VerzondenUitnodigingen.Remove(uitnodiging);
         }
 
-        public void RequestToevoegen(Request request)
+        public void RequestToevoegen(Gebruiker gebruiker)
         {
-            throw new NotImplementedException();
+            Requests.Add(new Request(gebruiker, this));
         }
 
-        public void MarkerenAlsGekocht(Wens wens)
+        public void RequestVerwijderen(Request request)
         {
-            throw new NotImplementedException();
+            Requests.Remove(request);
+        }
+
+        public void MarkerenAlsGekocht(Wens wens, GekochtCadeau gekochtCadeau)
+        {
+            wens.GekochtCadeau = gekochtCadeau;
         }
 
         public void WensWijzigen(Wens wens)
         {
-            throw new NotImplementedException();
+            var index = Wensen.IndexOf(wens);
+
+            try
+            {
+                Wensen[index] = wens;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Console.WriteLine("Wens niet gevonden");
+            }
         }
 
     }

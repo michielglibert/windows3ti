@@ -10,57 +10,57 @@ using WishlistServices.Models;
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Requests")]
-    public class RequestController : Controller
+    [Route("api/Uitnodigingen")]
+    public class UitnodigingsController : Controller
     {
         private readonly WishlistDbContext _context;
 
-        public RequestController(WishlistDbContext context)
+        public UitnodigingsController(WishlistDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Request
+        // GET: api/Uitnodigingen
         [HttpGet]
-        public IEnumerable<Request> GetRequests()
+        public IEnumerable<Uitnodiging> GetUitnodigingen()
         {
-            return _context.Requests;
+            return _context.Uitnodigingen;
         }
 
-        // GET: api/Request/5
+        // GET: api/Uitnodigingen/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRequest([FromRoute] int id)
+        public async Task<IActionResult> GetUitnodiging([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
+            var uitnodiging = await _context.Uitnodigingen.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (request == null)
+            if (uitnodiging == null)
             {
                 return NotFound();
             }
 
-            return Ok(request);
+            return Ok(uitnodiging);
         }
 
-        // PUT: api/Requests/5
+        // PUT: api/Uitnodigingen/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRequest([FromRoute] int id, [FromBody] Request request)
+        public async Task<IActionResult> PutUitnodiging([FromRoute] int id, [FromBody] Uitnodiging uitnodiging)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != request.Id)
+            if (id != uitnodiging.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(request).State = EntityState.Modified;
+            _context.Entry(uitnodiging).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace WishlistServices.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RequestExists(id))
+                if (!UitnodigingExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
-        // POST: api/Requests
+        // POST: api/Uitnodigingen
         [HttpPost]
-        public async Task<IActionResult> PostRequest([FromBody] Request request)
+        public async Task<IActionResult> PostUitnodiging([FromBody] Uitnodiging uitnodiging)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Requests.Add(request);
+            _context.Uitnodigingen.Add(uitnodiging);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRequest", new { id = request.Id }, request);
+            return CreatedAtAction("GetUitnodiging", new { id = uitnodiging.Id }, uitnodiging);
         }
 
-        // DELETE: api/Requests/5
+        // DELETE: api/Uitnodigingen/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRequest([FromRoute] int id)
+        public async Task<IActionResult> DeleteUitnodiging([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
-            if (request == null)
+            var uitnodiging = await _context.Uitnodigingen.SingleOrDefaultAsync(m => m.Id == id);
+            if (uitnodiging == null)
             {
                 return NotFound();
             }
 
-            _context.Requests.Remove(request);
+            _context.Uitnodigingen.Remove(uitnodiging);
             await _context.SaveChangesAsync();
 
-            return Ok(request);
+            return Ok(uitnodiging);
         }
 
-        private bool RequestExists(int id)
+        private bool UitnodigingExists(int id)
         {
-            return _context.Requests.Any(e => e.Id == id);
+            return _context.Uitnodigingen.Any(e => e.Id == id);
         }
     }
 }

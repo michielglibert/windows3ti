@@ -13,10 +13,11 @@ namespace WishlistServices.Models
         {
         }
         
-        public DbSet<Gebruiker> Gebruiker { get; set; }
-        public DbSet<Wishlist> Type { get; set; }
-        public DbSet<Wens> Wens { get; set; }
+        public DbSet<Gebruiker> Gebruikers { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Wens> Wensen { get; set; }
         public DbSet<Request> Requests { get; set; }
+        public DbSet<Uitnodiging> Uitnodigingen { get; set; }
         public DbSet<GekochtCadeau> GekochtCadeaus { get; set; }
     }
 }

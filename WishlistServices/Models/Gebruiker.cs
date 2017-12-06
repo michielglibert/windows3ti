@@ -13,7 +13,7 @@ namespace WishlistServices.Models
 
         public List<Wishlist> EigenWishlists { get; set; }
         public List<Wishlist> Wishlists { get; set; }
-        public List<Request> Uitnodigingen { get; set; }
+        public List<Uitnodiging> Uitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
 
         public Gebruiker()
@@ -22,62 +22,97 @@ namespace WishlistServices.Models
 
         public void WishlistMaken()
         {
-            throw new NotImplementedException();
+            Wishlist wishlist = new Wishlist();
+            wishlist.Ontvanger = this;
+            EigenWishlists.Add(wishlist);
+            
         }
 
         public void WishlistVerwijderen(Wishlist wishlist)
         {
-            throw new NotImplementedException();
+            EigenWishlists.Remove(wishlist);
+        }
+
+        public void WishlistJoinen(Wishlist wishlist)
+        {
+            Wishlists.Add(wishlist);
+            wishlist.KoperToevoegen(this);
+        }
+
+        public void WishlistVerlaten(Wishlist wishlist)
+        {
+            Wishlists.Add(wishlist);
+            wishlist.KoperVerwijderen(this);
         }
 
         public void WensToevoegenAanWishlist(Wishlist wishlist, Wens wens)
         {
-            throw new NotImplementedException();
+            wishlist.WensToevoegen(wens);
         }
 
         public void WensWijzigen(Wishlist wishlist, Wens wens)
         {
-            throw new NotImplementedException();
+            wishlist.WensWijzigen(wens);
         }
 
         public void WensVerwijderenVanWishlist(Wishlist wishlist, Wens wens)
         {
-            throw new NotImplementedException();
+            wishlist.WensVerwijderen(wens);
         }
 
         public void MarkerenAlsGekocht(Wishlist wishlist, Wens wens, GekochtCadeau gekochtCadeau)
         {
-            throw new NotImplementedException();
+            wishlist.MarkerenAlsGekocht(wens, gekochtCadeau);
+        }
+
+        public void UitnodigingToevoegen(Uitnodiging uitnodiging)
+        {
+            Uitnodigingen.Add(uitnodiging);
+        }
+
+        public void UitnodigingVerwijderen(Uitnodiging uitnodiging)
+        {
+            Uitnodigingen.Remove(uitnodiging);
         }
 
         public void UitnodigingAccepteren(Request uitnodiging)
         {
-            throw new NotImplementedException();
+            uitnodiging.AccepteerRequest();
         }
 
         public void UitnodigingAfwijzen(Request uitnodiging)
         {
-            throw new NotImplementedException();
+            uitnodiging.WijsRequestAf();
         }
 
         public void UitnodigenVoorWishlist(Gebruiker gebruiker, Wishlist wishlist)
         {
-            throw new NotImplementedException();
+            wishlist.UitnodigingToevoegen(gebruiker);
+        }
+
+        public void RequestToevoegen(Request request)
+        {
+            Requests.Add(request);
+        }
+
+        public void RequestVerwijderen(Request request)
+        {
+            Requests.Remove(request);
         }
 
         public void RequestAccepteren(Request request)
         {
-            throw new NotImplementedException();
+            request.AccepteerRequest();
         }
 
         public void RequestAfwijzen(Request request)
         {
-            throw new NotImplementedException();
+            request.WijsRequestAf();
         }
 
         public void RequestVersturenVoorWishlist(Wishlist wishlist)
         {
-            throw new NotImplementedException();
+            wishlist.RequestToevoegen(this);
         }
 
     }
