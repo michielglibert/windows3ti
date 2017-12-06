@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.PlatformAbstractions;
+using Server.Data;
 using Swashbuckle.AspNetCore.Swagger;
 using WishlistServices.Models;
 
@@ -30,9 +31,6 @@ namespace WishlistServices
         {
             services.AddMvc();
 
-            services.AddDbContext<WishlistDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WishlistDbContext")));
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Wishlist app API", Version = "v1" });
@@ -42,11 +40,15 @@ namespace WishlistServices
                 c.IncludeXmlComments(xmlPath);
             });
 
+            services.AddDbContext<WishlistDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("WishlistDbContext")));
+            services.AddScoped<DummyDataInitializer>();
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DummyDataInitializer dummyDataInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -60,6 +62,7 @@ namespace WishlistServices
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            dummyDataInitializer.InitData();
 
             app.UseMvc();
         }

@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+using WishlistServices.Data;
 
 namespace WishlistServices.Models
 {
     public class Wishlist
     {
         public int Id { get; set; }
+        public string Naam { get; set; }
 
         public Gebruiker Ontvanger { get; set; }
-        public List<Gebruiker> Kopers { get; set; }
+        public List<GebruikerWishlist> Kopers { get; set; }
         public List<Wens> Wensen { get; set; }
         public List<GekochtCadeau> GekochtCadeaus { get; set; }
         public List<Uitnodiging> VerzondenUitnodigingen { get; set; }
@@ -23,12 +25,13 @@ namespace WishlistServices.Models
 
         public void KoperToevoegen(Gebruiker gebruiker)
         {
-            Kopers.Add(gebruiker);
+            Kopers.Add(new GebruikerWishlist(gebruiker, this));
         }
 
         public void KoperVerwijderen(Gebruiker gebruiker)
         {
-            Kopers.Remove(gebruiker);
+            var teVerwijderenGebruiker = Kopers.SingleOrDefault(t => t.Wishlist == this && t.Gebruiker == gebruiker);
+            Kopers.Remove(teVerwijderenGebruiker);
         }
 
         public void WensToevoegen(Wens wens)

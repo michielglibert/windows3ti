@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WishlistServices.Models;
 
 namespace WishlistServices.Controllers
 {
@@ -17,15 +18,31 @@ namespace WishlistServices.Controllers
     [AllowAnonymous]
     public class AuthenticationController : Controller
     {
-        
+        private readonly WishlistDbContext _context;
+
+        public AuthenticationController(WishlistDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpPost]
         public IActionResult RequestToken([FromBody] TokenRequest request)
         {
-            if (request.Username == "Jon" && request.Password == "Pass")
+            var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Username == request.Username);
+
+            if (gebruiker == null)
             {
+                return NotFound();
+            }
+
+            if (string.Equals(request.Username, gebruiker.Username, StringComparison.CurrentCultureIgnoreCase)
+                && string.Equals(request.Password, gebruiker.Password))
+            {
+
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Name, request.Username)
+                    new Claim("username", request.Username),
+                    new Claim("id", gebruiker.Id.ToString())
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsVeryUnsafeButThisIsOnlyASchoolProject"));
@@ -37,6 +54,7 @@ namespace WishlistServices.Controllers
                     claims: claims,
                     expires: DateTime.Now.AddMinutes(30),
                     signingCredentials: creds);
+                
 
                 return Ok(new
                 {
@@ -46,6 +64,12 @@ namespace WishlistServices.Controllers
 
             return BadRequest("Could not verify username and password");
         }
+
+        private bool GebruikerExists(int id)
+        {
+            return _context.Gebruikers.Any(e => e.Id == id);
+        }
+
     }
 
     public class TokenRequest

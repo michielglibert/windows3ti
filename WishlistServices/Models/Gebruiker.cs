@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Cache;
 using System.Threading.Tasks;
+using WishlistServices.Data;
 
 namespace WishlistServices.Models
 {
     public class Gebruiker
     {
         public int Id { get; set; }
-        public string Naam { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
 
         public List<Wishlist> EigenWishlists { get; set; }
-        public List<Wishlist> Wishlists { get; set; }
+        public List<GebruikerWishlist> Wishlists { get; set; }
         public List<Uitnodiging> Uitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
 
         public Gebruiker()
         {
+        }
+
+        public Gebruiker(string username, string password)
+        {
+            Username = username;
+            Password = password;
         }
 
         public void WishlistMaken()
@@ -35,13 +43,14 @@ namespace WishlistServices.Models
 
         public void WishlistJoinen(Wishlist wishlist)
         {
-            Wishlists.Add(wishlist);
+            Wishlists.Add(new GebruikerWishlist(this, wishlist));
             wishlist.KoperToevoegen(this);
         }
 
         public void WishlistVerlaten(Wishlist wishlist)
         {
-            Wishlists.Add(wishlist);
+            var teVerwijderenWishlist = Wishlists.SingleOrDefault(t => t.Wishlist == wishlist && t.Gebruiker == this);
+            Wishlists.Remove(teVerwijderenWishlist);
             wishlist.KoperVerwijderen(this);
         }
 
