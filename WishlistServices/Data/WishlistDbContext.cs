@@ -47,8 +47,7 @@ namespace WishlistServices.Models
 
             //Relations
             gc.HasOne(t => t.Koper)
-                .WithOne()
-                .HasForeignKey<Gebruiker>(t => t.Id);
+                .WithMany();
 
             //Props
             gc.Property(t => t.Wat)
@@ -165,6 +164,7 @@ namespace WishlistServices.Models
                 .IsRequired();
 
             //Props
+            g.Property(t => t.Id).ValueGeneratedOnAdd();
             g.Property(t => t.Username)
                 .HasColumnName("Username")
                 .HasMaxLength(35)
