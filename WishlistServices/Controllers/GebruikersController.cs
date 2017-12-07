@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WishlistServices.Data;
 using WishlistServices.Models;
 
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
     [Route("api/Gebruikers")]
+    [Authorize]
     public class GebruikersController : Controller
     {
         private readonly WishlistDbContext _context;
@@ -24,7 +28,15 @@ namespace WishlistServices.Controllers
         [HttpGet]
         public IEnumerable<Gebruiker> GetGebruiker()
         {
-            return _context.Gebruikers;
+            //var id = User.Claims.SingleOrDefault(t => t.Type == "id")?.Value;
+            return _context.Gebruikers.Include(t => t.EigenWishlists);
+//                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
+//                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Gebruiker)
+//                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist)
+//                .Include(t => t.Requests).ThenInclude(t => t.Gebruiker)
+//                .Include(t => t.Requests).ThenInclude(t => t.Wishlist);
+
+
         }
 
         // GET: api/Gebruikers/5

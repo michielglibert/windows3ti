@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.PlatformAbstractions;
-using Server.Data;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
-using WishlistServices.Models;
+using WishlistServices.Data;
 
 namespace WishlistServices
 {
@@ -40,6 +37,35 @@ namespace WishlistServices
                 c.IncludeXmlComments(xmlPath);
             });
 
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                // The signing key must match!
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsVeryUnsafeButThisIsOnlyASchoolProject")),
+
+                // Validate the JWT Issuer (iss) claim  
+                ValidateIssuer = true,
+                ValidIssuer = "hogent.be",
+
+                // Validate the JWT Audience (aud) claim  
+                ValidateAudience = true,
+                ValidAudience = "hogent.be",
+
+                // Validate the token expiry  
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            services.AddAuthentication(a =>
+                {
+                    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = tokenValidationParameters;
+            });
+
             services.AddDbContext<WishlistDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WishlistDbContext")));
             services.AddScoped<DummyDataInitializer>();
@@ -56,11 +82,12 @@ namespace WishlistServices
             }
 
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            app.UseAuthentication();
 
             dummyDataInitializer.InitData();
 

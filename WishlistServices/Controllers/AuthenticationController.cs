@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WishlistServices.Data;
 using WishlistServices.Models;
 
 namespace WishlistServices.Controllers
@@ -49,8 +50,10 @@ namespace WishlistServices.Controllers
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
+                    issuer: "hogent.be",
+                    audience: "hogent.be",
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(30),
+                    expires: DateTime.Now.AddMinutes(3000000),
                     signingCredentials: creds);
                 
 

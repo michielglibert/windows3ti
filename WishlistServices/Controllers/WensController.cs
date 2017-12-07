@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WishlistServices.Data;
 using WishlistServices.Models;
 
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
     [Route("api/Wensen")]
+    [Authorize]
     public class WensController : Controller
     {
         private readonly WishlistDbContext _context;

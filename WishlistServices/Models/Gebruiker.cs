@@ -20,6 +20,10 @@ namespace WishlistServices.Models
 
         public Gebruiker()
         {
+            EigenWishlists = new List<Wishlist>();
+            Wishlists = new List<GebruikerWishlist>();
+            Uitnodigingen = new List<Uitnodiging>();
+            Requests = new List<Request>();
         }
 
         public Gebruiker(string username, string password)
@@ -28,10 +32,9 @@ namespace WishlistServices.Models
             Password = password;
         }
 
-        public void WishlistMaken()
+        public void WishlistMaken(string naam)
         {
-            Wishlist wishlist = new Wishlist();
-            wishlist.Ontvanger = this;
+            Wishlist wishlist = new Wishlist(naam) {Ontvanger = this};
             EigenWishlists.Add(wishlist);
             
         }

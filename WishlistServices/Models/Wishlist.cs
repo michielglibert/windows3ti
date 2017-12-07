@@ -21,6 +21,16 @@ namespace WishlistServices.Models
 
         public Wishlist()
         {
+            Kopers = new List<GebruikerWishlist>();
+            Wensen = new List<Wens>();
+            GekochtCadeaus = new List<GekochtCadeau>();
+            VerzondenUitnodigingen = new List<Uitnodiging>();
+            Requests = new List<Request>();
+        }
+
+        public Wishlist(string naam)
+        {
+            Naam = naam;
         }
 
         public void KoperToevoegen(Gebruiker gebruiker)

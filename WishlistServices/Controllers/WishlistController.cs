@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WishlistServices.Data;
 using WishlistServices.Models;
 
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
     [Route("api/Wishlists")]
+    [Authorize]
     public class WishlistController : Controller
     {
         private readonly WishlistDbContext _context;
@@ -24,7 +25,7 @@ namespace WishlistServices.Controllers
         [HttpGet]
         public IEnumerable<Wishlist> GetWishlist()
         {
-            return _context.Wishlists;
+            return _context.Wishlists.Include(t => t.Ontvanger);
         }
 
         // GET: api/Wishlists/5
@@ -36,7 +37,7 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wishlist = await _context.Wishlists.SingleOrDefaultAsync(m => m.Id == id);
+            var wishlist = await _context.Wishlists.Include(t => t.Ontvanger).SingleOrDefaultAsync(m => m.Id == id);
 
             if (wishlist == null)
             {
@@ -85,12 +86,17 @@ namespace WishlistServices.Controllers
         [HttpPost]
         public async Task<IActionResult> PostWishlist([FromBody] Wishlist wishlist)
         {
+            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
+
+            var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Id == id);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Wishlists.Add(wishlist);
+            gebruiker.WishlistMaken(wishlist.Naam);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetWishlist", new { id = wishlist.Id }, wishlist);

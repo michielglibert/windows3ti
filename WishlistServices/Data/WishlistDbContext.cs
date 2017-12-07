@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WishlistServices.Data;
+using WishlistServices.Models;
 
-namespace WishlistServices.Models
+namespace WishlistServices.Data
 {
     public class WishlistDbContext : DbContext
     {
-        public WishlistDbContext (DbContextOptions<WishlistDbContext> options)
+        public DbSet<Gebruiker> Gebruikers { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Wens> Wensen { get; set; }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<Uitnodiging> Uitnodigingen { get; set; }
+        public DbSet<GekochtCadeau> GekochtCadeaus { get; set; }
+
+        protected WishlistDbContext()
+        {
+        }
+
+        public WishlistDbContext (DbContextOptions options)
             : base(options)
         {
         }
@@ -26,7 +34,7 @@ namespace WishlistServices.Models
             builder.Entity<GebruikerWishlist>(MapGebruikerWishlist);
         }
 
-        private void MapGebruikerWishlist(EntityTypeBuilder<GebruikerWishlist> gw)
+        private static void MapGebruikerWishlist(EntityTypeBuilder<GebruikerWishlist> gw)
         {
             //Table
             gw.ToTable("GebruikerWishlist");
@@ -39,7 +47,7 @@ namespace WishlistServices.Models
                 .WithMany(t => t.Wishlists);
         }
 
-        private void MapGekochtCadeau(EntityTypeBuilder<GekochtCadeau> gc)
+        private static void MapGekochtCadeau(EntityTypeBuilder<GekochtCadeau> gc)
         {
             //Table
             gc.ToTable("GekochtCadeau");
@@ -59,7 +67,7 @@ namespace WishlistServices.Models
                 .IsRequired();
         }
 
-        private void MapUitnodiging(EntityTypeBuilder<Uitnodiging> u)
+        private static void MapUitnodiging(EntityTypeBuilder<Uitnodiging> u)
         {
             //Table
             u.ToTable("Uitnodiging");
@@ -76,7 +84,7 @@ namespace WishlistServices.Models
                 .HasColumnName("Bericht");
         }
 
-        private void MapRequest(EntityTypeBuilder<Request> r)
+        private static void MapRequest(EntityTypeBuilder<Request> r)
         {
             //Table
             r.ToTable("Request");
@@ -93,7 +101,7 @@ namespace WishlistServices.Models
                 .HasColumnName("Bericht");
         }
 
-        private void MapWens(EntityTypeBuilder<Wens> w)
+        private static void MapWens(EntityTypeBuilder<Wens> w)
         {
             //Table
             w.ToTable("Wens");
@@ -118,7 +126,7 @@ namespace WishlistServices.Models
             w.Ignore(t => t.Foto);
         }
 
-        private void MapWishlist(EntityTypeBuilder<Wishlist> w)
+        private static void MapWishlist(EntityTypeBuilder<Wishlist> w)
         {
             //Table
             w.ToTable("Wishlist");
@@ -146,7 +154,7 @@ namespace WishlistServices.Models
                 .IsRequired();
         }
 
-        private void MapGebruiker(EntityTypeBuilder<Gebruiker> g)
+        private static void MapGebruiker(EntityTypeBuilder<Gebruiker> g)
         {
             //Table
             g.ToTable("Gebruiker");
@@ -172,11 +180,5 @@ namespace WishlistServices.Models
         }
 
 
-        public DbSet<Gebruiker> Gebruikers { get; set; }
-        public DbSet<Wishlist> Wishlists { get; set; }
-        public DbSet<Wens> Wensen { get; set; }
-        public DbSet<Request> Requests { get; set; }
-        public DbSet<Uitnodiging> Uitnodigingen { get; set; }
-        public DbSet<GekochtCadeau> GekochtCadeaus { get; set; }
     }
 }

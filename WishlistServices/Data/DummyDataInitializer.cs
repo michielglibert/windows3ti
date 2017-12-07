@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WishlistServices.Models;
+﻿using WishlistServices.Models;
 
-namespace Server.Data
+namespace WishlistServices.Data
 {
     public class DummyDataInitializer
     {
