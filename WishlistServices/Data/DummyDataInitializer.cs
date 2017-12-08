@@ -1,4 +1,5 @@
-﻿using WishlistServices.Models;
+﻿using System.Collections.Generic;
+using WishlistServices.Models;
 
 namespace WishlistServices.Data
 {
@@ -18,10 +19,21 @@ namespace WishlistServices.Data
             if (_dbContext.Database.EnsureCreated())
             {
                 //Gebruikers
-                Gebruiker gebruiker1 = new Gebruiker("Jef","Pass");
+                List<Gebruiker> gebruikers = new List<Gebruiker>();
 
-                _dbContext.Gebruikers.Add(gebruiker1);
+                Gebruiker gebruiker1 = new Gebruiker("Jef","Pass");;
+                gebruikers.Add(gebruiker1);
 
+                Gebruiker gebruiker2 = new Gebruiker("Karel","Vanheede");
+                gebruikers.Add(gebruiker2);
+
+                //DbInit
+                foreach (var gebruiker in gebruikers)
+                {
+                    _dbContext.Gebruikers.Add(gebruiker);
+                }
+
+                //Save
                 _dbContext.SaveChanges();
             }
         }

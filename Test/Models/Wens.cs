@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WishlistServices.Models
+namespace Test.Models
 {
     public class Wens
     {
@@ -17,11 +17,6 @@ namespace WishlistServices.Models
         public GekochtCadeau GekochtCadeau { get; set; }
         public Wens()
         {
-        }
-
-        public void MarkerenAlsGekocht(Gebruiker gebruiker)
-        {
-            GekochtCadeau = new GekochtCadeau(gebruiker);
         }
     }
 }

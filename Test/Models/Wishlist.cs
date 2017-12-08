@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
-using WishlistServices.Data;
+using Test.Data;
 
-namespace WishlistServices.Models
+namespace Test.Models
 {
     public class Wishlist
     {
@@ -15,6 +14,7 @@ namespace WishlistServices.Models
         public Gebruiker Ontvanger { get; set; }
         public List<GebruikerWishlist> Kopers { get; set; }
         public List<Wens> Wensen { get; set; }
+        public List<GekochtCadeau> GekochtCadeaus { get; set; }
         public List<Uitnodiging> VerzondenUitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
 
@@ -22,6 +22,7 @@ namespace WishlistServices.Models
         {
             Kopers = new List<GebruikerWishlist>();
             Wensen = new List<Wens>();
+            GekochtCadeaus = new List<GekochtCadeau>();
             VerzondenUitnodigingen = new List<Uitnodiging>();
             Requests = new List<Request>();
         }
@@ -31,9 +32,9 @@ namespace WishlistServices.Models
             Naam = naam;
         }
 
-        public void KoperToevoegen(GebruikerWishlist gebruikerWishlist)
+        public void KoperToevoegen(Gebruiker gebruiker)
         {
-            Kopers.Add(gebruikerWishlist);
+            Kopers.Add(new GebruikerWishlist(gebruiker, this));
         }
 
         public void KoperVerwijderen(Gebruiker gebruiker)
@@ -71,6 +72,11 @@ namespace WishlistServices.Models
             Requests.Remove(request);
         }
 
+        public void MarkerenAlsGekocht(Wens wens, GekochtCadeau gekochtCadeau)
+        {
+            wens.GekochtCadeau = gekochtCadeau;
+        }
+
         public void WensWijzigen(Wens wens)
         {
             var index = Wensen.IndexOf(wens);
@@ -85,9 +91,5 @@ namespace WishlistServices.Models
             }
         }
 
-        public void WensMarkerenAlsGekocht(Gebruiker gebruiker, Wens wens)
-        {
-            wens.MarkerenAlsGekocht(gebruiker);
-        }
     }
 }

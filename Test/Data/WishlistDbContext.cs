@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WishlistServices.Models;
+using Test.Data;
+using Test.Models;
 
-namespace WishlistServices.Data
+namespace Test.Data
 {
     public class WishlistDbContext : DbContext
     {
@@ -55,6 +56,15 @@ namespace WishlistServices.Data
             //Relations
             gc.HasOne(t => t.Koper)
                 .WithMany();
+
+            //Props
+            gc.Property(t => t.Wat)
+                .HasColumnName("Wat")
+                .IsRequired();
+
+            gc.Property(t => t.Prijs)
+                .HasColumnName("Prijs")
+                .IsRequired();
         }
 
         private static void MapUitnodiging(EntityTypeBuilder<Uitnodiging> u)
@@ -124,6 +134,8 @@ namespace WishlistServices.Data
 
             //Relations
             w.HasMany(t => t.Wensen)
+                .WithOne();
+            w.HasMany(t => t.GekochtCadeaus)
                 .WithOne();
             w.HasMany(t => t.Requests)
                 .WithOne(t => t.Wishlist);

@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WishlistServices.Data;
-using WishlistServices.Models;
+using Test.Data;
+using Test.Models;
 
-namespace WishlistServices.Controllers
+namespace Test.Controllers
 {
     [Produces("application/json")]
     [Route("api/Gebruikers")]
@@ -28,20 +28,15 @@ namespace WishlistServices.Controllers
         [HttpGet]
         public IEnumerable<Gebruiker> GetGebruiker()
         {
-            //var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
-            return _context.Gebruikers.Include(t => t.EigenWishlists)
-                .Include(t => t.EigenWishlists).ThenInclude(t => t.Ontvanger)
-                .Include(t => t.EigenWishlists).ThenInclude(t => t.VerzondenUitnodigingen)
-                .Include(t => t.EigenWishlists).ThenInclude(t => t.Requests)
-                .Include(t => t.EigenWishlists).ThenInclude(t => t.Wensen).ThenInclude(t => t.GekochtCadeau)
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.VerzondenUitnodigingen)
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Requests)
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen).ThenInclude(t => t.GekochtCadeau)
-                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Gebruiker)
-                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist)
-                .Include(t => t.Requests).ThenInclude(t => t.Gebruiker)
-                .Include(t => t.Requests).ThenInclude(t => t.Wishlist);
+            //var id = User.Claims.SingleOrDefault(t => t.Type == "id")?.Value;
+            return _context.Gebruikers.Include(t => t.EigenWishlists);
+//                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
+//                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Gebruiker)
+//                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist)
+//                .Include(t => t.Requests).ThenInclude(t => t.Gebruiker)
+//                .Include(t => t.Requests).ThenInclude(t => t.Wishlist);
+
+
         }
 
         // GET: api/Gebruikers/5

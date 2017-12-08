@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WishlistServices.Data;
-using WishlistServices.Models;
+using Test.Data;
+using Test.Models;
 
-namespace WishlistServices.Controllers
+namespace Test.Controllers
 {
     [Produces("application/json")]
     [Route("api/Wensen")]
@@ -28,13 +28,6 @@ namespace WishlistServices.Controllers
         public IEnumerable<Wens> GetWensen()
         {
             return _context.Wensen;
-        }
-
-        [HttpGet]
-        [Route("~/Wensen/Categorien")]
-        public IEnumerable<string> GetCategorien()
-        {
-            return Enum.GetNames(typeof(Categorie)).ToList();
         }
 
         // GET: api/Wens/5
@@ -93,23 +86,14 @@ namespace WishlistServices.Controllers
 
         // POST: api/Wensen
         [HttpPost]
-        [Route("~/api/wishlists/{wishlistId}/wensen")]
-        public async Task<IActionResult> PostWens([FromRoute] int wishlistId, [FromBody] Wens wens)
+        public async Task<IActionResult> PostWens([FromBody] Wens wens)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
-            var gebruiker = _context.Gebruikers
-                .Include(t => t.EigenWishlists).ThenInclude(t => t.Wensen)
-                .SingleOrDefault(t => t.Id == id);
-
-            var wishlist = _context.Wishlists.SingleOrDefault(t => t.Id == wishlistId);
-
-            gebruiker.WensToevoegenAanWishlist(wishlist, wens);
-
+            _context.Wensen.Add(wens);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetWens", new { id = wens.Id }, wens);

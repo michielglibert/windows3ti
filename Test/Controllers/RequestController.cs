@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WishlistServices.Data;
-using WishlistServices.Models;
+using Test.Data;
+using Test.Models;
 
-namespace WishlistServices.Controllers
+namespace Test.Controllers
 {
     [Produces("application/json")]
     [Route("api/Requests")]
@@ -84,36 +84,6 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        [Route("~/api/Requests/{requestId}")]
-        public IActionResult RequestBeantwoorden([FromRoute] int requestId, [FromBody] RequestRequest antwoord)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var request = _context.Requests
-                .Include(t => t.Gebruiker).ThenInclude(t => t.Requests)
-                .Include(t => t.Wishlist).ThenInclude(t => t.Requests)
-                .SingleOrDefault(t => t.Id == requestId);
-            if (request == null)
-            {
-                return NotFound();
-            }
-
-            if (antwoord.Antwoord)
-            {
-                request.AccepteerRequest();
-            }
-            else
-            {
-                request.WijsRequestAf();
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Requests
         [HttpPost]
         public async Task<IActionResult> PostRequest([FromBody] Request request)
@@ -123,13 +93,7 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
-            var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Id == id);
-
-            var wishlist = _context.Wishlists.SingleOrDefault(t => t.Id == request.Wishlist.Id);
-
-            gebruiker.RequestVersturenVoorWishlist(wishlist);
-
+            _context.Requests.Add(request);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequest", new { id = request.Id }, request);
@@ -161,9 +125,4 @@ namespace WishlistServices.Controllers
             return _context.Requests.Any(e => e.Id == id);
         }
     }
-}
-
-public class RequestRequest
-{
-    public bool Antwoord { set; get; }
 }

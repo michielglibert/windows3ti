@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WishlistServices.Data;
-using WishlistServices.Models;
+using Test.Data;
+using Test.Models;
 
-namespace WishlistServices.Controllers
+namespace Test.Controllers
 {
     [Produces("application/json")]
     [Route("api/Uitnodigingen")]
@@ -84,42 +84,8 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        [Route("~/api/Uitnodigingen/{uitnodigingId}")]
-        public IActionResult RequestBeantwoorden([FromRoute] int uitnodigingId, [FromBody] InviteRequest antwoord)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var uitnodiging = _context.Uitnodigingen
-                .Include(t => t.Gebruiker).ThenInclude(t => t.Uitnodigingen)
-                .Include(t => t.Wishlist).ThenInclude(t => t.VerzondenUitnodigingen)
-                .SingleOrDefault(t => t.Id == uitnodigingId);
-
-            if (uitnodiging == null)
-            {
-                return NotFound();
-            }
-
-            if (antwoord.Antwoord)
-            {
-                uitnodiging.AccepteerUitnodiging();
-            }
-            else
-            {
-                uitnodiging.WijsUitnodigingAf();
-            }
-
-            _context.SaveChanges();
-
-            return NoContent();
-        }
-
         // POST: api/Uitnodigingen
         [HttpPost]
-        [Route("~/api/Uitnodigingen")]
         public async Task<IActionResult> PostUitnodiging([FromBody] Uitnodiging uitnodiging)
         {
             if (!ModelState.IsValid)
@@ -127,21 +93,14 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
-            var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Id == id);
-
-            var wishlist = _context.Wishlists.SingleOrDefault(t => t.Id == uitnodiging.Wishlist.Id);
-            var uitgenodigdeGebruiker = _context.Gebruikers.SingleOrDefault(t => t.Id == uitnodiging.Gebruiker.Id);
-
-            gebruiker.UitnodigenVoorWishlist(uitgenodigdeGebruiker, wishlist);
-            
+            _context.Uitnodigingen.Add(uitnodiging);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUitnodiging", new { id = uitnodiging.Id }, uitnodiging);
         }
 
         // DELETE: api/Uitnodigingen/5
-        /*[HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUitnodiging([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -159,16 +118,11 @@ namespace WishlistServices.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(uitnodiging);
-        }*/
+        }
 
         private bool UitnodigingExists(int id)
         {
             return _context.Uitnodigingen.Any(e => e.Id == id);
         }
     }
-}
-
-public class InviteRequest
-{
-    public bool Antwoord { set; get; }
 }

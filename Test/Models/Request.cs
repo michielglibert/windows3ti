@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WishlistServices.Models
+namespace Test.Models
 {
-    public class Uitnodiging
+    public class Request
     {
         public int Id { get; set; }
         public string Bericht { get; set; }
@@ -13,26 +13,27 @@ namespace WishlistServices.Models
         public Gebruiker Gebruiker { get; set; }
         public Wishlist Wishlist { get; set; }
 
-        public Uitnodiging()
+        public Request()
         {
         }
 
-        public Uitnodiging(Gebruiker gebruiker, Wishlist wishlist)
+        public Request(Gebruiker gebruiker, Wishlist wishlist)
         {
             Gebruiker = gebruiker;
             Wishlist = wishlist;
         }
 
-        public void AccepteerUitnodiging()
+        public void AccepteerRequest()
         {
             Gebruiker.WishlistJoinen(Wishlist);
-            WijsUitnodigingAf();
         }
 
-        public void WijsUitnodigingAf()
+        public void WijsRequestAf()
         {
-            Gebruiker.UitnodigingVerwijderen(this);
-            Wishlist.UitnodigingVerwijderen(this);
+            Gebruiker.RequestVerwijderen(this);
+            Wishlist.RequestVerwijderen(this);
         }
+
+
     }
 }

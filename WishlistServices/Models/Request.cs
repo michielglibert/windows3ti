@@ -26,6 +26,7 @@ namespace WishlistServices.Models
         public void AccepteerRequest()
         {
             Gebruiker.WishlistJoinen(Wishlist);
+            WijsRequestAf();
         }
 
         public void WijsRequestAf()

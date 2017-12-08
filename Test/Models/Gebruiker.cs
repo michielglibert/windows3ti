@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Cache;
 using System.Threading.Tasks;
-using WishlistServices.Data;
+using Test.Data;
 
-namespace WishlistServices.Models
+namespace Test.Models
 {
     public class Gebruiker
     {
@@ -46,9 +46,8 @@ namespace WishlistServices.Models
 
         public void WishlistJoinen(Wishlist wishlist)
         {
-            GebruikerWishlist gebruikerWishlist = new GebruikerWishlist(this, wishlist);
-            Wishlists.Add(gebruikerWishlist);
-            wishlist.KoperToevoegen(gebruikerWishlist);
+            Wishlists.Add(new GebruikerWishlist(this, wishlist));
+            wishlist.KoperToevoegen(this);
         }
 
         public void WishlistVerlaten(Wishlist wishlist)
@@ -72,7 +71,12 @@ namespace WishlistServices.Models
         {
             wishlist.WensVerwijderen(wens);
         }
-        
+
+        public void MarkerenAlsGekocht(Wishlist wishlist, Wens wens, GekochtCadeau gekochtCadeau)
+        {
+            wishlist.MarkerenAlsGekocht(wens, gekochtCadeau);
+        }
+
         public void UitnodigingToevoegen(Uitnodiging uitnodiging)
         {
             Uitnodigingen.Add(uitnodiging);
@@ -82,7 +86,17 @@ namespace WishlistServices.Models
         {
             Uitnodigingen.Remove(uitnodiging);
         }
-        
+
+        public void UitnodigingAccepteren(Request uitnodiging)
+        {
+            uitnodiging.AccepteerRequest();
+        }
+
+        public void UitnodigingAfwijzen(Request uitnodiging)
+        {
+            uitnodiging.WijsRequestAf();
+        }
+
         public void UitnodigenVoorWishlist(Gebruiker gebruiker, Wishlist wishlist)
         {
             wishlist.UitnodigingToevoegen(gebruiker);
@@ -98,14 +112,19 @@ namespace WishlistServices.Models
             Requests.Remove(request);
         }
 
+        public void RequestAccepteren(Request request)
+        {
+            request.AccepteerRequest();
+        }
+
+        public void RequestAfwijzen(Request request)
+        {
+            request.WijsRequestAf();
+        }
+
         public void RequestVersturenVoorWishlist(Wishlist wishlist)
         {
             wishlist.RequestToevoegen(this);
-        }
-
-        public void WensMarkerenAlsGekocht(Wishlist wishlist, Wens wens)
-        {
-            wishlist.WensMarkerenAlsGekocht(this, wens);
         }
 
     }

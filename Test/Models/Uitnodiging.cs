@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WishlistServices.Models
+namespace Test.Models
 {
     public class Uitnodiging
     {
@@ -26,7 +26,6 @@ namespace WishlistServices.Models
         public void AccepteerUitnodiging()
         {
             Gebruiker.WishlistJoinen(Wishlist);
-            WijsUitnodigingAf();
         }
 
         public void WijsUitnodigingAf()

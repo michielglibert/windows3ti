@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,65 +11,57 @@ using WishlistServices.Models;
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Wensen")]
-    [Authorize]
-    public class WensController : Controller
+    [Route("api/GekochteCadeaus")]
+    public class GekochteCadeausController : Controller
     {
         private readonly WishlistDbContext _context;
 
-        public WensController(WishlistDbContext context)
+        public GekochteCadeausController(WishlistDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Wens
+        // GET: api/GekochteCadeaus
         [HttpGet]
-        public IEnumerable<Wens> GetWensen()
+        public IEnumerable<GekochtCadeau> GetGekochtCadeaus()
         {
-            return _context.Wensen;
+            return _context.GekochtCadeaus;
         }
 
-        [HttpGet]
-        [Route("~/Wensen/Categorien")]
-        public IEnumerable<string> GetCategorien()
-        {
-            return Enum.GetNames(typeof(Categorie)).ToList();
-        }
-
-        // GET: api/Wens/5
+        // GET: api/GekochteCadeaus/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWens([FromRoute] int id)
+        public async Task<IActionResult> GetGekochtCadeau([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var wens = await _context.Wensen.SingleOrDefaultAsync(m => m.Id == id);
+            var gekochtCadeau = await _context.GekochtCadeaus.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (wens == null)
+            if (gekochtCadeau == null)
             {
                 return NotFound();
             }
 
-            return Ok(wens);
+            return Ok(gekochtCadeau);
         }
 
-        // PUT: api/Wensen/5
+        // PUT: api/GekochteCadeaus/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWens([FromRoute] int id, [FromBody] Wens wens)
+        public async Task<IActionResult> PutGekochtCadeau([FromRoute] int id, [FromBody] GekochtCadeau gekochtCadeau)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != wens.Id)
+            if (id != gekochtCadeau.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(wens).State = EntityState.Modified;
+            _context.Entry(gekochtCadeau).State = EntityState.Modified;
 
             try
             {
@@ -78,7 +69,7 @@ namespace WishlistServices.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WensExists(id))
+                if (!GekochtCadeauExists(id))
                 {
                     return NotFound();
                 }
@@ -91,10 +82,10 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
-        // POST: api/Wensen
+        // POST: api/GekochteCadeaus
         [HttpPost]
-        [Route("~/api/wishlists/{wishlistId}/wensen")]
-        public async Task<IActionResult> PostWens([FromRoute] int wishlistId, [FromBody] Wens wens)
+        [Route("~~/api/Wens/{wensId}/GekochteCadeaus")]
+        public async Task<IActionResult> PostGekochtCadeau([FromRoute] int wensId)
         {
             if (!ModelState.IsValid)
             {
@@ -103,42 +94,41 @@ namespace WishlistServices.Controllers
 
             var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
             var gebruiker = _context.Gebruikers
-                .Include(t => t.EigenWishlists).ThenInclude(t => t.Wensen)
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen).ThenInclude(t => t.GekochtCadeau)
                 .SingleOrDefault(t => t.Id == id);
 
-            var wishlist = _context.Wishlists.SingleOrDefault(t => t.Id == wishlistId);
-
-            gebruiker.WensToevoegenAanWishlist(wishlist, wens);
+            var wens = _context.Wensen.SingleOrDefault(t => t.Id == wensId);
+            wens.MarkerenAlsGekocht(gebruiker);
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWens", new { id = wens.Id }, wens);
+            return NoContent();
         }
 
-        // DELETE: api/Wensen/5
+        // DELETE: api/GekochteCadeaus/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWens([FromRoute] int id)
+        public async Task<IActionResult> DeleteGekochtCadeau([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var wens = await _context.Wensen.SingleOrDefaultAsync(m => m.Id == id);
-            if (wens == null)
+            var gekochtCadeau = await _context.GekochtCadeaus.SingleOrDefaultAsync(m => m.Id == id);
+            if (gekochtCadeau == null)
             {
                 return NotFound();
             }
 
-            _context.Wensen.Remove(wens);
+            _context.GekochtCadeaus.Remove(gekochtCadeau);
             await _context.SaveChangesAsync();
 
-            return Ok(wens);
+            return Ok(gekochtCadeau);
         }
 
-        private bool WensExists(int id)
+        private bool GekochtCadeauExists(int id)
         {
-            return _context.Wensen.Any(e => e.Id == id);
+            return _context.GekochtCadeaus.Any(e => e.Id == id);
         }
     }
 }
