@@ -102,6 +102,9 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+     <Compile Include="Views\Zoeken.xaml.cs">
+      <DependentUpon>Zoeken.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
     </Compile>
@@ -112,15 +115,11 @@
     <Compile Include="Views\WishlistsOverzicht.xaml.cs">
       <DependentUpon>WishlistsOverzicht.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Zoeken.xaml.cs">
-      <DependentUpon>Zoeken.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="WishlistApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -149,7 +148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Zoeken.xaml">
+    <Page Include="Views\Zoeken.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
