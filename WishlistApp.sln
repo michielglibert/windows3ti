@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Blend for Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishlistApp", "WishlistApp\WishlistApp.csproj", "{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WishlistServices", "WishlistServices\WishlistServices.csproj", "{A487A882-E97C-44C3-BE77-0DFD5A0EAEF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WishlistServices", "WishlistServices\WishlistServices.csproj", "{A487A882-E97C-44C3-BE77-0DFD5A0EAEF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}.Debug|Any CPU.Build.0 = Debug|x86
+		{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}.Debug|ARM.ActiveCfg = Debug|ARM
 		{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}.Debug|ARM.Build.0 = Debug|ARM
 		{8FB8114B-AD0A-4F86-95C2-BB4B80ECE435}.Debug|ARM.Deploy.0 = Debug|ARM
