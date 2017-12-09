@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
+      </Compile>
     <Compile Include="Views\Profiel.xaml.cs">
       <DependentUpon>Profiel.xaml</DependentUpon>
     </Compile>
@@ -142,7 +143,13 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Zoeken.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Profiel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
