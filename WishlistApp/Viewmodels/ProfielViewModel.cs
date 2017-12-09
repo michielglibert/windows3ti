@@ -13,6 +13,7 @@ namespace WishlistApp.Viewmodels
         public ObservableCollection<Wishlist> EigenWishlists { get; set; }
         public ObservableCollection<Wishlist> OntvangenWishlists { get; set; }
         public Gebruiker Gebruiker { get; set; }
+        public string ButtonText { get; set; }
 
         public ProfielViewModel()
         {
