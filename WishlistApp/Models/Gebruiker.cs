@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WishlistApp.Models
 {
-    class Profiel
+    class Gebruiker
     {
     }
 }

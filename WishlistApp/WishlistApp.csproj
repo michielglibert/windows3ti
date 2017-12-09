@@ -95,16 +95,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Profiel.cs" />
+    <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Viewmodels\MainPageViewModel.cs" />
     <Compile Include="Viewmodels\ProfielViewModel.cs" />
+    <Compile Include="Viewmodels\ViewModelBase.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
-      </Compile>
+    </Compile>
     <Compile Include="Views\Profiel.xaml.cs">
       <DependentUpon>Profiel.xaml</DependentUpon>
     </Compile>
