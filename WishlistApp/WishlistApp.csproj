@@ -95,7 +95,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Models\GebruikerWishlist.cs" />
@@ -104,9 +103,7 @@
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Uitnodiging.cs" />
     <Compile Include="Models\Wens.cs" />
-=======
     <Compile Include="Models\Gebruiker.cs" />
->>>>>>> 2e9974007cb0018d4a0218a7bd4cf8106786b20a
     <Compile Include="Models\Wishlist.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Viewmodels\MainPageViewModel.cs" />
