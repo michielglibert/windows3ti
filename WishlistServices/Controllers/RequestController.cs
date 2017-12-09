@@ -23,13 +23,24 @@ namespace WishlistServices.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Alle request voor wishlist bekijken
+        /// </summary>
         // GET: api/Request
         [HttpGet]
-        public IEnumerable<Request> GetRequests()
+        [Route("~/api/Wishlists/{wishlistId}/Requests")]
+        public IEnumerable<Request> GetRequestsVanWishlist([FromRoute] int wishlistId)
         {
-            return _context.Requests;
+            var wishlist = _context.Wishlists
+                .Include(t => t.Requests).ThenInclude(t => t.Gebruiker)
+                .SingleOrDefault(t => t.Id == wishlistId);
+
+            return wishlist.Requests;
         }
 
+        /// <summary>
+        /// Request by id
+        /// </summary>
         // GET: api/Request/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRequest([FromRoute] int id)
@@ -49,41 +60,9 @@ namespace WishlistServices.Controllers
             return Ok(request);
         }
 
-        // PUT: api/Requests/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRequest([FromRoute] int id, [FromBody] Request request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != request.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(request).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RequestExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        /// <summary>
+        /// Request aanvaard/afwijzen: { "antwoord":true/false }
+        /// </summary>
         [HttpDelete]
         [Route("~/api/Requests/{requestId}")]
         public IActionResult RequestBeantwoorden([FromRoute] int requestId, [FromBody] RequestRequest antwoord)
@@ -111,9 +90,14 @@ namespace WishlistServices.Controllers
                 request.WijsRequestAf();
             }
 
+            _context.SaveChanges();
+
             return NoContent();
         }
 
+        /// <summary>
+        /// Request toevoegen
+        /// </summary>
         // POST: api/Requests
         [HttpPost]
         public async Task<IActionResult> PostRequest([FromBody] Request request)
@@ -134,32 +118,7 @@ namespace WishlistServices.Controllers
 
             return CreatedAtAction("GetRequest", new { id = request.Id }, request);
         }
-
-        // DELETE: api/Requests/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRequest([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
-            if (request == null)
-            {
-                return NotFound();
-            }
-
-            _context.Requests.Remove(request);
-            await _context.SaveChangesAsync();
-
-            return Ok(request);
-        }
-
-        private bool RequestExists(int id)
-        {
-            return _context.Requests.Any(e => e.Id == id);
-        }
+       
     }
 }
 

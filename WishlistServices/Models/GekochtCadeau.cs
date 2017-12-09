@@ -11,12 +11,16 @@ namespace WishlistServices.Models
 
         public Gebruiker Koper { get; set; }
 
+        //ENKEL EN ALLEEN ENTITY FRAMEWORK ANDERS DIKKE BUGZZ
+        public Wens Wens { get; set; }
+
         public GekochtCadeau()
         {
         }
-        public GekochtCadeau(Gebruiker koper)
+        public GekochtCadeau(Gebruiker koper, Wens wens)
         {
             Koper = koper;
+            Wens = wens;
         }
     }
 }

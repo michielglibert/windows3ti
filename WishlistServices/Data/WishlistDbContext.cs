@@ -55,6 +55,8 @@ namespace WishlistServices.Data
             //Relations
             gc.HasOne(t => t.Koper)
                 .WithMany();
+            gc.HasOne(t => t.Wens)
+                .WithOne(t => t.GekochtCadeau);
         }
 
         private static void MapUitnodiging(EntityTypeBuilder<Uitnodiging> u)
@@ -99,10 +101,10 @@ namespace WishlistServices.Data
 
             //Relations
             w.HasOne(t => t.GekochtCadeau)
-                .WithOne()
-                .HasForeignKey<Wens>(t => t.Id); ;
+                .WithOne();
 
             //Props
+            w.Property(t => t.Id).ValueGeneratedOnAdd();
             w.Property(t => t.Categorie)
                 .HasColumnName("Categorie")
                 .IsRequired();

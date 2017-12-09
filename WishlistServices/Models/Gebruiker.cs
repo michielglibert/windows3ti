@@ -53,6 +53,11 @@ namespace WishlistServices.Models
 
         public void WishlistVerlaten(Wishlist wishlist)
         {
+            if (this == wishlist.Ontvanger)
+            {
+                throw new ArgumentException("Koper kan wishlist niet verlaten");
+            }
+
             var teVerwijderenWishlist = Wishlists.SingleOrDefault(t => t.Wishlist == wishlist && t.Gebruiker == this);
             Wishlists.Remove(teVerwijderenWishlist);
             wishlist.KoperVerwijderen(this);

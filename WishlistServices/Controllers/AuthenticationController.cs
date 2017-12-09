@@ -15,7 +15,6 @@ using WishlistServices.Models;
 namespace WishlistServices.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Authentication")]
     [AllowAnonymous]
     public class AuthenticationController : Controller
     {
@@ -26,23 +25,48 @@ namespace WishlistServices.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Gebruiker registreren, geeft json token terug
+        /// </summary>
         [HttpPost]
-        public IActionResult RequestToken([FromBody] TokenRequest request)
+        [Route("api/Authentication/register")]
+        public IActionResult Register([FromBody] User user)
         {
-            var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Username == request.Username);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Gebruiker gebruiker = new Gebruiker(user.Username, user.Password);
+
+            _context.Gebruikers.Add(gebruiker);
+
+            _context.SaveChanges();
+
+            return Login(user);
+        }
+
+        /// <summary>
+        /// Gebruiker inloggen, geeft json token terug.
+        /// </summary>
+        [HttpPost]
+        [Route("api/Authentication/login")]
+        public IActionResult Login([FromBody] User user)
+        {
+            var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Username == user.Username);
 
             if (gebruiker == null)
             {
                 return NotFound();
             }
 
-            if (string.Equals(request.Username, gebruiker.Username, StringComparison.CurrentCultureIgnoreCase)
-                && string.Equals(request.Password, gebruiker.Password))
+            if (string.Equals(user.Username, gebruiker.Username, StringComparison.CurrentCultureIgnoreCase)
+                && string.Equals(user.Password, gebruiker.Password))
             {
 
                 var claims = new[]
                 {
-                    new Claim("username", request.Username),
+                    new Claim("username", user.Username),
                     new Claim("id", gebruiker.Id.ToString())
                 };
 
@@ -66,14 +90,9 @@ namespace WishlistServices.Controllers
             return BadRequest("Could not verify username and password");
         }
 
-        private bool GebruikerExists(int id)
-        {
-            return _context.Gebruikers.Any(e => e.Id == id);
-        }
-
     }
 
-    public class TokenRequest
+    public class User
     {
         public string Username { get; set; }
         public string Password { get; set; }

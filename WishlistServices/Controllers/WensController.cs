@@ -23,20 +23,34 @@ namespace WishlistServices.Controllers
             _context = context;
         }
 
-        // GET: api/Wens
+        /// <summary>
+        /// Alle wensen van wishlist opvragen
+        /// </summary>
         [HttpGet]
-        public IEnumerable<Wens> GetWensen()
+        [Route("~/api/Wishlist/{wishlistId}/Wensen")]
+        public IEnumerable<Wens> GetWensenVanWishlist([FromRoute] int wishlistId)
         {
-            return _context.Wensen;
+            var wishlist = _context.Wishlists
+                .Include(t => t.Wensen)
+                .ThenInclude(t => t.GekochtCadeau)
+                .SingleOrDefault(t => t.Id == wishlistId);
+            
+            return wishlist.Wensen;
         }
 
+        /// <summary>
+        /// Alle mogelijke categorien voor wishlist opvragen => string[]
+        /// </summary>
         [HttpGet]
-        [Route("~/Wensen/Categorien")]
+        [Route("~/api/Wensen/Categorien")]
         public IEnumerable<string> GetCategorien()
         {
             return Enum.GetNames(typeof(Categorie)).ToList();
         }
 
+        /// <summary>
+        /// Wens by id
+        /// </summary>
         // GET: api/Wens/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWens([FromRoute] int id)
@@ -56,6 +70,9 @@ namespace WishlistServices.Controllers
             return Ok(wens);
         }
 
+        /// <summary>
+        /// Wens aanpassen
+        /// </summary>
         // PUT: api/Wensen/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWens([FromRoute] int id, [FromBody] Wens wens)
@@ -91,9 +108,12 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Wens toevoegen aan wishlist
+        /// </summary>
         // POST: api/Wensen
         [HttpPost]
-        [Route("~/api/wishlists/{wishlistId}/wensen")]
+        [Route("~/api/Wishlists/{wishlistId}/Wensen")]
         public async Task<IActionResult> PostWens([FromRoute] int wishlistId, [FromBody] Wens wens)
         {
             if (!ModelState.IsValid)
@@ -115,6 +135,9 @@ namespace WishlistServices.Controllers
             return CreatedAtAction("GetWens", new { id = wens.Id }, wens);
         }
 
+        /// <summary>
+        /// Wens verwijderen
+        /// </summary>
         // DELETE: api/Wensen/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWens([FromRoute] int id)

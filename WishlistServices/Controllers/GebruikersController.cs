@@ -24,7 +24,9 @@ namespace WishlistServices.Controllers
             _context = context;
         }
 
-        // GET: api/Gebruikers
+        /// <summary>
+        /// Get's alle gebruikers en alle attributen (handig voor testen)
+        /// </summary>
         [HttpGet]
         public IEnumerable<Gebruiker> GetGebruiker()
         {
@@ -44,6 +46,23 @@ namespace WishlistServices.Controllers
                 .Include(t => t.Requests).ThenInclude(t => t.Wishlist);
         }
 
+        /// <summary>
+        /// Gebruiker zoeken by naam: .../search?naam=Jef
+        /// </summary>
+        [HttpGet]
+        [Route("~/api/Gebruikers/search")]
+        public IEnumerable<Gebruiker> GetGebruikerBySearch([FromQuery] string naam)
+        {
+            if (naam.Length < 3)
+            {
+                throw new ArgumentException("Zoekopdracht moet langer zijn dan 3 tekens");
+            }
+            return _context.Gebruikers.Where(t => t.Username.Contains(naam));
+        }
+
+        /// <summary>
+        /// Gebruiker opvragen by id
+        /// </summary>
         // GET: api/Gebruikers/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGebruiker([FromRoute] int id)
@@ -62,8 +81,10 @@ namespace WishlistServices.Controllers
 
             return Ok(gebruiker);
         }
-
-        // PUT: api/Gebruikers/5
+        
+        /// <summary>
+        /// Gebruiker aanpassen
+        /// </summary>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGebruiker([FromRoute] int id, [FromBody] Gebruiker gebruiker)
         {
@@ -97,43 +118,7 @@ namespace WishlistServices.Controllers
 
             return NoContent();
         }
-
-        // POST: api/Gebruikers
-        [HttpPost]
-        public async Task<IActionResult> PostGebruiker([FromBody] Gebruiker gebruiker)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Gebruikers.Add(gebruiker);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGebruiker", new { id = gebruiker.Id }, gebruiker);
-        }
-
-        // DELETE: api/Gebruikers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGebruiker([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var gebruiker = await _context.Gebruikers.SingleOrDefaultAsync(m => m.Id == id);
-            if (gebruiker == null)
-            {
-                return NotFound();
-            }
-
-            _context.Gebruikers.Remove(gebruiker);
-            await _context.SaveChangesAsync();
-
-            return Ok(gebruiker);
-        }
-
+        
         private bool GebruikerExists(int id)
         {
             return _context.Gebruikers.Any(e => e.Id == id);

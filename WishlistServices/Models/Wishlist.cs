@@ -89,5 +89,28 @@ namespace WishlistServices.Models
         {
             wens.MarkerenAlsGekocht(gebruiker);
         }
+
+        public Dictionary<Gebruiker, int> AantalGekochteCadeaus()
+        {
+            Dictionary<Gebruiker, int> aantalGekochteCadeaus = new Dictionary<Gebruiker, int>();
+
+            foreach (var wens in Wensen)
+            {
+                if (wens.GekochtCadeau != null)
+                {
+                    if (!aantalGekochteCadeaus.ContainsKey(wens.GekochtCadeau.Koper))
+                    {
+                        aantalGekochteCadeaus.Add(wens.GekochtCadeau.Koper, 1);
+                    }
+                    else
+                    {
+                        aantalGekochteCadeaus[wens.GekochtCadeau.Koper]++;
+                    }
+                    
+                }
+            }
+
+            return aantalGekochteCadeaus;
+        }
     }
 }

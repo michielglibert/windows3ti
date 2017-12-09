@@ -21,70 +21,12 @@ namespace WishlistServices.Controllers
             _context = context;
         }
 
-        // GET: api/GekochteCadeaus
-        [HttpGet]
-        public IEnumerable<GekochtCadeau> GetGekochtCadeaus()
-        {
-            return _context.GekochtCadeaus;
-        }
-
-        // GET: api/GekochteCadeaus/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetGekochtCadeau([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var gekochtCadeau = await _context.GekochtCadeaus.SingleOrDefaultAsync(m => m.Id == id);
-
-            if (gekochtCadeau == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(gekochtCadeau);
-        }
-
-        // PUT: api/GekochteCadeaus/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGekochtCadeau([FromRoute] int id, [FromBody] GekochtCadeau gekochtCadeau)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != gekochtCadeau.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(gekochtCadeau).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GekochtCadeauExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        /// <summary>
+        /// Gekocht cadeau toevoegen aan wens
+        /// </summary>
         // POST: api/GekochteCadeaus
         [HttpPost]
-        [Route("~~/api/Wens/{wensId}/GekochteCadeaus")]
+        [Route("~/api/Wens/{wensId}/GekochteCadeaus")]
         public async Task<IActionResult> PostGekochtCadeau([FromRoute] int wensId)
         {
             if (!ModelState.IsValid)
@@ -105,6 +47,9 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Gekocht cadeau verwijderen van wens
+        /// </summary>
         // DELETE: api/GekochteCadeaus/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGekochtCadeau([FromRoute] int id)

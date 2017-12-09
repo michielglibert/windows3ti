@@ -23,13 +23,24 @@ namespace WishlistServices.Controllers
             _context = context;
         }
 
-        // GET: api/Uitnodigingen
+        /// <summary>
+        /// Alle uitnodigingen van gebruiker bekijken
+        /// </summary>
+        // GET: api/Request
         [HttpGet]
-        public IEnumerable<Uitnodiging> GetUitnodigingen()
+        public IEnumerable<Uitnodiging> GetUitnodigingenVanWishlist([FromRoute] int wishlistId)
         {
-            return _context.Uitnodigingen;
+            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
+            var gebruiker = _context.Gebruikers
+                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
+                .SingleOrDefault(t => t.Id == id);
+
+            return gebruiker.Uitnodigingen;
         }
 
+        /// <summary>
+        /// Uitnodiging by id
+        /// </summary>
         // GET: api/Uitnodigingen/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUitnodiging([FromRoute] int id)
@@ -49,41 +60,9 @@ namespace WishlistServices.Controllers
             return Ok(uitnodiging);
         }
 
-        // PUT: api/Uitnodigingen/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUitnodiging([FromRoute] int id, [FromBody] Uitnodiging uitnodiging)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != uitnodiging.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(uitnodiging).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UitnodigingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        /// <summary>
+        /// Uitnodiging aanvaard/afwijzen: { "antwoord":true/false }
+        /// </summary>
         [HttpDelete]
         [Route("~/api/Uitnodigingen/{uitnodigingId}")]
         public IActionResult RequestBeantwoorden([FromRoute] int uitnodigingId, [FromBody] InviteRequest antwoord)
@@ -117,6 +96,9 @@ namespace WishlistServices.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Uitnodiging toevoegen
+        /// </summary>
         // POST: api/Uitnodigingen
         [HttpPost]
         [Route("~/api/Uitnodigingen")]
@@ -139,32 +121,7 @@ namespace WishlistServices.Controllers
 
             return CreatedAtAction("GetUitnodiging", new { id = uitnodiging.Id }, uitnodiging);
         }
-
-        // DELETE: api/Uitnodigingen/5
-        /*[HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUitnodiging([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var uitnodiging = await _context.Uitnodigingen.SingleOrDefaultAsync(m => m.Id == id);
-            if (uitnodiging == null)
-            {
-                return NotFound();
-            }
-
-            _context.Uitnodigingen.Remove(uitnodiging);
-            await _context.SaveChangesAsync();
-
-            return Ok(uitnodiging);
-        }*/
-
-        private bool UitnodigingExists(int id)
-        {
-            return _context.Uitnodigingen.Any(e => e.Id == id);
-        }
+        
     }
 }
 

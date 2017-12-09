@@ -21,7 +21,7 @@ namespace WishlistServices.Models
 
         public void MarkerenAlsGekocht(Gebruiker gebruiker)
         {
-            GekochtCadeau = new GekochtCadeau(gebruiker);
+            GekochtCadeau = new GekochtCadeau(gebruiker, this);
         }
     }
 }
