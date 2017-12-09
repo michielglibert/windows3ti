@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WishlistApp.Models
 {
-    public class Gebruiker
+    public class Wishlist
     {
-        public string Naam { get; set; }
+        public Gebruiker Ontvanger { get; set; }
     }
 }
