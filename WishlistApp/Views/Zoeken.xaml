@@ -40,7 +40,8 @@
                     FontSize="18"
                     Width="100"
                     Margin="50,0,0,0"
-                    HorizontalAlignment="Left">Zoeken</Button>
+                    HorizontalAlignment="Left"
+                    Click="Submit_OnClick">Zoeken</Button>
 
             <ListView x:Name="ListView"
                       Grid.Row="1"

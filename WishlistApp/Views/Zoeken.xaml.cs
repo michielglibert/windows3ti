@@ -27,5 +27,9 @@ namespace WishlistApp
             this.InitializeComponent();
         }
 
+        private void Submit_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
