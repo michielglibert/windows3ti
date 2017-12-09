@@ -11,45 +11,29 @@
     <SplitView x:Name="NavigationPane" DisplayMode="CompactOverlay"  IsPaneOpen="False" 
                CompactPaneLength="50" OpenPaneLength="200">
         <SplitView.Pane>
-            <StackPanel  Background="LightGray">
+            <StackPanel Background="LightGray">
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
                         Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"/>
-                <StackPanel x:Name="NavigationMenu" Orientation="Vertical" Grid.Row="1">
-                    <RadioButton x:Name="Option1"
-                                 GroupName="Group1"
-                                 Style="{StaticResource NavigationButtonStyle}"
-                                 Tag="&#xE14C;"
-                                 Checked="Option1Button_Checked"
-                                 Content="Wishlists"
-                    />
-                    <RadioButton x:Name="Option2"
-                                 GroupName="Group1"
-                                 Style="{StaticResource NavigationButtonStyle}"
-                                 Tag="&#xE76E;"
-                                 Checked="Option2Button_Checked"
-                                 Content="Option 2"
-                    />
-                </StackPanel>
-                <!--<StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped_2">
+                <StackPanel Orientation="Horizontal" Tapped="Wishlists_Click">
                     <Button x:Name="MenuButton1" FontFamily="Segoe MDL2 Assets" Content="&#xE14C;"
                             Width="50" Height="50" Background="Transparent"/>
                     <TextBlock Text="Wishlists" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped">
+                <StackPanel Orientation="Horizontal" Tapped="Zoeken_Click">
                     <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Content="&#xE11A;"
                             Width="50" Height="50" Background="Transparent"/>
                     <TextBlock Text="Zoeken" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped_1">
+                <StackPanel Orientation="Horizontal" Tapped="Profiel_Click">
                     <Button x:Name="MenuButton3" FontFamily="Segoe MDL2 Assets" Content="&#xE13D;"
                             Width="50" Height="50" Background="Transparent"/>
                     <TextBlock Text="Profiel" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Tapped="StackPanel_Tapped_1">
+                <StackPanel Orientation="Horizontal" Tapped="Uitnodigingen_Click">
                     <Button x:Name="MenuButton4" FontFamily="Segoe MDL2 Assets" Content="&#xE119;"
                             Width="50" Height="50" Background="Transparent"/>
                     <TextBlock Text="Uitnodigingen" FontSize="18" VerticalAlignment="Center" />
-                </StackPanel>-->
+                </StackPanel>
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>

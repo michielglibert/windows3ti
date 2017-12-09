@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WishlistApp.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,52 +31,26 @@ namespace WishlistApp
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationPane.IsPaneOpen = !NavigationPane.IsPaneOpen;
-
-            ResizeOptions();
         }
 
-        private void StackPanel_Tapped_2(object sender, TappedRoutedEventArgs e)
+        private void Zoeken_Click(object sender, TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(Page1));
+            mainFrame.Navigate(typeof(Zoeken));
         }
 
-        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+        private void Wishlists_Click(object sender, TappedRoutedEventArgs e)
         {
-            //mainFrame.Navigate(typeof(Page2));
+            mainFrame.Navigate(typeof(WishlistsOverzicht));
         }
 
-        private void StackPanel_Tapped_1(object sender, TappedRoutedEventArgs e)
+        private void Profiel_Click(object sender, TappedRoutedEventArgs e)
         {
-            //mainFrame.Navigate(typeof(Page3));
+            mainFrame.Navigate(typeof(Profiel));
         }
 
-        private void Option1Button_Checked(object sender, RoutedEventArgs e)
+        private void Uitnodigingen_Click(object sender, TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(Page1));
-        }
-
-        private void Option2Button_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void ResizeOptions()
-        {
-            // calculate the actual width of the navigation pane
-
-            var width = NavigationPane.CompactPaneLength;
-            if (NavigationPane.IsPaneOpen)
-                width = NavigationPane.OpenPaneLength;
-
-            // change the width of all control in the navigation pane
-
-            HamburgerButton.Width = width;
-
-            foreach (var option in NavigationMenu.Children)
-            {
-                var radioButton = (option as RadioButton);
-                if (radioButton != null)
-                    radioButton.Width = width;
-            }
+            mainFrame.Navigate(typeof(Profiel));
         }
     }
 }

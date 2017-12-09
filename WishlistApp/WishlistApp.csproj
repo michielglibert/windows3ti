@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Models\GebruikerWishlist.cs" />
@@ -103,12 +104,19 @@
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Uitnodiging.cs" />
     <Compile Include="Models\Wens.cs" />
+=======
+    <Compile Include="Models\Gebruiker.cs" />
+>>>>>>> 2e9974007cb0018d4a0218a7bd4cf8106786b20a
     <Compile Include="Models\Wishlist.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Viewmodels\MainPageViewModel.cs" />
     <Compile Include="Viewmodels\ProfielViewModel.cs" />
+    <Compile Include="Viewmodels\ViewModelBase.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Zoeken.xaml.cs">
+      <DependentUpon>Zoeken.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page1.xaml.cs">
       <DependentUpon>Page1.xaml</DependentUpon>
@@ -117,15 +125,14 @@
       <DependentUpon>Profiel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Zoeken.xaml.cs">
-      <DependentUpon>Zoeken.xaml</DependentUpon>
+    <Compile Include="Views\WishlistsOverzicht.xaml.cs">
+      <DependentUpon>WishlistsOverzicht.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="WishlistApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -150,7 +157,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
+    <Page Include="Views\WishlistsOverzicht.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

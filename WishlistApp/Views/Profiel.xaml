@@ -21,10 +21,10 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <TextBlock Padding="40,30,20,20" Style="{StaticResource HeaderTextBlockStyle}">Profiel</TextBlock>
-        <TextBlock Padding="50,20,20,20" FontSize="36" FontWeight="Bold">Name</TextBlock>
+        <TextBlock Padding="50,20,20,20" FontSize="36" FontWeight="Bold">Naam</TextBlock>
         <StackPanel x:Name="stackPanel" Orientation="Vertical" Padding="50,30,50,50" HorizontalAlignment="Left" >
             <StackPanel Width="400">
-                <ListView ItemsSource="">
+                <ListView ItemsSource="{Binding EigenWishlists}">
                     <ListView.Header >
                         <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,0,0,30">
                             Eigen Wishlists
