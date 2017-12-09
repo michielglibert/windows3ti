@@ -26,5 +26,56 @@ namespace WishlistApp
         {
             this.InitializeComponent();
         }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationPane.IsPaneOpen = !NavigationPane.IsPaneOpen;
+
+            ResizeOptions();
+        }
+
+        private void StackPanel_Tapped_2(object sender, TappedRoutedEventArgs e)
+        {
+            mainFrame.Navigate(typeof(Page1));
+        }
+
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            //mainFrame.Navigate(typeof(Page2));
+        }
+
+        private void StackPanel_Tapped_1(object sender, TappedRoutedEventArgs e)
+        {
+            //mainFrame.Navigate(typeof(Page3));
+        }
+
+        private void Option1Button_Checked(object sender, RoutedEventArgs e)
+        {
+            mainFrame.Navigate(typeof(Page1));
+        }
+
+        private void Option2Button_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ResizeOptions()
+        {
+            // calculate the actual width of the navigation pane
+
+            var width = NavigationPane.CompactPaneLength;
+            if (NavigationPane.IsPaneOpen)
+                width = NavigationPane.OpenPaneLength;
+
+            // change the width of all control in the navigation pane
+
+            HamburgerButton.Width = width;
+
+            foreach (var option in NavigationMenu.Children)
+            {
+                var radioButton = (option as RadioButton);
+                if (radioButton != null)
+                    radioButton.Width = width;
+            }
+        }
     }
 }
