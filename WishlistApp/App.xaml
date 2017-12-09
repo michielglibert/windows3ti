@@ -8,7 +8,7 @@
 
     <Application.Resources>
         <DataTemplate x:Key="MainPageViewModel">
-            <view:MainPage/>
+            <local:MainPage/>
         </DataTemplate>
         <DataTemplate x:Key="ProfielViewModel">
             <view:Profiel/>

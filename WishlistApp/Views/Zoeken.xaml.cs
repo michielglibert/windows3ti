@@ -28,7 +28,7 @@ namespace WishlistApp
         public List<Object> ResultLijst { get; set; }
         public string ZoekString { get; set; }
 
-        private readonly List<string> _lijstSoorten;
+        private List<string> _lijstSoorten;
         private string _zoekSoort;
 
         public List<string> LijstSoorten

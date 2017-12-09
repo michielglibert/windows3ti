@@ -98,6 +98,7 @@
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\GebruikerWishlist.cs" />
     <Compile Include="Models\GekochtCadeau.cs" />
+    <Compile Include="Models\Profiel.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Uitnodiging.cs" />
     <Compile Include="Models\Wens.cs" />
