@@ -21,10 +21,10 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <TextBlock Padding="40,30,20,20" Style="{StaticResource HeaderTextBlockStyle}">Profiel</TextBlock>
-        <TextBlock Padding="50,20,20,20" FontSize="36" FontWeight="Bold">Name</TextBlock>
+        <TextBlock Padding="50,20,20,20" FontSize="36" FontWeight="Bold">Naam</TextBlock>
         <StackPanel x:Name="stackPanel" Orientation="Vertical" Padding="50,30,50,50" HorizontalAlignment="Left" >
             <StackPanel Width="400">
-                <ListView ItemsSource="">
+                <ListView ItemsSource="{Binding EigenWishlists}">
                     <ListView.Header >
                         <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,0,0,30">
                             Eigen Wishlists
@@ -33,7 +33,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock FontSize="20" Text="{Binding NaamEigenWishlist}"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding Naam}"></TextBlock>
                                 <Button FontSize="20" Content="{Binding ButtonText}"></Button>
                             </StackPanel>
                         </DataTemplate>
@@ -41,7 +41,7 @@
                 </ListView>
             </StackPanel>
             <StackPanel Width="400">
-                <ListView ItemsSource="">
+                <ListView ItemsSource="{Binding OntvangenWishlists}">
                     <ListView.Header >
                         <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,0,0,30">
                             Wishlists waarvan lid
@@ -50,8 +50,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock FontSize="20" Text="{Binding NaamOntvangenWishlist}"/>
-                                <TextBlock FontSize="20" Text="{Binding EigenaarOntvangenWishlist}"/>
+                                <TextBlock FontSize="20" Text="{Binding Naam}"/>
+                                <TextBlock FontSize="20" Text="{Binding Eigenaar}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

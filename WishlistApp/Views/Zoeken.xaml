@@ -5,11 +5,13 @@
     xmlns:local="using:WishlistApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:WishlistApp.Views"
     mc:Ignorable="d">
 
-    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid Margin="0,150,0,0" HorizontalAlignment="Center">
-            
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+        <Grid>
             <TextBox x:Name="InputVeld"
                     Grid.Row="0"
                     Grid.Column="0"
@@ -19,6 +21,7 @@
                     Width="400"
                     HorizontalContentAlignment="center" 
                     PlaceholderText="Zoek op gebruiker of wishlist" 
+                    Text="{Binding Path=ZoekSoort}"
                     />
 
             <ComboBox x:Name="Selectie"
@@ -29,9 +32,8 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center" 
                     Margin="16,0,0,0"
-                    >
-                <ComboBoxItem IsSelected="True">Gebruiker</ComboBoxItem>
-                <ComboBoxItem>Wishlist</ComboBoxItem>
+                    ItemsSource="{Binding Path=LijstSoorten}"
+                    SelectedValue="{Binding Path=ZoekSoort}">
             </ComboBox>
             
             <Button x:Name="Submit"
@@ -44,13 +46,17 @@
                     Click="Submit_OnClick">Zoeken</Button>
 
             <ListView x:Name="ListView"
+                      ItemsSource="{x:Bind ResultLijst}"
                       Grid.Row="1"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Margin="0,16,0,0"
-                      MinHeight="300"
-                      >
-                
+                      MinHeight="300">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock></TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
 
             <Grid.ColumnDefinitions>

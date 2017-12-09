@@ -3,8 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WishlistApp"
-    RequestedTheme="Light">
+    RequestedTheme="Light"
+    xmlns:view="using:WishlistApp.Views">
 
+    <Application.Resources>
+        <DataTemplate x:Key="MainPageViewModel">
+            <local:MainPage/>
+        </DataTemplate>
+        <DataTemplate x:Key="ProfielViewModel">
+            <view:Profiel/>
+        </DataTemplate>
+    </Application.Resources>
 </Application>
     
     
