@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using WishlistApp.Views;
 
@@ -36,21 +37,34 @@ namespace WishlistApp
         private void Zoeken_Click(object sender, TappedRoutedEventArgs e)
         {
             mainFrame.Navigate(typeof(Zoeken));
+            NavigationPane.IsPaneOpen = false;
         }
 
         private void Wishlists_Click(object sender, TappedRoutedEventArgs e)
         {
             mainFrame.Navigate(typeof(WishlistsOverzicht));
+            NavigationPane.IsPaneOpen = false;
         }
 
         private void Profiel_Click(object sender, TappedRoutedEventArgs e)
         {
             mainFrame.Navigate(typeof(Profiel));
+            NavigationPane.IsPaneOpen = false;
         }
 
         private void Uitnodigingen_Click(object sender, TappedRoutedEventArgs e)
         {
             mainFrame.Navigate(typeof(Profiel));
+            NavigationPane.IsPaneOpen = false;
+        }
+
+        private void Logout_Click(object sender, TappedRoutedEventArgs e)
+        {
+            if (Window.Current.Content is Frame rootFrame)
+            {
+                rootFrame.ContentTransitions = new TransitionCollection {new NavigationThemeTransition()};
+                rootFrame.Navigate(typeof(Login), null, new ContinuumNavigationTransitionInfo());
+            }
         }
     }
 }

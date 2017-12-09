@@ -96,14 +96,20 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Gebruiker.cs" />
+    <Compile Include="Views\Registreer.xaml.cs">
+      <DependentUpon>Registreer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Viewmodels\MainPageViewModel.cs" />
     <Compile Include="Viewmodels\ProfielViewModel.cs" />
     <Compile Include="Viewmodels\ViewModelBase.cs" />
+    <Compile Include="Views\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-     <Compile Include="Views\Zoeken.xaml.cs">
+    <Compile Include="Views\Zoeken.xaml.cs">
       <DependentUpon>Zoeken.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page1.xaml.cs">
@@ -137,6 +143,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\Registreer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

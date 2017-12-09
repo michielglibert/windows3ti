@@ -34,6 +34,11 @@
                             Width="50" Height="50" Background="Transparent"/>
                     <TextBlock Text="Uitnodigingen" FontSize="18" VerticalAlignment="Center" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Tapped="Logout_Click">
+                    <Button x:Name="MenuButton5" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;"
+                            Width="50" Height="50" Background="Transparent"/>
+                    <TextBlock Text="Afmelden" FontSize="18" VerticalAlignment="Center" />
+                </StackPanel>
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
