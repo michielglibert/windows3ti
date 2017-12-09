@@ -44,13 +44,20 @@
                     Click="Submit_OnClick">Zoeken</Button>
 
             <ListView x:Name="ListView"
+                      ItemsSource="{x:Bind ResultLijst}"
                       Grid.Row="1"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Margin="0,16,0,0"
-                      MinHeight="300"
-                      >
-                
+                      MinHeight="300">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="Gebruiker">
+                        <TextBlock></TextBlock>
+                    </DataTemplate>
+                    <DataTemplate x:DataType="">
+                        <TextBlock></TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
 
             <Grid.ColumnDefinitions>
