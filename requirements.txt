@@ -1,0 +1,24 @@
+X Registeren
+X Inloggen
+X Wishlist aanmaken
+X Mensen voor wishlist uitnodigen
+X Uitnodiging verwijderen (afwijzen)
+X Wishlist verwijderen
+X Wishlist joinen (uitnodiging aanvaarden)
+X Request sturen voor wishlist
+X Request verwijderen voor wishlist (weigeren)
+X Wishlist joinen (request aanvaarden)
+X Wishlist verlaten
+X Wensen tonen
+X Wens aanpassen
+X Wens aan wishlist toevoegen
+X Wens verwijderen
+X Wens als gekocht aanduiden (adhv gekochtcadeau object)
+X Leden wishlist bekijken
+~ Leden hun aantal gekochte cadeau's bekijken
+X Wishlist zoeken
+X Gebruikers zoeken
+X Uitnodigingen van gebruiker bekijken
+X Requests van wishlist bekijken
+- Geen mogelijkheid tot request indien al uitgenodigd
+- Geen mogelijkheid tot uitnodiging indien al request
