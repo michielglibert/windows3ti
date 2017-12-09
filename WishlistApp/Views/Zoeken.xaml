@@ -51,10 +51,7 @@
                       Margin="0,16,0,0"
                       MinHeight="300">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="Gebruiker">
-                        <TextBlock></TextBlock>
-                    </DataTemplate>
-                    <DataTemplate x:DataType="">
+                    <DataTemplate x:DataType="string">
                         <TextBlock></TextBlock>
                     </DataTemplate>
                 </ListView.ItemTemplate>

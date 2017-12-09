@@ -7,9 +7,7 @@
     xmlns:view="using:WishlistApp.Views">
 
     <Application.Resources>
-        <DataTemplate x:Key="MainPageViewModel">
-            <view:MainPage/>
-        </DataTemplate>
+        
         <DataTemplate x:Key="ProfielViewModel">
             <view:Profiel/>
         </DataTemplate>

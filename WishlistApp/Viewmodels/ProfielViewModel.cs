@@ -18,9 +18,19 @@ namespace WishlistApp.Viewmodels
         public ProfielViewModel()
         {
             //API CALLS
-            EigenWishlists = new ObservableCollection<Wishlist>();
+            EigenWishlists = new ObservableCollection<Wishlist>(generateWishlist());
             OntvangenWishlists = new ObservableCollection<Wishlist>();
             Gebruiker = new Gebruiker{Naam = "Jef"};
+        }
+
+        public List<Wishlist> generateWishlist()
+        {
+            Wishlist w1 = new Wishlist {Naam = "Wishlist 1"};
+            Wishlist w2 = new Wishlist {Naam = "Wishlist 2"};
+
+            List<Wishlist> wishlists = new List<Wishlist> {w1, w2};
+            return wishlists;
+
         }
     }
 }

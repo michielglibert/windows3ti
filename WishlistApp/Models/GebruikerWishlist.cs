@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WishlistApp.Models;
-using WishlistServices.Models;
-
-namespace WishlistApp.Data
+﻿namespace WishlistApp.Models
 {
     public class GebruikerWishlist
     {
