@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -13,6 +18,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -38,20 +44,37 @@ namespace WishlistApp.Views
         }
 
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
             var username = Username.Text;
             var password = Password.Password;
 
             if (Validate(username, password))
             {
-                Windows.Storage.ApplicationDataContainer localSettings =
-                    Windows.Storage.ApplicationData.Current.LocalSettings;
+                var client = new HttpClient();
 
-                localSettings.Values["username"] = "";
-                localSettings.Values["token"] = "";
+                var json = JsonConvert.SerializeObject(new {Username = username, Password = password});
+                var resp = await client.PostAsync(new Uri("http://localhost:58253/api/Authentication/login"),
+                    new StringContent(json, Encoding.UTF8, "application/json"));
 
-                _rootFrame.Navigate(typeof(MainPage), null, new DrillInNavigationTransitionInfo());
+                if (resp.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    PasswordError.Text = "Foute gebruikersnaam of wachtwoord";
+                    PasswordError.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+                    var jsonResp = await resp.Content.ReadAsStringAsync();
+                    var djson = JsonConvert.DeserializeObject<LoginResponse>(jsonResp);
+
+                    localSettings.Values["username"] = djson.Username;
+                    localSettings.Values["token"] = djson.Token;
+
+                    _rootFrame.Navigate(typeof(MainPage), null, new DrillInNavigationTransitionInfo());
+                }
+                
             }
             
         }
@@ -89,5 +112,17 @@ namespace WishlistApp.Views
 
             return validationOk;
         }
+
+        private void Quicklogin_Click(object sender, RoutedEventArgs e)
+        {
+            _rootFrame.Navigate(typeof(MainPage), null, new DrillInNavigationTransitionInfo());
+        }
     }
+}
+
+
+public class LoginResponse
+{
+    public string Username { get; set; }
+    public string Token { get; set; }
 }

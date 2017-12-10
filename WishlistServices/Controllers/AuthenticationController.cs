@@ -55,36 +55,36 @@ namespace WishlistServices.Controllers
         {
             var gebruiker = _context.Gebruikers.SingleOrDefault(t => t.Username == user.Username);
 
-            if (gebruiker == null)
+            if (gebruiker != null)
             {
-                return NotFound();
-            }
-
-            if (string.Equals(user.Username, gebruiker.Username, StringComparison.CurrentCultureIgnoreCase)
-                && string.Equals(user.Password, gebruiker.Password))
-            {
-
-                var claims = new[]
+                if (string.Equals(user.Username, gebruiker.Username, StringComparison.CurrentCultureIgnoreCase)
+                    && string.Equals(user.Password, gebruiker.Password))
                 {
+
+                    var claims = new[]
+                    {
                     new Claim("username", user.Username),
                     new Claim("id", gebruiker.Id.ToString())
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsVeryUnsafeButThisIsOnlyASchoolProject"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsVeryUnsafeButThisIsOnlyASchoolProject"));
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var token = new JwtSecurityToken(
-                    issuer: "hogent.be",
-                    audience: "hogent.be",
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(3000000),
-                    signingCredentials: creds);
-                
+                    var token = new JwtSecurityToken(
+                        issuer: "hogent.be",
+                        audience: "hogent.be",
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(3000000),
+                        signingCredentials: creds);
 
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token)
-                });
+
+                    return Ok(new
+                    {
+                        username = gebruiker.Username,
+                        token = new JwtSecurityTokenHandler().WriteToken(token)
+                    });
+                }
+
             }
 
             return BadRequest("Could not verify username and password");

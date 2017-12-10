@@ -27,6 +27,7 @@ namespace WishlistApp
         public MainPage()
         {
             this.InitializeComponent();
+            mainFrame.Navigate(typeof(WishlistsOverzicht));
         }
 
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)

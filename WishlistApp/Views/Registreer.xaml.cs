@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -11,7 +14,9 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
 using WishlistApp.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -30,7 +35,7 @@ namespace WishlistApp
             this.InitializeComponent();
         }
 
-        private void Registreer_Click(object sender, RoutedEventArgs e)
+        private async void Registreer_Click(object sender, RoutedEventArgs e)
         {
             var username = Username.Text;
             var password = Password.Password;
@@ -38,7 +43,29 @@ namespace WishlistApp
 
             if (Validate(username, password, passwordherh))
             {
-                _rootFrame.Navigate(typeof(MainPage));
+                var client = new HttpClient();
+
+                var json = JsonConvert.SerializeObject(new { Username = username, Password = password });
+                var resp = await client.PostAsync(new Uri("http://localhost:58253/api/Authentication/register"),
+                    new StringContent(json, Encoding.UTF8, "application/json"));
+
+                if (resp.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    PasswordErrorHerh.Text = "Registration failed";
+                    PasswordErrorHerh.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+                    var jsonResp = await resp.Content.ReadAsStringAsync();
+                    var djson = JsonConvert.DeserializeObject<LoginResponse>(jsonResp);
+
+                    localSettings.Values["username"] = djson.Username;
+                    localSettings.Values["token"] = djson.Token;
+
+                    _rootFrame.Navigate(typeof(MainPage), null, new DrillInNavigationTransitionInfo());
+                }
             }
 
         }
@@ -53,7 +80,7 @@ namespace WishlistApp
         {
             bool validationOk = true;
 
-            if (string.IsNullOrEmpty(username)) 
+            if (string.IsNullOrEmpty(username))
             {
                 validationOk = false;
                 UsernameError.Text = "Verplicht";
@@ -93,7 +120,7 @@ namespace WishlistApp
                 PasswordErrorHerh.Text = "Verplicht";
                 PasswordErrorHerh.Visibility = Visibility.Visible;
             }
-            else if (!passwordherh.Equals(password)) 
+            else if (!passwordherh.Equals(password))
             {
                 validationOk = false;
                 PasswordErrorHerh.Text = "Wachtwoorden komen niet overeen";
