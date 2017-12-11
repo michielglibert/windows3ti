@@ -17,5 +17,26 @@ namespace WishlistApp.Models
         public List<Uitnodiging> VerzondenUitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
 
+        public bool IsHuidigeGebruikerDeelVanWishlist()
+        {
+            //TODO: ophalen van huidige gebruiker
+            //TODO: is huidige gebruiker deel van wishlist?
+            return true;
+        }
+
+        public string JoinOrLeaveText
+        {
+            get
+            {
+                if (IsHuidigeGebruikerDeelVanWishlist())
+                {
+                    return "Neem deel";
+                }
+                else
+                {
+                    return "Verlaat wishlist";
+                }
+            }
+        }
     }
 }

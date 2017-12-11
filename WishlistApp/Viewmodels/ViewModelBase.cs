@@ -11,29 +11,29 @@ namespace WishlistApp.Viewmodels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        private DataTemplate _template;
+        //private DataTemplate _template;
 
-        public DataTemplate Template
-        {
-            get { return _template; }
-            set
-            {
-                _template = value;
-                RaisePropertyChanged("Template");
-            }
-        }
+        //public DataTemplate Template
+        //{
+        //    get { return _template; }
+        //    set
+        //    {
+        //        _template = value;
+        //        RaisePropertyChanged("Template");
+        //    }
+        //}
 
-        public ViewModelBase()
-        {
-            Template = GetTemplate();
-        }
+        //public ViewModelBase()
+        //{
+        //    Template = GetTemplate();
+        //}
 
-        private DataTemplate GetTemplate()
-        {
-            string s = GetType().Name;
-            return (DataTemplate)App.Current.Resources[s];
+        //private DataTemplate GetTemplate()
+        //{
+        //    string s = GetType().Name;
+        //    return (DataTemplate)App.Current.Resources[s];
 
-        }
+        //}
 
 
         public event PropertyChangedEventHandler PropertyChanged;
