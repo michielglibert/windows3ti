@@ -14,6 +14,7 @@ namespace WishlistApp.Viewmodels
         public ObservableCollection<Wishlist> EigenWishlists { get; set; }
         public ObservableCollection<Wishlist> OntvangenWishlists { get; set; }
         private Gebruiker _gebruiker;
+        public ObservableCollection<Wishlist> WishlistsIngelogdeGebruiker { get; set; }
 
         public Gebruiker Gebruiker
         {
@@ -31,15 +32,26 @@ namespace WishlistApp.Viewmodels
         }
 
         public RelayCommand<Wishlist> JoinOrLeaveCommand { get; set; }
-
+        public RelayCommand<Wishlist> NodigUitCommand { get; set; }
 
         public ProfielViewModel()
         {
             //TODO: API CALLS
             EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
             OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
-            Gebruiker = new Gebruiker{Naam = "Jef"};
+            WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
+            Gebruiker = new Gebruiker{Naam = "Koen"};
+
             JoinOrLeaveCommand = new RelayCommand<Wishlist>(JoinOrLeaveWishlist);
+            NodigUitCommand = new RelayCommand<Wishlist>(NodigUit);
+        }
+
+        private void NodigUit(Wishlist wishlist)
+        {
+            //TODO: NodigUit() implementeren
+            //wishlist.NodigUit();
+            System.Diagnostics.Debug.WriteLine("NodigUit werkt");
+            System.Diagnostics.Debug.WriteLine(wishlist.Naam);
         }
 
         private void JoinOrLeaveWishlist(Wishlist wishlist)
@@ -71,5 +83,13 @@ namespace WishlistApp.Viewmodels
 
         }
 
+        public List<Wishlist> GenerateWishlistsIngelogdeGebruiker()
+        {
+            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Naam = "Jef"} };
+
+            List<Wishlist> wishlists = new List<Wishlist> { w1};
+            return wishlists;
+
+        }
     }
 }

@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:WishlistApp.Viewmodels"
-    mc:Ignorable="d">
+    xmlns:utils="using:WishlistApp.Utils"
+    mc:Ignorable="d"
+    x:Name="Page">
     
     <Page.DataContext>
         <viewmodels:ProfielViewModel></viewmodels:ProfielViewModel>
@@ -26,8 +28,20 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <TextBlock Padding="40,30,20,20" Style="{StaticResource HeaderTextBlockStyle}">Profiel</TextBlock>
-        <TextBlock Padding="50,20,20,10" FontSize="36" FontWeight="Bold" Text="{Binding Naam}"></TextBlock>
-        <!--TODO: Uitnodigen -->
+        <TextBlock Padding="50,20,20,10" FontSize="36" FontWeight="Bold" Text="{Binding Naam}"/>
+        <Button Margin="50,10" Content="Uitnodigen..." x:Name="Button">
+            <Button.Flyout>
+                <Flyout utils:BindableFlyout.ItemsSource="{Binding WishlistsIngelogdeGebruiker}" x:Name="Flyout">
+                    <utils:BindableFlyout.ItemTemplate>
+                        <DataTemplate>
+                            <MenuFlyoutItem Text="{Binding Naam}" 
+                                            Command="{Binding NodigUitCommand}"
+                                            CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </utils:BindableFlyout.ItemTemplate>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
         <StackPanel x:Name="stackPanel" Orientation="Vertical" Padding="50,30,50,50" HorizontalAlignment="Left">
             <StackPanel Width="400">
                 <ListView ItemsSource="{Binding EigenWishlists}">
@@ -38,12 +52,14 @@
                     </ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Height="60">
+                            <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
+                                <StackPanel Height="70">
                                 <TextBlock FontSize="20" Text="{Binding Naam}"/>
                                 <Button Content="{Binding JoinOrLeaveText}" 
                                         Command="{Binding Path=DataContext.JoinOrLeaveCommand, ElementName=stackPanel}"
                                         CommandParameter="{Binding}"/>
-                            </StackPanel>
+                                </StackPanel>
+                            </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -57,10 +73,12 @@
                     </ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock FontSize="20" Text="{Binding Naam}"/>
-                                <TextBlock FontSize="20" Text="{Binding Ontvanger.Naam}"/>
-                            </StackPanel>
+                            <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
+                                <StackPanel Height="70" >
+                                    <TextBlock FontSize="20" Text="{Binding Naam}"/>
+                                    <TextBlock FontSize="20" Text="{Binding Ontvanger.Naam}"/>
+                                </StackPanel>
+                             </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

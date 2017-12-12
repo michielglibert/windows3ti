@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Command;
 using WishlisApp.Models;
 
 namespace WishlistApp.Models
@@ -37,6 +38,22 @@ namespace WishlistApp.Models
                     return "Verlaat wishlist";
                 }
             }
+        }
+
+        public RelayCommand NodigUitCommand { get; set; }
+
+        public Wishlist()
+        {
+            NodigUitCommand = new RelayCommand(NodigUit);
+        }
+
+        private void NodigUit()
+        {
+            //TODO: Dit moet in de viewmodel. Lukte niet om in xaml te binden met viewmodel.
+            //TODO: NodigUit() implementeren
+            //wishlist.NodigUit();
+            System.Diagnostics.Debug.WriteLine("NodigUit werkt");
+            System.Diagnostics.Debug.WriteLine(Naam);
         }
     }
 }

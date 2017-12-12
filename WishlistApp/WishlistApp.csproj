@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Gebruiker.cs" />
+    <Compile Include="Utils\BindableFlyout.cs" />
     <Compile Include="Views\Registreer.xaml.cs">
       <DependentUpon>Registreer.xaml</DependentUpon>
     </Compile>
