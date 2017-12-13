@@ -1,60 +1,146 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Newtonsoft.Json;
+using WishlistApp.Annotations;
 using WishlistApp.Models;
 using WishlistApp.Utils;
 
 namespace WishlistApp.Viewmodels
 {
-    public class ZoekViewModel: ViewModelBase
+    public class ZoekViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Gebruiker> GebruikersLijst { get; set; }
-        public IEnumerable<Gebruiker> ResultGebruikersLijst { get; set; }
-        public ObservableCollection<Wishlist> WishlistLijst { get; set; }
-        public IEnumerable<Wishlist> ResultWishlistLijst { get; set; }
-    
+        private ObservableCollection<Gebruiker> _gebruikersLijst;
+
+        public ObservableCollection<Gebruiker> ResultGebruikersLijst
+        {
+            get { return _gebruikersLijst; }
+            set
+            {
+                _gebruikersLijst = value;
+                OnPropertyChanged(nameof(ResultGebruikersLijst));
+            }
+        }
+
+        private ObservableCollection<Wishlist> _wishlistLijst;
+
+        public ObservableCollection<Wishlist> ResultWishlistLijst
+        {
+            get { return _wishlistLijst; }
+            set
+            {
+                _wishlistLijst = value;
+                OnPropertyChanged(nameof(ResultWishlistLijst));
+            }
+        }
+
+        private string _zoekError;
+        public string ZoekError
+        {
+            get { return _zoekError; }
+            set
+            {
+                _zoekError = value;
+                OnPropertyChanged(nameof(ZoekError));
+            }
+        }
+
         public List<string> ZoekSoorten { get; set; }
         public string ZoekString { get; set; }
         public string GeselecteerdeSoort { get; set; }
         public RelayCommand ZoekCommand { get; set; }
 
+
         public ZoekViewModel()
         {
-            ZoekSoorten = new List<string>{"Gebruiker", "Wishlist"};
-            GebruikersLijst = new ObservableCollection<Gebruiker>(GenerateGebruikersList());
-            WishlistLijst = new ObservableCollection<Wishlist>(GenerateWishlists());
+            ZoekSoorten = new List<string> { "Gebruiker", "Wishlist" };
             ZoekCommand = new RelayCommand((param) => StelLijstIn(param));
+        }
+
+        public async void GetGebruikersLijstOpUsername(string zoekString)
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/search?naam=" + zoekString));
+            var result = JsonConvert.DeserializeObject<ObservableCollection<Gebruiker>>(json);
+            if (result.Count == 0)
+            {
+                ZoekError = "Gebruiker met naam: " + zoekString + "bestaat niet.";
+            }
+            ResultGebruikersLijst = result;
+        }
+
+        public async void GetWishlistsLijstOpUsername(string zoekString)
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Wishlists/search?naam=" + zoekString));
+            var result = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
+            if (result == null)
+            {
+                ZoekError = "Wishist met naam: " + zoekString + "bestaat niet.";
+            }
+            ResultWishlistLijst = result;
+            Debug.WriteLine(ZoekError);
         }
 
         private void StelLijstIn(object zoekString)
         {
-            Debug.WriteLine(zoekString);
+            Debug.WriteLine(zoekString.ToString());
             Debug.WriteLine(GeselecteerdeSoort);
             Debug.WriteLine("ZoekButton geklikt");
 
             if (GeselecteerdeSoort.Equals("Gebruiker"))
             {
-               GebruikersLijst = new ObservableCollection<Gebruiker>(ZoekGebruikersMetNaam(zoekString.ToString()));
+                if (!zoekString.ToString().Equals(""))
+                {
+                    GetGebruikersLijstOpUsername(zoekString.ToString());
+
+                }
+                else ZoekError = "Gelieve een Gebruikersnaam of Wishlistnaam in te geven.";
             }
             else
             {
-                WishlistLijst = new ObservableCollection<Wishlist>(GenerateWishlists());
+                if (!zoekString.ToString().Equals(""))
+                {
+                    GetWishlistsLijstOpUsername(zoekString.ToString());
+                }
+                else ZoekError = "Gelieve een Gebruikersnaam of Wishlistnaam in te geven.";
             }
-            Debug.WriteLine(GebruikersLijst);
+            Debug.WriteLine(ZoekError);
+            Debug.WriteLine(_gebruikersLijst);
         }
 
 
-        public List<Gebruiker> GenerateGebruikersList()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Gebruiker g1 = new Gebruiker { Naam = "Frank" };
-            Gebruiker g2 = new Gebruiker { Naam = "Henk" };
-            Gebruiker g3 = new Gebruiker { Naam = "Mariette" };
-            Gebruiker g4 = new Gebruiker { Naam = "Jean-Claude" };
-            Gebruiker g5 = new Gebruiker { Naam = "Wilhelm" };
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /*public List<Gebruiker> GenerateGebruikersList()
+        {
+            Gebruiker g1 = new Gebruiker { Username = "Frank" };
+            Gebruiker g2 = new Gebruiker { Username = "Henk" };
+            Gebruiker g3 = new Gebruiker { Username = "Mariette" };
+            Gebruiker g4 = new Gebruiker { Username = "Jean-Claude" };
+            Gebruiker g5 = new Gebruiker { Username = "Wilhelm" };
 
             List<Gebruiker> gebruikers = new List<Gebruiker>{g1, g2, g3, g4, g5};
             return gebruikers;
@@ -62,17 +148,18 @@ namespace WishlistApp.Viewmodels
 
         private List<Wishlist> GenerateWishlists()
         {
-            Wishlist w1 = new Wishlist { Naam = "Fatima's Hanoeka Wishlist", Ontvanger = new Gebruiker { Naam = "Fatima" } };
-            Wishlist w2 = new Wishlist { Naam = "Bob's vrijgezellenfeest Wensenlijst", Ontvanger = new Gebruiker { Naam = "Bob" } };
-            Wishlist w3 = new Wishlist { Naam = "Thomas's uit de kast gekomen Wensenlijst", Ontvanger = new Gebruiker { Naam = "Thomas" } };
+            Wishlist w1 = new Wishlist { Naam = "Fatima's Hanoeka Wishlist", Ontvanger = new Gebruiker { Username = "Fatima" } };
+            Wishlist w2 = new Wishlist { Naam = "Bob's vrijgezellenfeest Wensenlijst", Ontvanger = new Gebruiker { Username = "Bob" } };
+            Wishlist w3 = new Wishlist { Naam = "Thomas's uit de kast gekomen Wensenlijst", Ontvanger = new Gebruiker { Username = "Thomas" } };
 
             List<Wishlist> wishlists = new List<Wishlist> { w1, w2, w3 };
             return wishlists;
         }
 
-        public IEnumerable<Gebruiker> ZoekGebruikersMetNaam(string zoekString)
+        public IEnumerable<Gebruiker> ZoekGebruikersMetUsername(string zoekString)
         {
-            return GebruikersLijst.Where(g => g.Naam == ZoekString);
+            return _gebruikersLijst.Where(g => g.Username == ZoekString);
         }
+        */
     }
 }

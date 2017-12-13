@@ -58,6 +58,38 @@ namespace WishlistServices.Controllers
             return wishlists;
         }
 
+        [HttpGet]
+        [Route("~/api/WishlistsFromGebruiker/{gebruikerId}")]
+        public IEnumerable<Wishlist> GetWishlistsFromGebruiker([FromRoute] int gebruikerId)
+        {
+            var gebruiker = _context.Gebruikers
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .SingleOrDefault(t => t.Id == gebruikerId);
+
+            List<Wishlist> wishlists = gebruiker.EigenWishlists;
+
+            return wishlists;
+        }
+
+        [HttpGet]
+        [Route("~/api/DeelnemendeWishlistsFromGebruiker/{gebruikerId}")]
+        public IEnumerable<Wishlist> GetDeelnemendeWishlistsFromGebruiker([FromRoute] int gebruikerId)
+        {
+            var gebruiker = _context.Gebruikers
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .SingleOrDefault(t => t.Id == gebruikerId);
+
+            List<Wishlist> wishlists = new List<Wishlist>();
+            foreach (var gebruikerWishlist in gebruiker.Wishlists)
+            {
+                wishlists.Add(gebruikerWishlist.Wishlist);
+            }
+
+            return wishlists;
+        }
+
         /// <summary>
         /// Wishlist zoeken
         /// </summary>
