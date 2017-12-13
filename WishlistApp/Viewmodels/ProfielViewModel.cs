@@ -28,7 +28,7 @@ namespace WishlistApp.Viewmodels
 
         public string Naam
         {
-            get { return Gebruiker.Naam; }
+            get { return Gebruiker.Username; }
         }
 
         public RelayCommand<Wishlist> JoinOrLeaveCommand { get; set; }
@@ -40,7 +40,7 @@ namespace WishlistApp.Viewmodels
             EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
             OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
             WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
-            Gebruiker = new Gebruiker{Naam = "Koen"};
+            Gebruiker = new Gebruiker{Username = "Koen"};
 
             JoinOrLeaveCommand = new RelayCommand<Wishlist>(JoinOrLeaveWishlist);
             NodigUitCommand = new RelayCommand<Wishlist>(NodigUit);
@@ -74,9 +74,9 @@ namespace WishlistApp.Viewmodels
 
         public List<Wishlist> GenerateAndereWishlists()
         {
-            Wishlist w1 = new Wishlist { Naam = "Fatima's Hanoeka Wishlist", Ontvanger = new Gebruiker {Naam = "Fatima"}};
-            Wishlist w2 = new Wishlist { Naam = "Bob's vrijgezellenfeest Wensenlijst", Ontvanger = new Gebruiker { Naam = "Bob" } };
-            Wishlist w3 = new Wishlist { Naam = "Thomas's uit de kast gekomen Wensenlijst", Ontvanger = new Gebruiker { Naam = "Thomas" } };
+            Wishlist w1 = new Wishlist { Naam = "Fatima's Hanoeka Wishlist", Ontvanger = new Gebruiker {Username = "Fatima"}};
+            Wishlist w2 = new Wishlist { Naam = "Bob's vrijgezellenfeest Wensenlijst", Ontvanger = new Gebruiker { Username = "Bob" } };
+            Wishlist w3 = new Wishlist { Naam = "Thomas's uit de kast gekomen Wensenlijst", Ontvanger = new Gebruiker { Username = "Thomas" } };
 
             List<Wishlist> wishlists = new List<Wishlist> { w1, w2, w3 };
             return wishlists;
@@ -85,7 +85,7 @@ namespace WishlistApp.Viewmodels
 
         public List<Wishlist> GenerateWishlistsIngelogdeGebruiker()
         {
-            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Naam = "Jef"} };
+            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Username = "Jef"} };
 
             List<Wishlist> wishlists = new List<Wishlist> { w1};
             return wishlists;
