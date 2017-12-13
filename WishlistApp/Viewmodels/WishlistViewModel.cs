@@ -9,14 +9,19 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using WishlistApp.Annotations;
 using WishlistApp.Models;
+using WishlistApp.Views;
 
 namespace WishlistApp.Viewmodels
 {
     class WishlistViewModel:INotifyPropertyChanged
     {
+        public RelayCommand GoToWishlist = new RelayCommand(() => MainPage.Frame.Navigate(typeof(WishlistDetail)));
 
         private ObservableCollection<Wishlist> _eigenWishlists;
 
@@ -61,7 +66,7 @@ namespace WishlistApp.Viewmodels
             var lst = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
             Wishlists = lst;
         }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

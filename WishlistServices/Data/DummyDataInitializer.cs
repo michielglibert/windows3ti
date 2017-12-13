@@ -26,7 +26,7 @@ namespace WishlistServices.Data
 
                 Gebruiker gebruiker2 = new Gebruiker("Karel","Vanheede");
                 gebruikers.Add(gebruiker2);
-
+                
                 //DbInit
                 foreach (var gebruiker in gebruikers)
                 {

@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Utils\BindableFlyout.cs" />
+    <Compile Include="Viewmodels\UitnodigingViewModel.cs" />
     <Compile Include="Viewmodels\WishlistViewModel.cs" />
     <Compile Include="Viewmodels\ZoekViewModel.cs" />
     <Compile Include="Views\Registreer.xaml.cs">
@@ -119,6 +120,12 @@
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UitnodigingRequest.xaml.cs">
+      <DependentUpon>UitnodigingRequest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WishlistDetail.xaml.cs">
+      <DependentUpon>WishlistDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Zoeken.xaml.cs">
       <DependentUpon>Zoeken.xaml</DependentUpon>
@@ -167,6 +174,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Page1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UitnodigingRequest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WishlistDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -24,9 +24,12 @@ namespace WishlistApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public new static Frame Frame { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();
+            Frame = mainFrame;
             mainFrame.Navigate(typeof(WishlistsOverzicht));
         }
 
@@ -55,7 +58,7 @@ namespace WishlistApp
 
         private void Uitnodigingen_Click(object sender, TappedRoutedEventArgs e)
         {
-            mainFrame.Navigate(typeof(Profiel));
+            mainFrame.Navigate(typeof(UitnodigingRequest));
             NavigationPane.IsPaneOpen = false;
         }
 

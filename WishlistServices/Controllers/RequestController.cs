@@ -38,6 +38,20 @@ namespace WishlistServices.Controllers
             return wishlist.Requests;
         }
 
+        [HttpGet]
+        [Route("~/api/Requests")]
+        public IEnumerable<Request> GetRequestsVanGebruiker([FromRoute] int wishlistId)
+        {
+            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
+            var gebruiker = _context.Gebruikers
+                .Include(t => t.Requests).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
+                .Include(t => t.Requests).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .Include(t => t.Requests).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
+                .SingleOrDefault(t => t.Id == id);
+
+            return gebruiker.Requests;
+        }
+
         /// <summary>
         /// Request by id
         /// </summary>
