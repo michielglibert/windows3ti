@@ -27,16 +27,42 @@ namespace WishlistServices.Controllers
         /// </summary>
         // GET: api/Wishlists
         [HttpGet]
-        public IEnumerable<Wishlist> GetWishlist()
+        [Route("~/api/EigenWishlists")]
+        public IEnumerable<Wishlist> GetEigenWishlists([FromQuery] string naam)
         {
-            return _context.Wishlists.Include(t => t.Ontvanger);
+            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
+            var gebruiker = _context.Gebruikers
+                .Include(t => t.EigenWishlists).ThenInclude(t => t.Kopers)
+                .Include(t => t.EigenWishlists).ThenInclude(t => t.Wensen)
+                .SingleOrDefault(t => t.Id == id);
+
+            return gebruiker.EigenWishlists;
+        }
+
+        [HttpGet]
+        [Route("~/api/Wishlists")]
+        public IEnumerable<Wishlist> GetWishlists([FromQuery] string naam)
+        {
+            var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
+            var gebruiker = _context.Gebruikers
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .SingleOrDefault(t => t.Id == id);
+
+            List<Wishlist> wishlists = new List<Wishlist>();
+            foreach (var gebruikerWishlist in gebruiker.Wishlists)
+            {
+                wishlists.Add(gebruikerWishlist.Wishlist);
+            }
+
+            return wishlists;
         }
 
         /// <summary>
         /// Wishlist zoeken
         /// </summary>
         [HttpGet]
-        [Route("~/api/Wishlist/search")]
+        [Route("~/api/Wishlists/search")]
         public IEnumerable<Wishlist> GetWishlistBySearch([FromQuery] string naam)
         {
             if (naam.Length < 3)
@@ -50,7 +76,7 @@ namespace WishlistServices.Controllers
         /// Aantal cadeau's van wishlist per username (werkt nie deftig)
         /// </summary>
         [HttpGet]
-        [Route("~/api/Wishlist/{wishlistId}/AantalGekochteCadeaus")]
+        [Route("~/api/Wishlists/{wishlistId}/AantalGekochteCadeaus")]
         public Dictionary<Gebruiker, int> GetAantalGekochtCadeaus([FromRoute] int wishlistId)
         {
             var wishlist = _context.Wishlists
