@@ -136,8 +136,8 @@ namespace WishlistApp.Viewmodels
 
         public List<Wishlist> GenerateWishlistsIngelogdeGebruiker()
         {
-            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Naam = "Jef"} };
-            Wishlist w2 = new Wishlist { Naam = "Barmitsha Jef", Ontvanger = new Gebruiker { Naam = "Jef" } };
+            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{ Username = "Jef"} };
+            Wishlist w2 = new Wishlist { Naam = "Barmitsha Jef", Ontvanger = new Gebruiker { Username = "Jef" } };
 
             List<Wishlist> wishlists = new List<Wishlist> { w1, w2 };
             return wishlists;
