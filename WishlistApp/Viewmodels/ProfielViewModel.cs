@@ -32,7 +32,7 @@ namespace WishlistApp.Viewmodels
 
         public string Naam
         {
-            get { return Gebruiker.Naam; }
+            get { return Gebruiker.Username; }
         }
 
         private Wishlist _selectedWishlist;
@@ -114,9 +114,9 @@ namespace WishlistApp.Viewmodels
 
         public List<Wishlist> GenerateAndereWishlists()
         {
-            Wishlist w1 = new Wishlist { Naam = "Fatima's Hanoeka Wishlist", Ontvanger = new Gebruiker {Naam = "Fatima"}};
-            Wishlist w2 = new Wishlist { Naam = "Bob's vrijgezellenfeest Wensenlijst", Ontvanger = new Gebruiker { Naam = "Bob" } };
-            Wishlist w3 = new Wishlist { Naam = "Thomas's uit de kast gekomen Wensenlijst", Ontvanger = new Gebruiker { Naam = "Thomas" } };
+            Wishlist w1 = new Wishlist { Naam = "Fatima's Hanoeka Wishlist", Ontvanger = new Gebruiker {Username = "Fatima"}};
+            Wishlist w2 = new Wishlist { Naam = "Bob's vrijgezellenfeest Wensenlijst", Ontvanger = new Gebruiker { Username = "Bob" } };
+            Wishlist w3 = new Wishlist { Naam = "Thomas's uit de kast gekomen Wensenlijst", Ontvanger = new Gebruiker { Username = "Thomas" } };
 
             List<Wishlist> wishlists = new List<Wishlist> { w1, w2, w3 };
             return wishlists;

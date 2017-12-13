@@ -26,6 +26,14 @@
                     HorizontalContentAlignment="center" 
                     PlaceholderText="Zoek op gebruiker of wishlist"
                     />
+            <TextBlock x:Name="ZoekStringError" 
+                       Grid.Row="1"
+                       Grid.Column="0"
+                    Text="{Binding ZoekError, Mode=TwoWay}" 
+                    Width="400"
+                    Foreground="Red"  
+                    TextWrapping="Wrap"
+                    Margin="0, 0, 0, 0"/>
 
             <ComboBox x:Name="Selectie"
                     Grid.Row="0"
@@ -38,7 +46,7 @@
                     SelectedItem="{Binding GeselecteerdeSoort , Mode=TwoWay}"
                     ItemsSource="{Binding ZoekSoorten}"
                     PlaceholderText="Kies zoekfunctie">
-       
+
             </ComboBox>
 
             <Button x:Name="Submit"
@@ -53,8 +61,8 @@
                 Zoeken</Button>
 
             <ListView x:Name="ListView"
-                      ItemsSource="{Binding GebruikersLijst, Mode=TwoWay}"
-                      Grid.Row="1"
+                      ItemsSource="{Binding ResultGebruikersLijst}"
+                      Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Margin="0,16,0,0"
@@ -63,7 +71,7 @@
                     <DataTemplate>
                         <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
                             <StackPanel Height="70" >
-                                <TextBlock FontSize="20" Text="{Binding Naam}"/>
+                                <TextBlock FontSize="20" Text="{Binding Username}"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
@@ -78,7 +86,8 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
         </Grid>
