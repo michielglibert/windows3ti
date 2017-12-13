@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Command;
+using Windows.UI.Xaml.Controls;
 using WishlistApp.Models;
+using WishlistApp.Utils;
 
 namespace WishlistApp.Viewmodels
 {
@@ -31,8 +32,21 @@ namespace WishlistApp.Viewmodels
             get { return Gebruiker.Username; }
         }
 
-        public RelayCommand<Wishlist> JoinOrLeaveCommand { get; set; }
-        public RelayCommand<Wishlist> NodigUitCommand { get; set; }
+        private Wishlist _selectedWishlist;
+
+        public Wishlist SelectedWishlist {
+            get { return _selectedWishlist; }
+            set
+            {
+                _selectedWishlist = value;
+                RaisePropertyChanged("SelectedWishlist");
+            } 
+        }
+
+        public RelayCommand JoinOrLeaveCommand { get; set; }
+        public RelayCommand NodigUitCommand { get; set; }
+
+        public RelayCommand OpenContentDialogCommand { get; set; }
 
         public ProfielViewModel()
         {
@@ -42,16 +56,24 @@ namespace WishlistApp.Viewmodels
             WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
             Gebruiker = new Gebruiker{Username = "Koen"};
 
-            JoinOrLeaveCommand = new RelayCommand<Wishlist>(JoinOrLeaveWishlist);
-            NodigUitCommand = new RelayCommand<Wishlist>(NodigUit);
+            JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
+            NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
+            OpenContentDialogCommand = new RelayCommand((param) => OpenContentDialog(param as ContentDialog));
         }
 
         private void NodigUit(Wishlist wishlist)
         {
-            //TODO: NodigUit() implementeren
+            //TODO: NodigUit() implementeren, check op nul (combobox = leeg)
             //wishlist.NodigUit();
             System.Diagnostics.Debug.WriteLine("NodigUit werkt");
-            System.Diagnostics.Debug.WriteLine(wishlist.Naam);
+            System.Diagnostics.Debug.WriteLine(SelectedWishlist.Naam);
+        }
+
+        private void OpenContentDialog(ContentDialog dialog)
+        {
+            //TODO Andere dialoog tonen indien nog geen wishlist (kan dus niet uitnodigen)
+            System.Diagnostics.Debug.WriteLine("OpenContentDialogCommand werkt");
+            dialog.ShowAsync();
         }
 
         private void JoinOrLeaveWishlist(Wishlist wishlist)
@@ -85,9 +107,10 @@ namespace WishlistApp.Viewmodels
 
         public List<Wishlist> GenerateWishlistsIngelogdeGebruiker()
         {
-            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Username = "Jef"} };
+            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Naam = "Jef"} };
+            Wishlist w2 = new Wishlist { Naam = "Barmitsha Jef", Ontvanger = new Gebruiker { Naam = "Jef" } };
 
-            List<Wishlist> wishlists = new List<Wishlist> { w1};
+            List<Wishlist> wishlists = new List<Wishlist> { w1, w2 };
             return wishlists;
 
         }

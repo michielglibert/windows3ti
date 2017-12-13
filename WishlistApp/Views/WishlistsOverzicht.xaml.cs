@@ -26,10 +26,5 @@ namespace WishlistApp.Views
         {
             this.InitializeComponent();
         }
-
-        private void eigenWishlistLst_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }
