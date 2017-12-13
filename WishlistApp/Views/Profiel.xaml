@@ -29,19 +29,33 @@
         </VisualStateManager.VisualStateGroups>
         <TextBlock Padding="40,30,20,20" Style="{StaticResource HeaderTextBlockStyle}">Profiel</TextBlock>
         <TextBlock Padding="50,20,20,10" FontSize="36" FontWeight="Bold" Text="{Binding Naam}"/>
-        <Button Margin="50,10" Content="Uitnodigen..." x:Name="Button">
-            <Button.Flyout>
-                <Flyout utils:BindableFlyout.ItemsSource="{Binding WishlistsIngelogdeGebruiker}" x:Name="Flyout">
-                    <utils:BindableFlyout.ItemTemplate>
+        <Button Margin="50,10" Content="Uitnodigen..." 
+                Command="{Binding OpenContentDialogCommand}" 
+                CommandParameter="{Binding ElementName=ContentDialog}"/>
+        <ContentDialog x:Name="ContentDialog" >
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Kies wishlist: "/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <StackPanel>
+                <ComboBox ItemsSource="{Binding WishlistsIngelogdeGebruiker}" 
+                          SelectedItem="{Binding SelectedWishlist, Mode=TwoWay}" x:Name="ComboBox" Width="200">
+                    <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <MenuFlyoutItem Text="{Binding Naam}" 
-                                            Command="{Binding NodigUitCommand}"
-                                            CommandParameter="{Binding}"/>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Naam}"/>
+                            </StackPanel>
                         </DataTemplate>
-                    </utils:BindableFlyout.ItemTemplate>
-                </Flyout>
-            </Button.Flyout>
-        </Button>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="Nodig Uit" 
+                        Command="{Binding DataContext.NodigUitCommand, ElementName=ComboBox}" 
+                        CommandParameter="{Binding ElementName=ComboBox}"></Button>
+            </StackPanel>
+        </ContentDialog>
         <StackPanel x:Name="stackPanel" Orientation="Vertical" Padding="50,30,50,50" HorizontalAlignment="Left">
             <StackPanel Width="400">
                 <ListView ItemsSource="{Binding EigenWishlists}">

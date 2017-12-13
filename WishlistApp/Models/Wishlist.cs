@@ -51,7 +51,7 @@ namespace WishlistApp.Models
         {
             //TODO: Dit moet in de viewmodel. Lukte niet om in xaml te binden met viewmodel.
             //TODO: NodigUit() implementeren
-            //wishlist.NodigUit();
+
             System.Diagnostics.Debug.WriteLine("NodigUit werkt");
             System.Diagnostics.Debug.WriteLine(Naam);
         }
