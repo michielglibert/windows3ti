@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Newtonsoft.Json;
 using WishlistApp.Models;
 using WishlistApp.Utils;
 
@@ -51,10 +54,15 @@ namespace WishlistApp.Viewmodels
         public ProfielViewModel()
         {
             //TODO: API CALLS
-            EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
-            OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
-            WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
-            Gebruiker = new Gebruiker{Naam = "Koen"};
+            //EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
+            //OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
+            //WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
+            //Gebruiker = new Gebruiker { Naam = "Koen" };
+            GetGebruiker();
+            GetEigenWishlistsVanProfiel();
+            GetAndereWishlistsVanProfiel();
+            GetWishlistsIngelogdeGebruiker();
+            
 
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
@@ -93,6 +101,16 @@ namespace WishlistApp.Viewmodels
             return wishlists;
 
         }
+        public async void GetEigenWishlistsVanProfiel()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/WishlistsFromGebruiker/" + Gebruiker.Id));
+            var lst = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
+            EigenWishlists = lst;
+        }
 
         public List<Wishlist> GenerateAndereWishlists()
         {
@@ -105,6 +123,17 @@ namespace WishlistApp.Viewmodels
 
         }
 
+        public async void GetAndereWishlistsVanProfiel()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/DeelnemendeWishlistsFromGebruiker/" + Gebruiker.Id));
+            var lst = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
+            OntvangenWishlists = lst;
+        }
+
         public List<Wishlist> GenerateWishlistsIngelogdeGebruiker()
         {
             Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Naam = "Jef"} };
@@ -113,6 +142,31 @@ namespace WishlistApp.Viewmodels
             List<Wishlist> wishlists = new List<Wishlist> { w1, w2 };
             return wishlists;
 
+        }
+
+        public async void GetWishlistsIngelogdeGebruiker()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/EigenWishlists"));
+            var lst = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
+            WishlistsIngelogdeGebruiker = lst;
+        }
+
+        public async void GetGebruiker()
+        {
+            //TODO vaste id aanpassen
+            int id = 1;
+
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/" + id ));
+            var gebruiker = JsonConvert.DeserializeObject<Gebruiker>(json);
+            Gebruiker = gebruiker;
         }
     }
 }
