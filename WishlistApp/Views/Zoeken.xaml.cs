@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,7 +17,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WishlistApp.Annotations;
+using WishlistApp.Models;
 using WishlistApp.Viewmodels;
+using WishlistApp.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,6 +33,16 @@ namespace WishlistApp
         public Zoeken()
         {
             this.InitializeComponent();
+        }
+
+        private void ListViewGebruiker_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            Vm.GoToGebruiker.Execute(e.ClickedItem);
+        }
+
+        private void ListViewWishlist_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            Vm.GoToWishlist.Execute(e.ClickedItem);
         }
     }
 }

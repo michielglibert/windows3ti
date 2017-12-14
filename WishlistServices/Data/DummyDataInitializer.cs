@@ -18,6 +18,8 @@ namespace WishlistServices.Data
 
             if (_dbContext.Database.EnsureCreated())
             {
+                #region Gebruikers
+
                 //Gebruikers
                 List<Gebruiker> gebruikers = new List<Gebruiker>();
 
@@ -26,6 +28,11 @@ namespace WishlistServices.Data
 
                 Gebruiker gebruiker2 = new Gebruiker("Karel","Vanheede");
                 gebruikers.Add(gebruiker2);
+
+                #endregion
+
+                List<Wishlist> wishLists = new List<Wishlist>();
+
                 
                 //DbInit
                 foreach (var gebruiker in gebruikers)

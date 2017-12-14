@@ -29,7 +29,7 @@ namespace WishlistApp.Viewmodels
         private Wishlist _wishlist;
         public Wishlist Wishlist
         {
-            get => _wishlist;
+            get { return _wishlist; }
             set { _wishlist = value; OnPropertyChanged(nameof(Wishlist)); }
         }
 

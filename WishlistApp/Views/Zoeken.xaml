@@ -9,7 +9,7 @@
     xmlns:utils="using:WishlistApp.Utils"
     mc:Ignorable="d">
     <Page.DataContext>
-        <viewmodels:ZoekViewModel />
+        <viewmodels:ZoekViewModel x:Name="Vm"/>
     </Page.DataContext>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -60,18 +60,40 @@
                     Command="{Binding Path=ZoekCommand}">
                 Zoeken</Button>
 
-            <ListView x:Name="ListView"
+            <ListView x:Name="ListViewGebruiker"
                       ItemsSource="{Binding ResultGebruikersLijst}"
                       Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Margin="0,16,0,0"
-                      MinHeight="300">
+                      MinHeight="300"
+                      IsItemClickEnabled="True"
+                      ItemClick="ListViewGebruiker_OnItemClick" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
                             <StackPanel Height="70" >
                                 <TextBlock FontSize="20" Text="{Binding Username}"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView x:Name="ListViewWishlist" Visibility="Collapsed"
+                      ItemsSource="{Binding ResultWishlistLijst}"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      Margin="0,16,0,0"
+                      MinHeight="300"
+                      IsItemClickEnabled="True"
+                      ItemClick="ListViewGebruiker_OnItemClick" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
+                            <StackPanel Height="70" >
+                                <TextBlock FontSize="20" Text="{Binding Naam}"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
@@ -91,8 +113,6 @@
             </Grid.RowDefinitions>
 
         </Grid>
-
-
 
     </StackPanel>
 </Page>

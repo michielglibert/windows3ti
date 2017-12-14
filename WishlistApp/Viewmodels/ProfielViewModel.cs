@@ -54,19 +54,23 @@ namespace WishlistApp.Viewmodels
         public ProfielViewModel()
         {
             //TODO: API CALLS
-            EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
-            OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
-            WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
-            Gebruiker = new Gebruiker { Username = "Koen" };
-            //GetGebruiker();
-            //GetEigenWishlistsVanProfiel();
-            //GetAndereWishlistsVanProfiel();
-            //GetWishlistsIngelogdeGebruiker();
+            //EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
+            //OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
+            //WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
+            //Gebruiker = new Gebruiker { Naam = "Koen" };
 
 
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
             OpenContentDialogCommand = new RelayCommand((param) => OpenContentDialog(param as ContentDialog));
+        }
+
+        public void initData()
+        {
+            GetGebruiker();
+            GetEigenWishlistsVanProfiel();
+            GetAndereWishlistsVanProfiel();
+            GetWishlistsIngelogdeGebruiker();
         }
 
         private void NodigUit(Wishlist wishlist)
