@@ -54,15 +54,15 @@ namespace WishlistApp.Viewmodels
         public ProfielViewModel()
         {
             //TODO: API CALLS
-            //EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
-            //OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
-            //WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
-            //Gebruiker = new Gebruiker { Naam = "Koen" };
-            GetGebruiker();
-            GetEigenWishlistsVanProfiel();
-            GetAndereWishlistsVanProfiel();
-            GetWishlistsIngelogdeGebruiker();
-            
+            EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
+            OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
+            WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
+            Gebruiker = new Gebruiker { Username = "Koen" };
+            //GetGebruiker();
+            //GetEigenWishlistsVanProfiel();
+            //GetAndereWishlistsVanProfiel();
+            //GetWishlistsIngelogdeGebruiker();
+
 
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
@@ -136,8 +136,8 @@ namespace WishlistApp.Viewmodels
 
         public List<Wishlist> GenerateWishlistsIngelogdeGebruiker()
         {
-            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{Naam = "Jef"} };
-            Wishlist w2 = new Wishlist { Naam = "Barmitsha Jef", Ontvanger = new Gebruiker { Naam = "Jef" } };
+            Wishlist w1 = new Wishlist { Naam = "Verjaardag Jef", Ontvanger = new Gebruiker{ Username = "Jef"} };
+            Wishlist w2 = new Wishlist { Naam = "Barmitsha Jef", Ontvanger = new Gebruiker { Username = "Jef" } };
 
             List<Wishlist> wishlists = new List<Wishlist> { w1, w2 };
             return wishlists;
