@@ -20,10 +20,17 @@ namespace WishlistApp.Viewmodels
 {
     class UitnodigingViewModel:INotifyPropertyChanged
     {
+        private Uitnodiging _selectedUitnodiging;
 
-        public Uitnodiging SelectedUitnodiging { get; set; }
+        public Uitnodiging SelectedUitnodiging
+        {
+            get => _selectedUitnodiging;
+            set { _selectedUitnodiging = value; OnPropertyChanged(nameof(SelectedUitnodiging)); }
+        }
 
-        public RelayCommand OpenContentDialog => new RelayCommand((dialog) => { ShowDialog(); });
+        public RelayCommand OpenUitnodigingDialogCommand => new RelayCommand((uitnodiging) => { ShowUitnodigingDialog((Uitnodiging)uitnodiging); });
+        public RelayCommand OpenRequestDialogCommand => new RelayCommand((request) => { ShowRequestDialog((Request)request); });
+
         public RelayCommand UitnodigingAanvaarden => new RelayCommand((uitnodiging) => { UitnodigingBeantwoorden((Uitnodiging) uitnodiging, true); });
         public RelayCommand UitnodigingAfwijzen => new RelayCommand((uitnodiging) => { UitnodigingBeantwoorden((Uitnodiging)uitnodiging, false); });
         public RelayCommand RequestAanvaarden => new RelayCommand((request) => { RequestBeantwoorden((Request)request, true); });
@@ -97,30 +104,8 @@ namespace WishlistApp.Viewmodels
             Requests = lst;
         }
 
-        public async void RequestBeantwoorden(Request r, bool antwoord)
-        {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = JsonConvert.SerializeObject(new { Antwoord = antwoord });
-
-            HttpRequestMessage request = new HttpRequestMessage
-            {
-                Content = new StringContent(json, Encoding.UTF8, "application/json"),
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri("http://localhost:58253/api/Requests/" + r.Id)
-            };
-
-            var resp = await client.SendAsync(request);
-
-            if (resp.StatusCode == HttpStatusCode.NoContent)
-            {
-                Requests.Remove(r);
-            }
-        }
-
-        public async void ShowDialog()
+        public async void ShowUitnodigingDialog(Uitnodiging uitnodiging)
         {
             ContentDialog uitnodigingDialog = new ContentDialog
             {
@@ -129,12 +114,14 @@ namespace WishlistApp.Viewmodels
                 PrimaryButtonText = "Aanvaarden",
                 SecondaryButtonText = "Afwijzen",
                 PrimaryButtonCommand = UitnodigingAanvaarden,
-                PrimaryButtonCommandParameter = SelectedUitnodiging,
+                PrimaryButtonCommandParameter = uitnodiging,
                 SecondaryButtonCommand = UitnodigingAfwijzen,
+                SecondaryButtonCommandParameter = uitnodiging
             };
 
             await uitnodigingDialog.ShowAsync();
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

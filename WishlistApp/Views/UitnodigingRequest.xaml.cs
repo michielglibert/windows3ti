@@ -28,9 +28,14 @@ namespace WishlistApp.Views
             this.InitializeComponent();
         }
 
-        private async void Uitnodigingen_OnItemClick(object sender, ItemClickEventArgs e)
+        private void Uitnodigingen_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            Vm.OpenContentDialog.Execute(null);
+            Vm.OpenUitnodigingDialogCommand.Execute(e.ClickedItem);
+        }
+
+        private void Requests_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            Vm.OpenRequestDialogCommand.Execute(e.ClickedItem);
         }
     }
 }
