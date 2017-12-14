@@ -58,15 +58,19 @@ namespace WishlistApp.Viewmodels
             //OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
             //WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
             //Gebruiker = new Gebruiker { Naam = "Koen" };
-            GetGebruiker();
-            GetEigenWishlistsVanProfiel();
-            GetAndereWishlistsVanProfiel();
-            GetWishlistsIngelogdeGebruiker();
-            
+
 
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
             OpenContentDialogCommand = new RelayCommand((param) => OpenContentDialog(param as ContentDialog));
+        }
+
+        public void initData()
+        {
+            GetGebruiker();
+            GetEigenWishlistsVanProfiel();
+            GetAndereWishlistsVanProfiel();
+            GetWishlistsIngelogdeGebruiker();
         }
 
         private void NodigUit(Wishlist wishlist)

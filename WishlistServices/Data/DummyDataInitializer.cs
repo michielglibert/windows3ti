@@ -18,6 +18,8 @@ namespace WishlistServices.Data
 
             if (_dbContext.Database.EnsureCreated())
             {
+                #region Gebruikers
+
                 //Gebruikers
                 var gebruikers = new List<Gebruiker>();
 

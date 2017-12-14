@@ -11,7 +11,7 @@
     x:Name="Page">
     
     <Page.DataContext>
-        <viewmodels:ProfielViewModel></viewmodels:ProfielViewModel>
+        <viewmodels:ProfielViewModel x:Name="ProfielViewModel"/>
     </Page.DataContext>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
