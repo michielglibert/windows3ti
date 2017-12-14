@@ -29,12 +29,11 @@ namespace WishlistApp.Viewmodels
         }
 
         public RelayCommand OpenUitnodigingDialogCommand => new RelayCommand((uitnodiging) => { ShowUitnodigingDialog((Uitnodiging)uitnodiging); });
-        public RelayCommand OpenRequestDialogCommand => new RelayCommand((request) => { ShowRequestDialog((Request)request); });
+
 
         public RelayCommand UitnodigingAanvaarden => new RelayCommand((uitnodiging) => { UitnodigingBeantwoorden((Uitnodiging) uitnodiging, true); });
         public RelayCommand UitnodigingAfwijzen => new RelayCommand((uitnodiging) => { UitnodigingBeantwoorden((Uitnodiging)uitnodiging, false); });
-        public RelayCommand RequestAanvaarden => new RelayCommand((request) => { RequestBeantwoorden((Request)request, true); });
-        public RelayCommand RequestAfwijzen => new RelayCommand((request) => { RequestBeantwoorden((Request)request, false); });
+
 
         private ObservableCollection<Uitnodiging> _uitnodigingen;
 

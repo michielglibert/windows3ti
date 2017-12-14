@@ -32,10 +32,5 @@ namespace WishlistApp.Views
         {
             Vm.OpenUitnodigingDialogCommand.Execute(e.ClickedItem);
         }
-
-        private void Requests_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            Vm.OpenRequestDialogCommand.Execute(e.ClickedItem);
-        }
     }
 }
