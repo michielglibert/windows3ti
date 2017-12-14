@@ -26,18 +26,31 @@ namespace WishlistServices.Controllers
         /// <summary>
         /// Alle uitnodigingen van gebruiker bekijken
         /// </summary>
-        // GET: api/Request
+        // GET: api/Uitnodigingen
         [HttpGet]
-        public IEnumerable<Uitnodiging> GetUitnodigingenVanWishlist([FromRoute] int wishlistId)
+        public IEnumerable<Uitnodiging> GetUitnodigingenVanGebruiker()
         {
             var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
             var gebruiker = _context.Gebruikers
                 .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
+                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .Include(t => t.Uitnodigingen).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
                 .SingleOrDefault(t => t.Id == id);
 
             return gebruiker.Uitnodigingen;
         }
 
+        [HttpGet]
+        [Route("~/api/Wishlists/{wishlistId}/Uitnodigingen")]
+        public IEnumerable<Uitnodiging> GetUitnodigingenVanWishlist([FromRoute] int wishlistId)
+        {
+            var wishlist = _context.Wishlists
+                .Include(t => t.VerzondenUitnodigingen).ThenInclude(t => t.Gebruiker)
+                .SingleOrDefault(t => t.Id == wishlistId);
+
+            return wishlist.VerzondenUitnodigingen;
+        }
+        
         /// <summary>
         /// Uitnodiging by id
         /// </summary>

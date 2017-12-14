@@ -20,16 +20,17 @@ namespace WishlistApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class WishlistsOverzicht : Page
+    public sealed partial class UitnodigingRequest : Page
     {
-        public WishlistsOverzicht()
+    
+        public UitnodigingRequest()
         {
             this.InitializeComponent();
         }
 
-        private void EigenWishlistLst_OnItemClick(object sender, ItemClickEventArgs e)
+        private void Uitnodigingen_OnItemClick(object sender, ItemClickEventArgs e)
         {
-           Vm.GoToWishlist.Execute(e.ClickedItem);
+            Vm.OpenUitnodigingDialogCommand.Execute(e.ClickedItem);
         }
     }
 }
