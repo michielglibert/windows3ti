@@ -29,7 +29,7 @@ namespace WishlistApp.Views
 
         private void EigenWishlistLst_OnItemClick(object sender, ItemClickEventArgs e)
         {
-           Vm.GoToWishlist.Execute(null);
+           Vm.GoToWishlist.Execute(e.ClickedItem);
         }
     }
 }

@@ -11,17 +11,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using WishlistApp.Annotations;
 using WishlistApp.Models;
+using WishlistApp.Utils;
 using WishlistApp.Views;
 
 namespace WishlistApp.Viewmodels
 {
     class WishlistViewModel:INotifyPropertyChanged
     {
-        public RelayCommand GoToWishlist = new RelayCommand(() => MainPage.Frame.Navigate(typeof(WishlistDetail)));
+        public RelayCommand GoToWishlist => new RelayCommand((wishlist) => MainPage.Frame.Navigate(typeof(WishlistDetail), wishlist));
+        public RelayCommand OpenContentDialog => new RelayCommand((dialog) => { ShowDialog(); });
+        public RelayCommand WishlistMakenCommand => new RelayCommand((naam) => WishlistMaken((string) naam)); 
 
         private ObservableCollection<Wishlist> _eigenWishlists;
 
@@ -39,34 +41,65 @@ namespace WishlistApp.Viewmodels
             set { _wishlists = value; OnPropertyChanged(nameof(Wishlists)); }
         }
 
+        public HttpClient Client { get; set; }
+
         public WishlistViewModel()
         {
+            //Client aanmaken
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            Client = new HttpClient();
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+
+            //Data ophalen
             GetEigenWishlists();
             GetWishlists();
         }
 
         public async void GetEigenWishlists()
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/EigenWishlists"));
+            var json = await Client.GetStringAsync(new Uri("http://localhost:58253/api/EigenWishlists"));
             var lst = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
             EigenWishlists = lst;
         }
 
         public async void GetWishlists()
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Wishlists"));
+            var json = await Client.GetStringAsync(new Uri("http://localhost:58253/api/Wishlists"));
             var lst = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
             Wishlists = lst;
         }
+
+        public async void WishlistMaken(string naam)
+        {
+            Wishlist wishlist = new Wishlist(naam);
+
+            var json = JsonConvert.SerializeObject(wishlist);
+            var res = await Client.PostAsync(new Uri("http://localhost:58253/api/Wishlists"),
+                new StringContent(json, Encoding.UTF8, "application/json"));
+
+            var jsonResp = await res.Content.ReadAsStringAsync();
+            var newWishlist = JsonConvert.DeserializeObject<Wishlist>(jsonResp);
+
+            EigenWishlists.Add(newWishlist);
+        }
         
+        public async void ShowDialog()
+        {
+            var textbox = new TextBox();
+
+            ContentDialog uitnodigingDialog = new ContentDialog
+            {
+                Title = "Nieuwe wishlist naam",
+                Content = textbox,
+                PrimaryButtonText = "Aanmaken",
+                SecondaryButtonText = "Annuleren",
+                PrimaryButtonCommand = WishlistMakenCommand,
+                PrimaryButtonCommandParameter = textbox.Text
+            };
+
+            await uitnodigingDialog.ShowAsync();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

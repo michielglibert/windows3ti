@@ -47,6 +47,11 @@ namespace WishlistApp.Models
             NodigUitCommand = new RelayCommand(NodigUit);
         }
 
+        public Wishlist(string naam)
+        {
+            Naam = naam;
+        }
+
         private void NodigUit()
         {
             //TODO: Dit moet in de viewmodel. Lukte niet om in xaml te binden met viewmodel.
