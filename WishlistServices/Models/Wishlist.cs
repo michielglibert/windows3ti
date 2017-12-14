@@ -26,7 +26,7 @@ namespace WishlistServices.Models
             Requests = new List<Request>();
         }
 
-        public Wishlist(string naam)
+        public Wishlist(string naam):this()
         {
             Naam = naam;
         }

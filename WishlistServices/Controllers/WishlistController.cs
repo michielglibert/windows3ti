@@ -45,6 +45,7 @@ namespace WishlistServices.Controllers
         {
             var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
             var gebruiker = _context.Gebruikers
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
                 .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
                 .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
                 .SingleOrDefault(t => t.Id == id);

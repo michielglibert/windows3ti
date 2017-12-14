@@ -80,7 +80,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Naam}">Naam wishlist</TextBlock>
                         <TextBlock Text="{Binding Wensen.Count}" Grid.Row="0" Grid.Column="1">Aantal wensen</TextBlock>
-                        <TextBlock  Text="{Binding Ontvanger.Naam}" Grid.Row="1" Grid.Column="0">Eigenaar</TextBlock>
+                        <TextBlock  Text="{Binding Ontvanger.Username}" Grid.Row="1" Grid.Column="0">Eigenaar</TextBlock>
                         <TextBlock Text="{Binding Kopers.Count}" Grid.Column="1" Grid.Row="1">Aantal leden</TextBlock>
                         <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Background="LawnGreen"></StackPanel>
                     </Grid>
