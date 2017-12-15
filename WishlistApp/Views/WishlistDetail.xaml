@@ -9,6 +9,7 @@
     mc:Ignorable="d">
     <Page.DataContext>
         <viewmodels:WishlistDetailViewModel x:Name="Vm"/>
+        
     </Page.DataContext>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -18,7 +19,8 @@
             <TextBlock FontSize="20pt" Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
         </StackPanel>
         <Pivot>
-            <PivotItem Header="Wensen" >
+            <PivotItem Header="Wensen">
+                
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />

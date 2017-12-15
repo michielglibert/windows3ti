@@ -127,8 +127,8 @@ namespace WishlistApp.Viewmodels
             {
                 if (!zoekString.ToString().Equals(""))
                 {
+                    ResultWishlistLijst = null;
                     GetGebruikersLijstOpUsername(zoekString.ToString());
-
                 }
                 else ZoekError = "Gelieve een Gebruikersnaam of Wishlistnaam in te geven.";
             }
@@ -136,6 +136,7 @@ namespace WishlistApp.Viewmodels
             {
                 if (!zoekString.ToString().Equals(""))
                 {
+                    ResultGebruikersLijst = null;
                     GetWishlistsLijstOpUsername(zoekString.ToString());
                 }
                 else ZoekError = "Gelieve een Gebruikersnaam of Wishlistnaam in te geven.";

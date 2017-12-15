@@ -44,5 +44,6 @@ namespace WishlistApp
         {
             Vm.GoToWishlist.Execute(e.ClickedItem);
         }
+
     }
 }
