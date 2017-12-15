@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+using Newtonsoft.Json;
 using WishlistServices.Data;
 
 namespace WishlistServices.Models
@@ -26,7 +27,7 @@ namespace WishlistServices.Models
             Requests = new List<Request>();
         }
 
-        public Wishlist(string naam)
+        public Wishlist(string naam):this()
         {
             Naam = naam;
         }

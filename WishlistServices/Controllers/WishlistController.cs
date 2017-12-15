@@ -45,6 +45,7 @@ namespace WishlistServices.Controllers
         {
             var id = int.Parse(User.Claims.SingleOrDefault(t => t.Type == "id")?.Value);
             var gebruiker = _context.Gebruikers
+                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Ontvanger)
                 .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
                 .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
                 .SingleOrDefault(t => t.Id == id);
@@ -130,12 +131,16 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wishlist = await _context.Wishlists.Include(t => t.Ontvanger).SingleOrDefaultAsync(m => m.Id == id);
+            var wishlist = await _context.Wishlists
+                .Include(t => t.Ontvanger)
+                .Include(t => t.Wensen).ThenInclude(t => t.GekochtCadeau)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
             if (wishlist == null)
             {
                 return NotFound();
             }
-
+            
             return Ok(wishlist);
         }
 

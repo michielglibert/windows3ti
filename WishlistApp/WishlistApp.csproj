@@ -97,10 +97,15 @@
     </Compile>
     <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Utils\BindableFlyout.cs" />
+    <Compile Include="Viewmodels\NewWensViewModel.cs" />
     <Compile Include="Viewmodels\UitnodigingViewModel.cs" />
+    <Compile Include="Viewmodels\WensViewModel.cs" />
     <Compile Include="Viewmodels\WishlistDetailViewModel.cs" />
     <Compile Include="Viewmodels\WishlistViewModel.cs" />
     <Compile Include="Viewmodels\ZoekViewModel.cs" />
+    <Compile Include="Views\NewWens.xaml.cs">
+      <DependentUpon>NewWens.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Registreer.xaml.cs">
       <DependentUpon>Registreer.xaml</DependentUpon>
     </Compile>
@@ -127,6 +132,9 @@
     </Compile>
     <Compile Include="Views\UitnodigingRequest.xaml.cs">
       <DependentUpon>UitnodigingRequest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wens.xaml.cs">
+      <DependentUpon>Wens.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WishlistDetail.xaml.cs">
       <DependentUpon>WishlistDetail.xaml</DependentUpon>
@@ -165,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\NewWens.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Registreer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -186,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UitnodigingRequest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wens.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

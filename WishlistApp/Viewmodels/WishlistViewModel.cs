@@ -25,8 +25,6 @@ namespace WishlistApp.Viewmodels
         public RelayCommand OpenContentDialog => new RelayCommand((dialog) => { ShowDialog(); });
         public RelayCommand WishlistMakenCommand => new RelayCommand((naam) => WishlistMaken((string) naam));
 
-        public TextBox TextBox { get; set; } = new TextBox();
-
         private ObservableCollection<Wishlist> _eigenWishlists;
 
         public ObservableCollection<Wishlist> EigenWishlists
@@ -87,17 +85,24 @@ namespace WishlistApp.Viewmodels
         
         public async void ShowDialog()
         {
+            var textbox = new TextBox();
+
             ContentDialog uitnodigingDialog = new ContentDialog
             {
                 Title = "Nieuwe wishlist naam",
-                Content = TextBox,
+                Content = textbox,
                 PrimaryButtonText = "Aanmaken",
-                SecondaryButtonText = "Annuleren",
-                PrimaryButtonCommand = WishlistMakenCommand,
-                PrimaryButtonCommandParameter = TextBox.Text
+                SecondaryButtonText = "Annuleren"
             };
 
-            await uitnodigingDialog.ShowAsync();
+            var dialog = await uitnodigingDialog.ShowAsync();
+
+            if (dialog == ContentDialogResult.Primary)
+            {
+                WishlistMakenCommand.Execute(textbox.Text);
+            } else if (dialog == ContentDialogResult.Secondary)
+            {
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
