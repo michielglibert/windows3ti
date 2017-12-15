@@ -8,8 +8,6 @@
     xmlns:viewmodels="using:WishlistApp.Viewmodels"
     xmlns:flyout="using:WishlistApp.Views"
     xmlns:utils="using:WishlistApp.Utils"
-    xmlns:behaviors="using:Cimbalino.Toolkit.Behaviors"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewmodels:WishlistDetailViewModel x:Name="Vm"/>
