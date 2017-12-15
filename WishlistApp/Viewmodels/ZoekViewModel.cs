@@ -56,7 +56,7 @@ namespace WishlistApp.Viewmodels
             set
             {
                 _zoekError = value;
-                OnPropertyChanged(nameof(ZoekError));
+                OnPropertyChanged("ZoekError");
             }
         }
 
