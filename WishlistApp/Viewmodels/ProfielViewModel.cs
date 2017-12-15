@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using WishlisApp.Models;
@@ -111,16 +111,25 @@ namespace WishlistApp.Viewmodels
             {
                 case "Verlaat wishlist":
                     // Show popup
-                    // Remove from wishlist
+                    ContentDialog dialog = new ContentDialog()
+                    {
+                        Title = "Verlaat wishlist",
+                        Content = "Bent u zeker dat u de wishlist " + wishlist.Naam + " wilt verlaten?",
+                        PrimaryButtonText = "Ja",
+                        PrimaryButtonCommand = new RelayCommand(param => VerlaatWishlist(wishlist)),
+                        SecondaryButtonText = "Annuleer"
+                    };
+
+                    dialog.ShowAsync();
                     break;
                 case "Annuleer aanvraag":
-                    // Remove request
+                    VerwijderAanvraag(wishlist);
                     break;
                 case "Accepteer uitnodiging":
-                    // Accepteer uitnodiging
+                    AccepteerUitnodiging(wishlist);
                     break;
                 case "Vraag aan":
-                    // Add request
+                    VoegAanvraagToe(wishlist);
                     break;
             }
         }
@@ -237,19 +246,86 @@ namespace WishlistApp.Viewmodels
             //TODO melding geven indien succesvol
         }
 
-        //public async Task GetGebruiker()
-        //{
-        //    //TODO vaste id aanpassen
-        //    int id = 1;
+        private async void VerlaatWishlist(Wishlist wishlist)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-        //    var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = 
+                new AuthenticationHeaderValue("Bearer", 
+                localSettings.Values["token"].ToString());
 
-        //    HttpClient client = new HttpClient();
-        //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-        //    var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/" + id ));
-        //    var gebruiker = JsonConvert.DeserializeObject<Gebruiker>(json);
-        //    Gebruiker = gebruiker;
-        //}
+            await client.DeleteAsync(new Uri("http://localhost:58253/api/Uitnodigingen/" + wishlist.Id));
+
+        }
+
+        private async void VerwijderAanvraag(Wishlist wishlist)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string username = localSettings.Values["username"].ToString();
+            Request teVerwijderenRequest = wishlist.Requests.Find(request => request.Gebruiker.Username == username);
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+
+            var json = JsonConvert.SerializeObject(new { Antwoord = false });
+
+            HttpRequestMessage httpRequest = new HttpRequestMessage
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("http://localhost:58253/api/Requests/" + teVerwijderenRequest.Id)
+            };
+
+            var resp = await client.SendAsync(httpRequest);
+
+            if (resp.StatusCode == HttpStatusCode.NoContent)
+            {
+                wishlist.Requests.Remove(teVerwijderenRequest);
+            }
+        }
+
+        private async void VoegAanvraagToe(Wishlist wishlist)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            Request request = new Request {Gebruiker = Gebruiker, Wishlist = wishlist};
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var jsonRequest = JsonConvert.SerializeObject(request);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            await client.PostAsync(new Uri("http://localhost:58253/api/Requests"), content);
+
+        }
+
+        private async void AccepteerUitnodiging(Wishlist wishlist)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string username = localSettings.Values["username"].ToString();
+            Uitnodiging teAccepterenUitnodiging = wishlist.VerzondenUitnodigingen
+                .Find(uitnodiging => uitnodiging.Gebruiker.Username == username);
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+
+            var json = JsonConvert.SerializeObject(new { Antwoord = true });
+
+            HttpRequestMessage httpRequest = new HttpRequestMessage
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("http://localhost:58253/api/Uitnodigingen/" + teAccepterenUitnodiging.Id)
+            };
+
+            var resp = await client.SendAsync(httpRequest);
+
+            if (resp.StatusCode == HttpStatusCode.NoContent)
+            {
+                wishlist.VerzondenUitnodigingen.Remove(teAccepterenUitnodiging);
+            }
+        }
 
         #endregion
 

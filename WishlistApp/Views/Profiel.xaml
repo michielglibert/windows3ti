@@ -79,7 +79,7 @@
                            PrimaryButtonCommand="{Binding NodigUitCommand}"
                            PrimaryButtonCommandParameter="{Binding ElementName=ComboBox}"
                            SecondaryButtonText="Annuleer"
-                           SecondaryButtonCommand="{Binding CloseContentDialogBox}"
+                           SecondaryButtonCommand="{Binding CloseContentDialogCommand}"
                            SecondaryButtonCommandParameter="{Binding ElementName=ContentDialog}">
                 <ContentDialog.TitleTemplate>
                     <DataTemplate>
