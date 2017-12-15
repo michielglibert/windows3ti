@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Utils\BindableFlyout.cs" />
+    <Compile Include="Utils\NullVisibilityConverter.cs" />
     <Compile Include="Viewmodels\NewWensViewModel.cs" />
     <Compile Include="Viewmodels\UitnodigingViewModel.cs" />
     <Compile Include="Viewmodels\WensViewModel.cs" />

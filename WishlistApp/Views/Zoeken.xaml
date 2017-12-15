@@ -11,6 +11,9 @@
     <Page.DataContext>
         <viewmodels:ZoekViewModel x:Name="Vm"/>
     </Page.DataContext>
+    <Page.Resources>
+        <utils:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </Page.Resources>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                 HorizontalAlignment="Center"
@@ -62,6 +65,7 @@
 
             <ListView x:Name="ListViewGebruiker"
                       ItemsSource="{Binding ResultGebruikersLijst}"
+                      Visibility="{Binding ResultGebruikersLijst, Converter={StaticResource NullToVisibilityConverter}}"
                       Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
@@ -80,15 +84,16 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ListView x:Name="ListViewWishlist" Visibility="Collapsed"
+            <ListView x:Name="ListViewWishlist"
                       ItemsSource="{Binding ResultWishlistLijst}"
+                      Visibility="{Binding ResultWishlistLijst, Converter={StaticResource NullToVisibilityConverter}}"
                       Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Margin="0,16,0,0"
                       MinHeight="300"
                       IsItemClickEnabled="True"
-                      ItemClick="ListViewGebruiker_OnItemClick" >
+                      ItemClick="ListViewWishlist_OnItemClick" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
