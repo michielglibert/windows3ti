@@ -11,15 +11,20 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using WishlistApp.Annotations;
 using WishlistApp.Models;
 using WishlistApp.Utils;
+using WishlistApp.Views;
 
 namespace WishlistApp.Viewmodels
 {
     public class ZoekViewModel : INotifyPropertyChanged
     {
+        public RelayCommand GoToGebruiker => new RelayCommand((gebruiker) => MainPage.Frame.Navigate(typeof(Profiel), gebruiker));
+        public RelayCommand GoToWishlist => new RelayCommand((wishlist) => MainPage.Frame.Navigate(typeof(WishlistDetail), wishlist));
+
         private ObservableCollection<Gebruiker> _gebruikersLijst;
 
         public ObservableCollection<Gebruiker> ResultGebruikersLijst
@@ -59,13 +64,27 @@ namespace WishlistApp.Viewmodels
         public string ZoekString { get; set; }
         public string GeselecteerdeSoort { get; set; }
         public RelayCommand ZoekCommand { get; set; }
-
+        public RelayCommand GoToProfiel { get; set; }
 
         public ZoekViewModel()
         {
             ZoekSoorten = new List<string> { "Gebruiker", "Wishlist" };
             ZoekCommand = new RelayCommand((param) => StelLijstIn(param));
+            //GoToProfiel = new RelayCommand((frame) => Zoeken.Frame.Navigate(typeof(Profiel)));
         }
+
+        /*public void ListViewOnItemClick(ItemClickEventArgs args)
+        {
+            if (args.ClickedItem.GetType() == typeof(Gebruiker))
+            {
+                Gebruiker gebruiker = (Gebruiker) args.ClickedItem;
+                Debug.WriteLine(gebruiker);
+            }
+            else
+            {
+                Wishlist wishlist = (Wishlist) args.ClickedItem;
+            }
+        }*/
 
         public async void GetGebruikersLijstOpUsername(string zoekString)
         {
@@ -77,7 +96,7 @@ namespace WishlistApp.Viewmodels
             var result = JsonConvert.DeserializeObject<ObservableCollection<Gebruiker>>(json);
             if (result.Count == 0)
             {
-                ZoekError = "Gebruiker met naam: " + zoekString + "bestaat niet.";
+                ZoekError = "Gebruiker met naam: \"" + zoekString + "\" bestaat niet.";
             }
             ResultGebruikersLijst = result;
         }
@@ -92,7 +111,7 @@ namespace WishlistApp.Viewmodels
             var result = JsonConvert.DeserializeObject<ObservableCollection<Wishlist>>(json);
             if (result == null)
             {
-                ZoekError = "Wishist met naam: " + zoekString + "bestaat niet.";
+                ZoekError = "Wishist met naam: \"" + zoekString + "\" bestaat niet.";
             }
             ResultWishlistLijst = result;
             Debug.WriteLine(ZoekError);

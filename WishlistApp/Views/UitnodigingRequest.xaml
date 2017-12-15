@@ -56,7 +56,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                             <TextBlock Text="Ontvanger: " Margin="0,0,5,0"></TextBlock>
-                            <TextBlock Text="{Binding Wishlist.Ontvanger.Naam}"></TextBlock>
+                            <TextBlock Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <TextBlock Text="{Binding Wishlist.Wensen.Count}"></TextBlock>
@@ -96,7 +96,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
                             <TextBlock Text="Ontvanger: " Margin="0,0,5,0"></TextBlock>
-                            <TextBlock Text="{Binding Wishlist.Ontvanger.Naam}"></TextBlock>
+                            <TextBlock Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <TextBlock Text="{Binding Wishlist.Wensen.Count}"></TextBlock>
@@ -109,8 +109,6 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.Items>
-            </ListView.Items>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

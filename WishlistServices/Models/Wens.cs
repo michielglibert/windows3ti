@@ -19,6 +19,12 @@ namespace WishlistServices.Models
         {
         }
 
+        public Wens(string titel, string omschrijving)
+        {
+            Titel = titel;
+            Omschrijving = omschrijving;
+        }
+
         public void MarkerenAlsGekocht(Gebruiker gebruiker)
         {
             GekochtCadeau = new GekochtCadeau(gebruiker, this);

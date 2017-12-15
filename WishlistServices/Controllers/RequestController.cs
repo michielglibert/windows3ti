@@ -33,6 +33,7 @@ namespace WishlistServices.Controllers
         {
             var wishlist = _context.Wishlists
                 .Include(t => t.Requests).ThenInclude(t => t.Gebruiker)
+                .Include(t => t.Ontvanger)
                 .SingleOrDefault(t => t.Id == wishlistId);
 
             return wishlist.Requests;

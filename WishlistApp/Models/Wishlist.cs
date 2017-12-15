@@ -49,6 +49,10 @@ namespace WishlistApp.Models
 
         public Wishlist(string naam)
         {
+            VerzondenUitnodigingen = new List<Uitnodiging>();
+            Requests = new List<Request>();
+            Kopers = new List<GebruikerWishlist>();
+            Wensen = new List<Wens>();
             Naam = naam;
         }
 

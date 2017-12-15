@@ -53,20 +53,19 @@ namespace WishlistApp.Viewmodels
 
         public ProfielViewModel()
         {
-
             //TODO: API CALLS
-            LoadPage();
             //EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
             //OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
             //WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
-            //Gebruiker = new Gebruiker { Username = "Koen" };
+            //Gebruiker = new Gebruiker { Naam = "Koen" };
+
 
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
             OpenContentDialogCommand = new RelayCommand((param) => OpenContentDialog(param as ContentDialog));
         }
 
-        private async void LoadPage()
+        public void initData()
         {
             GetGebruiker();
             GetEigenWishlistsVanProfiel();
@@ -160,7 +159,7 @@ namespace WishlistApp.Viewmodels
             WishlistsIngelogdeGebruiker = lst;
         }
 
-        public void GetGebruiker()
+        public async void GetGebruiker()
         {
             //TODO vaste id aanpassen
             int id = 1;
@@ -169,7 +168,7 @@ namespace WishlistApp.Viewmodels
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/" + id )).Result;
+            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/" + id ));
             var gebruiker = JsonConvert.DeserializeObject<Gebruiker>(json);
             Gebruiker = gebruiker;
         }
