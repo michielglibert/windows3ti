@@ -21,9 +21,9 @@ namespace WishlistApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class WishlistDetail : Page
+    public sealed partial class NewWens : Page
     {
-        public WishlistDetail()
+        public NewWens()
         {
             this.InitializeComponent();
         }
@@ -32,12 +32,6 @@ namespace WishlistApp.Views
         {
             base.OnNavigatedTo(e);
             Vm.Wishlist = (Wishlist) e.Parameter;
-            Vm.InitData();
-        }
-
-        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            Vm.GoToWens.Execute(e.ClickedItem);
         }
     }
 }

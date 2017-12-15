@@ -5,9 +5,177 @@
     xmlns:local="using:WishlistApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:WishlistApp.Viewmodels"
     mc:Ignorable="d">
+    <Page.DataContext>
+        <viewmodels:WishlistDetailViewModel x:Name="Vm"/>
+    </Page.DataContext>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock Text="OI MATE"></TextBlock>
-    </Grid>
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock HorizontalAlignment="Center" FontSize="50pt" Text="{Binding Wishlist.Naam}"></TextBlock>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+            <TextBlock FontSize="20pt" Text="Ontvanger: " Margin="0, 0, 5, 0"></TextBlock>
+            <TextBlock FontSize="20pt" Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
+        </StackPanel>
+        <Pivot>
+            <PivotItem Header="Wensen" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <ListView ItemsSource="{Binding Wishlist.Wensen}"
+                              IsItemClickEnabled="True"
+                              ItemClick="ListViewBase_OnItemClick">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Titel:" Margin="0,0,5,0"></TextBlock>
+                                        <TextBlock Text="{Binding Titel}"></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="Nog niet gekocht"></TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.Items>
+                            <x:String>1</x:String>
+                        </ListView.Items>
+                    </ListView>
+                    <Button Command="{Binding GoToNewWens}" Grid.Row="1" HorizontalAlignment="Center">Nieuwe wens</Button>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Leden">
+                <ListView ItemsSource="{Binding Kopers}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock></TextBlock>
+                                <TextBlock Text="{Binding Username}"></TextBlock>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <TextBlock Text="Aantal gekochte cadeau's:"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.Items>
+                        <x:String>1</x:String>
+                    </ListView.Items>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Verzonden uitnodigingen">
+                <ListView Grid.Row="1" Margin="0,0,5,0"
+                  ItemsSource="{Binding Uitnodigingen}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Naam:" Margin="0,0,5,0"></TextBlock>
+                                    <TextBlock Text="{Binding Wishlist.Naam}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Text="Ontvanger: " Margin="0,0,5,0"></TextBlock>
+                                    <TextBlock Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Wishlist.Wensen.Count}"></TextBlock>
+                                    <TextBlock Text=" wensen"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Wishlist.Kopers.Count}"></TextBlock>
+                                    <TextBlock Text=" leden "></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Ontvangen requests">
+                <ListView Grid.Row="1" Margin="5,0,0,0"
+                  ItemsSource="{Binding Requests}"
+                  IsItemClickEnabled="False">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="0.1*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Naam:" Margin="0,0,5,0"></TextBlock>
+                                    <TextBlock Text="{Binding Wishlist.Naam}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Text="Ontvanger: " Margin="0,0,5,0"></TextBlock>
+                                    <TextBlock Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Wishlist.Wensen.Count}"></TextBlock>
+                                    <TextBlock Text=" wensen"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Wishlist.Kopers.Count}"></TextBlock>
+                                    <TextBlock Text=" leden "></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </PivotItem>
+        </Pivot>
+    </StackPanel>
 </Page>

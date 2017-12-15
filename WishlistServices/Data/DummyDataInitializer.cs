@@ -18,9 +18,10 @@ namespace WishlistServices.Data
 
             if (_dbContext.Database.EnsureCreated())
             {
-                #region Gebruikers
+                //Standaard login: Username(Jef), Password(Pass)
+                //Standaard wishlist -> wishlist2
 
-                //Gebruikers
+                #region Gebruikers
                 var gebruikers = new List<Gebruiker>();
 
                 var gebruiker1 = new Gebruiker("Giel","Pass");;
@@ -46,9 +47,9 @@ namespace WishlistServices.Data
 
                 var gebruiker8 = new Gebruiker("Kelly", "Pass");
                 gebruikers.Add(gebruiker8);
+                #endregion
 
-
-                //Wishlists
+                #region Wishlists
                 var wishlists = new List<Wishlist>();
 
                 var wishlist1 = new Wishlist("Bday bash") {Ontvanger = gebruiker1};
@@ -62,10 +63,8 @@ namespace WishlistServices.Data
                 wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker2, wishlist2));
                 wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker1, wishlist2));
                 wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker4, wishlist2));
-                wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker5, wishlist2));
                 wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker6, wishlist2));
                 wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker7, wishlist2));
-                wishlist2.Kopers.Add(new GebruikerWishlist(gebruiker8, wishlist2));
                 wishlists.Add(wishlist2);
 
                 var wishlist3 = new Wishlist("Nieuwjaar 2017") {Ontvanger = gebruiker3};
@@ -93,8 +92,38 @@ namespace WishlistServices.Data
                 var wishlist6 = new Wishlist("Dingen die ik graag zou hebben") { Ontvanger = gebruiker1 };
                 wishlist6.Kopers.Add(new GebruikerWishlist(gebruiker2, wishlist6));
                 wishlists.Add(wishlist6);
+                #endregion
 
-                //Init data
+                #region Wensen
+
+                var wensen = new List<Wens>();
+                wishlist2.Wensen.Add(new Wens("Star wars","Ik wil graag de dvd's van star wars op blu ray"));
+                wishlist2.Wensen.Add(new Wens("Appelsien", "Ik wil graag een verse appelsien"));
+                wishlist2.Wensen.Add(new Wens("Holy Meme Bible", "Moe maar ke googlen kwil diene haha"));
+                wishlist2.Wensen.Add(new Wens("Pussy", "Kwaliteit graag, kenners weten wel wat ik bedoel"));
+
+                #endregion
+
+                #region Uitnodigingen
+
+                var uitnodigingen = new List<Uitnodiging>();
+                Uitnodiging uitnodiging1 = new Uitnodiging(gebruiker8, wishlist2);
+                wishlist2.VerzondenUitnodigingen.Add(uitnodiging1);
+                gebruiker8.Uitnodigingen.Add(uitnodiging1);
+
+                #endregion
+
+                #region Requests
+
+                var requests = new List<Request>();
+                Request request1 = new Request(gebruiker5, wishlist2);
+                wishlist2.Requests.Add(request1);
+                gebruiker8.Requests.Add(request1);
+
+
+                #endregion
+
+                #region InitData
                 foreach (var gebruiker in gebruikers)
                 {
                     _dbContext.Gebruikers.Add(gebruiker);
@@ -105,18 +134,25 @@ namespace WishlistServices.Data
                     _dbContext.Wishlists.Add(wishlist);
                 }
 
-                //Uitnodigingen
+                foreach (var wens in wensen)
+                {
+                    _dbContext.Wensen.Add(wens);
+                }
 
-                //Requests
+                foreach (var uitnodiging in uitnodigingen)
+                {
+                    _dbContext.Uitnodigingen.Add(uitnodiging);
+                }
 
-                //Wensen
-
-
-
-
-
-                //Save
+                foreach (var request in requests)
+                {
+                    _dbContext.Requests.Add(request);
+                }
+                
                 _dbContext.SaveChanges();
+                #endregion
+
+
             }
         }
     }

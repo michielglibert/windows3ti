@@ -20,6 +20,8 @@ namespace WishlistApp.Viewmodels
 {
     class UitnodigingViewModel:INotifyPropertyChanged
     {
+        public HttpClient Client { get; set; }
+
         private Uitnodiging _selectedUitnodiging;
 
         public Uitnodiging SelectedUitnodiging
@@ -53,27 +55,23 @@ namespace WishlistApp.Viewmodels
 
         public UitnodigingViewModel()
         {
+            Client = new HttpClient();
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+
             GetUitnodigingen();
             GetRequests();
         }
 
         public async void GetUitnodigingen()
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Uitnodigingen"));
+            var json = await Client.GetStringAsync(new Uri("http://localhost:58253/api/Uitnodigingen"));
             var lst = JsonConvert.DeserializeObject<ObservableCollection<Uitnodiging>>(json);
             Uitnodigingen = lst;
         }
 
         public async void UitnodigingBeantwoorden(Uitnodiging u, bool antwoord)
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
             var json = JsonConvert.SerializeObject(new {Antwoord = antwoord});
 
             HttpRequestMessage request = new HttpRequestMessage
@@ -83,7 +81,7 @@ namespace WishlistApp.Viewmodels
                 RequestUri = new Uri("http://localhost:58253/api/Uitnodigingen/" + u.Id)
             };
 
-            var resp = await client.SendAsync(request);
+            var resp = await Client.SendAsync(request);
 
             if (resp.StatusCode == HttpStatusCode.NoContent)
             {
@@ -94,11 +92,7 @@ namespace WishlistApp.Viewmodels
 
         public async void GetRequests()
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Requests"));
+            var json = await Client.GetStringAsync(new Uri("http://localhost:58253/api/Requests"));
             var lst = JsonConvert.DeserializeObject<ObservableCollection<Request>>(json);
             Requests = lst;
         }

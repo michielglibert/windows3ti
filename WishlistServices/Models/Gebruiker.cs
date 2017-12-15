@@ -26,7 +26,7 @@ namespace WishlistServices.Models
             Requests = new List<Request>();
         }
 
-        public Gebruiker(string username, string password)
+        public Gebruiker(string username, string password):this()
         {
             Username = username;
             Password = password;

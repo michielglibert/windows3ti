@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using WishlistApp.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -21,9 +20,9 @@ namespace WishlistApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class WishlistDetail : Page
+    public sealed partial class Wens : Page
     {
-        public WishlistDetail()
+        public Wens()
         {
             this.InitializeComponent();
         }
@@ -31,13 +30,8 @@ namespace WishlistApp.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Vm.Wishlist = (Wishlist) e.Parameter;
+            Vm.Wens = (Models.Wens) e.Parameter;
             Vm.InitData();
-        }
-
-        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            Vm.GoToWens.Execute(e.ClickedItem);
         }
     }
 }

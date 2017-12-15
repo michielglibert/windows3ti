@@ -131,12 +131,16 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            var wishlist = await _context.Wishlists.Include(t => t.Ontvanger).SingleOrDefaultAsync(m => m.Id == id);
+            var wishlist = await _context.Wishlists
+                .Include(t => t.Ontvanger)
+                .Include(t => t.Wensen).ThenInclude(t => t.GekochtCadeau)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
             if (wishlist == null)
             {
                 return NotFound();
             }
-
+            
             return Ok(wishlist);
         }
 
