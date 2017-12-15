@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -38,6 +39,22 @@ namespace WishlistApp.Views
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
             Vm.GoToWens.Execute(e.ClickedItem);
+        }
+
+        private void EditTapped(object sender, RoutedEventArgs e)
+        {
+            //Wens wens = new Wens();
+            Vm.EditCommand.Execute(ListViewWensen.SelectedItem);
+        }
+
+        private void RemoveTapped(object sender, TappedRoutedEventArgs e)
+        {
+            Vm.RemoveCommand.Execute(ListViewWensen.SelectedItem);
+        }
+
+        private void ViewTapped(object sender, TappedRoutedEventArgs e)
+        {
+            Vm.GoToWens.Execute(ListViewWensen.SelectedItem);
         }
     }
 }

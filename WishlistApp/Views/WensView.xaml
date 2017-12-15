@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="WishlistApp.Views.NewWens"
+    x:Class="WishlistApp.Views.WensView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WishlistApp.Views"
@@ -8,7 +8,7 @@
     xmlns:viewmodels="using:WishlistApp.Viewmodels"
     mc:Ignorable="d">
     <Page.DataContext>
-        <viewmodels:NewWensViewModel x:Name="Vm"/>
+        <viewmodels:WensViewModel x:Name="Vm"/>
     </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -22,10 +22,10 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
         <TextBlock Text="Titel"></TextBlock>
-        <TextBox PlaceholderText="Titel" Grid.Column="1" Width="250"></TextBox>
+        <TextBlock Text="{Binding Wens.Titel}"  Grid.Column="1" Width="250"></TextBlock>
         <TextBlock Text="Omschrijving" Grid.Row="1"></TextBlock>
-        <TextBox  PlaceholderText="Omschrijving" Grid.Row="1" Grid.Column="1" Height="100"></TextBox>
+        <TextBlock Text="{Binding Wens.Omschrijving}" Grid.Row="1" Grid.Column="1"></TextBlock>
         <TextBlock Text="Categorie" Grid.Row="2"></TextBlock>
-        <TextBox PlaceholderText="Categorie" Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBlock Text="{Binding Wens.Categorie}" Grid.Row="2" Grid.Column="1"></TextBlock>
     </Grid>
 </Page>
