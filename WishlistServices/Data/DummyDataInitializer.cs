@@ -97,6 +97,11 @@ namespace WishlistServices.Data
                 #region Wensen
 
                 var wensen = new List<Wens>();
+                wishlist1.Wensen.Add(new Wens("Hololens", "Ik wil een hololens zodat ik men windows app kan testen"));
+                wishlist1.Wensen.Add(new Wens("Appelsien", "Ik wil graag een verse appelsien"));
+                wishlist1.Wensen.Add(new Wens("Holy Meme Bible", "Moe maar ke googlen kwil diene haha"));
+                wishlist1.Wensen.Add(new Wens("Pussy", "Kwaliteit graag, kenners weten wel wat ik bedoel ;)"));
+
                 wishlist2.Wensen.Add(new Wens("Star wars","Ik wil graag de dvd's van star wars op blu ray"));
                 wishlist2.Wensen.Add(new Wens("Appelsien", "Ik wil graag een verse appelsien"));
                 wishlist2.Wensen.Add(new Wens("Holy Meme Bible", "Moe maar ke googlen kwil diene haha"));

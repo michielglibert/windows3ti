@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,19 +18,44 @@ using WishlistApp.Annotations;
 using WishlistApp.Models;
 using WishlistApp.Utils;
 using WishlistApp.Views;
-using Wens = WishlistApp.Views.Wens;
+using Wens = WishlistApp.Models.Wens;
+
 
 namespace WishlistApp.Viewmodels
 {
-    class WishlistDetailViewModel:INotifyPropertyChanged
+    class WishlistDetailViewModel : INotifyPropertyChanged
     {
         public HttpClient Client { get; set; }
-
-        public RelayCommand GoToWishlist => new RelayCommand((wishlist) => MainPage.Frame.Navigate(typeof(NewWens), this));
-        public RelayCommand GoToWens => new RelayCommand((wens) => MainPage.Frame.Navigate(typeof(Wens), wens));
+        
+        public RelayCommand GoToWens => new RelayCommand((wens) => MainPage.Frame.Navigate(typeof(WensView), wens));
         public RelayCommand OpenRequestDialogCommand => new RelayCommand((request) => { ShowRequestDialog((Request)request); });
         public RelayCommand RequestAanvaarden => new RelayCommand((request) => { RequestBeantwoorden((Request)request, true); });
         public RelayCommand RequestAfwijzen => new RelayCommand((request) => { RequestBeantwoorden((Request)request, false); });
+        public RelayCommand AddNewWens { get; set; }
+
+
+        private string _nieuweWensTitel;
+        public string NieuweWensTitel
+        {
+            get { return _nieuweWensTitel;}
+            set { _nieuweWensTitel = value; OnPropertyChanged(nameof(NieuweWensTitel)); }
+        }
+
+        private string _nieuweWensOmschrijving;
+        public string NieuweWensOmschrijving
+        {
+            get { return _nieuweWensOmschrijving; }
+            set { _nieuweWensOmschrijving = value; OnPropertyChanged(nameof(NieuweWensOmschrijving)); }
+        }
+
+        private Categorie _geselecteerdeCategorie;
+        public Categorie GeselecteerdeCategorie
+        {
+            get { return _geselecteerdeCategorie; }
+            set { _geselecteerdeCategorie = value; OnPropertyChanged(nameof(GeselecteerdeCategorie)); }
+        }
+
+        public List<Categorie> CategorieLijst { get; set; }
 
         private Wishlist _wishlist;
         public Wishlist Wishlist
@@ -37,17 +64,25 @@ namespace WishlistApp.Viewmodels
             set { _wishlist = value; OnPropertyChanged(nameof(Wishlist)); }
         }
 
+        private ObservableCollection<Wens> _wensen;
+        public ObservableCollection<Wens> Wensen
+        {
+            get { return _wensen; }
+            set { _wensen = value; OnPropertyChanged(nameof(Wensen)); }
+        }
+
+
         private ObservableCollection<Gebruiker> _kopers;
         public ObservableCollection<Gebruiker> Kopers
         {
-            get => _kopers;
+            get { return _kopers; }
             set { _kopers = value; OnPropertyChanged(nameof(Kopers)); }
         }
         private ObservableCollection<Uitnodiging> _uitnodigingen;
 
         public ObservableCollection<Uitnodiging> Uitnodigingen
         {
-            get => _uitnodigingen;
+            get { return _uitnodigingen; }
             set { _uitnodigingen = value; OnPropertyChanged(nameof(Uitnodigingen)); }
         }
 
@@ -55,20 +90,38 @@ namespace WishlistApp.Viewmodels
 
         public ObservableCollection<Request> Requests
         {
-            get => _requests;
+            get { return _requests; }
             set { _requests = value; OnPropertyChanged(nameof(Requests)); }
         }
 
         public WishlistDetailViewModel()
         {
+            CategorieLijst = Enum.GetValues(typeof(Categorie)).Cast<Categorie>().ToList();
+            AddNewWens = new RelayCommand(WensToevoegen);
             Client = new HttpClient();
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
         }
 
+        private async void WensToevoegen(object o)
+        {
+            Debug.WriteLine("Wens toevoegen gedrukt");
+            Debug.WriteLine(o);
+            Wens wens = new Wens(NieuweWensTitel, NieuweWensOmschrijving, GeselecteerdeCategorie);
+            Debug.WriteLine(wens);
+            var json = JsonConvert.SerializeObject(wens);
+            var res = await Client.PostAsync(new Uri("http://localhost:58253/api/Wishlists/" + Wishlist.Id + "/Wensen"),
+                new StringContent(json, Encoding.UTF8, "application/json"));
+
+            var jsonResp = await res.Content.ReadAsStringAsync();
+            var newWens = JsonConvert.DeserializeObject<Wens>(jsonResp);
+            Wensen.Add(newWens);
+        }
+
         public void InitData()
         {
             GetWishlist();
+            GetWensen();
             GetKopers();
             GetRequests();
             GetUitnodigingen();
@@ -79,6 +132,11 @@ namespace WishlistApp.Viewmodels
             var json = await Client.GetStringAsync(new Uri("http://localhost:58253/api/Wishlists/" + Wishlist.Id));
             var wishlist = JsonConvert.DeserializeObject<Wishlist>(json);
             Wishlist = wishlist;
+        }
+
+        public void GetWensen()
+        {
+            Wensen = new ObservableCollection<Wens>(Wishlist.Wensen);
         }
 
         public async void GetKopers()
@@ -101,7 +159,7 @@ namespace WishlistApp.Viewmodels
             var lst = JsonConvert.DeserializeObject<ObservableCollection<Request>>(json);
             Requests = lst;
         }
-        
+
         public async void RequestBeantwoorden(Request r, bool antwoord)
         {
             var json = JsonConvert.SerializeObject(new { Antwoord = antwoord });
@@ -120,6 +178,7 @@ namespace WishlistApp.Viewmodels
                 Wishlist.Requests.Remove(r);
             }
         }
+
 
         public async void ShowRequestDialog(Request request)
         {

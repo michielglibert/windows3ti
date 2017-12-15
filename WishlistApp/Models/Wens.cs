@@ -16,5 +16,12 @@ namespace WishlistApp.Models
         public Categorie Categorie { get; set; }
         public GekochtCadeau GekochtCadeau { get; set; }
 
+        public Wens(string titel, string omschrijving, Categorie categorie)
+        {
+            Titel = titel;
+            Omschrijving = omschrijving;
+            Categorie = categorie;
+        }
+
     }
 }

@@ -6,12 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:WishlistApp.Viewmodels"
+    xmlns:flyout="using:WishlistApp.Views"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewmodels:WishlistDetailViewModel x:Name="Vm"/>
-        
     </Page.DataContext>
-
+    
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock HorizontalAlignment="Center" FontSize="50pt" Text="{Binding Wishlist.Naam}"></TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
@@ -19,8 +19,7 @@
             <TextBlock FontSize="20pt" Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
         </StackPanel>
         <Pivot>
-            <PivotItem Header="Wensen">
-                
+            <PivotItem Header="Wensen" Height="164" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
@@ -29,7 +28,7 @@
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-                    <ListView ItemsSource="{Binding Wishlist.Wensen}"
+                    <ListView ItemsSource="{Binding Wensen}"
                               IsItemClickEnabled="True"
                               ItemClick="ListViewBase_OnItemClick">
                         <ListView.ItemTemplate>
@@ -58,15 +57,44 @@
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             </Style>
                         </ListView.ItemContainerStyle>
-                        <ListView.Items>
-                            <x:String>1</x:String>
-                        </ListView.Items>
                     </ListView>
-                    <Button Command="{Binding GoToNewWens}" Grid.Row="1" HorizontalAlignment="Center">Nieuwe wens</Button>
+                    <Button Grid.Row="1" HorizontalAlignment="Center">Nieuwe wens
+                        <Button.Flyout>
+                            <Flyout>
+                                <Flyout.Content>
+                                    <Grid Padding="10,10,10,10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock FontSize="20pt" Text="Nieuwe wens" Grid.Row="0" Grid.ColumnSpan="2" TextAlignment="Center"></TextBlock>
+
+                                        <TextBlock Margin="8" Text="Titel" Grid.Row="1"></TextBlock>
+                                        <TextBox Text="{Binding NieuweWensTitel, Mode=TwoWay}" Margin="8" PlaceholderText="Titel" Grid.Row="1" Grid.Column="1" Width="250"></TextBox>
+
+                                        <TextBlock Margin="8" Text="Omschrijving" Grid.Row="2"></TextBlock>
+                                        <TextBox Text="{Binding NieuweWensOmschrijving, Mode=TwoWay}" Margin="8" PlaceholderText="Omschrijving" Grid.Row="2" Grid.Column="1" Height="100"></TextBox>
+
+                                        <TextBlock Margin="8" Text="Categorie" Grid.Row="3"></TextBlock>
+                                        <ComboBox ItemsSource="{Binding CategorieLijst}" SelectedItem="{Binding GeselecteerdeCategorie, Mode=TwoWay}" Margin="8" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="Kies categorie"></ComboBox>
+
+                                        <Button Margin="8" Command="{Binding Path=AddNewWens}" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Right">Wens toevoegen</Button>
+                                    </Grid>
+                                </Flyout.Content>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Leden">
-                <ListView ItemsSource="{Binding Kopers}">
+                <ListView x:Name="ListViewKopers" ItemsSource="{Binding Kopers}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -81,6 +109,7 @@
                                 <TextBlock Text="{Binding Username}"></TextBlock>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                     <TextBlock Text="Aantal gekochte cadeau's:"></TextBlock>
+                                    <TextBlock Text="{Binding }"></TextBlock>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>

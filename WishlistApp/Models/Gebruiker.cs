@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using WishlisApp.Models;
 
 namespace WishlistApp.Models
@@ -13,5 +14,12 @@ namespace WishlistApp.Models
         public List<GebruikerWishlist> Wishlists { get; set; }
         public List<Uitnodiging> Uitnodigingen { get; set; }
         public List<Request> Requests { get; set; }
+
+        public int GetAantalGekochtVanWishlist(Wishlist wishlist)
+        {
+            return wishlist.Wensen.Count(w => w.GekochtCadeau.Koper == this);
+        }
     }
+
+
 }

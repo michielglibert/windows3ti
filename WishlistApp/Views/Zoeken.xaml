@@ -18,6 +18,7 @@
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
+        <TextBlock FontSize="42" TextAlignment="Center" Text="Zoek een Gebruiker of Wishlist" Margin="0,0,0,50"></TextBlock>
         <Grid>
             <TextBox x:Name="ZoekString"
                     Grid.Row="0"
