@@ -101,6 +101,7 @@
     <Compile Include="Viewmodels\NewWensViewModel.cs" />
     <Compile Include="Viewmodels\UitnodigingViewModel.cs" />
     <Compile Include="Viewmodels\WensViewModel.cs" />
+    <Compile Include="Viewmodels\WensWijzigenViewModel.cs" />
     <Compile Include="Viewmodels\WishlistDetailViewModel.cs" />
     <Compile Include="Viewmodels\WishlistViewModel.cs" />
     <Compile Include="Viewmodels\ZoekViewModel.cs" />
@@ -130,6 +131,9 @@
     </Compile>
     <Compile Include="Views\WensView.xaml.cs">
       <DependentUpon>WensView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WensWijzigen.xaml.cs">
+      <DependentUpon>WensWijzigen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WishlistDetail.xaml.cs">
       <DependentUpon>WishlistDetail.xaml</DependentUpon>
@@ -189,6 +193,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WensView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WensWijzigen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

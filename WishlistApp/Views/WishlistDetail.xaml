@@ -7,11 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:WishlistApp.Viewmodels"
     xmlns:flyout="using:WishlistApp.Views"
+    xmlns:utils="using:WishlistApp.Utils"
+    xmlns:behaviors="using:Cimbalino.Toolkit.Behaviors"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewmodels:WishlistDetailViewModel x:Name="Vm"/>
     </Page.DataContext>
-    
+
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock HorizontalAlignment="Center" FontSize="50pt" Text="{Binding Wishlist.Naam}"></TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
@@ -19,7 +22,7 @@
             <TextBlock FontSize="20pt" Text="{Binding Wishlist.Ontvanger.Username}"></TextBlock>
         </StackPanel>
         <Pivot>
-            <PivotItem Header="Wensen" Height="164" VerticalAlignment="Top">
+            <PivotItem Header="Wensen" Height="400" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
@@ -28,14 +31,15 @@
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
-                    <ListView ItemsSource="{Binding Wensen}"
-                              IsItemClickEnabled="True"
+                    <ListView x:Name="ListViewWensen" ItemsSource="{Binding Wensen}"
+                              IsItemClickEnabled="False"
                               ItemClick="ListViewBase_OnItemClick">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="2*" />
                                         <ColumnDefinition Width="1*" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -47,6 +51,59 @@
                                         <TextBlock Text="{Binding Titel}"></TextBlock>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button Margin="8" CommandParameter="{Binding ElementName=ListViewWensen, Path=SelectedItem}"
+                                                Command="{Binding Path=EditCommand}">
+                                            <SymbolIcon Symbol="Edit"></SymbolIcon>
+                                            <Button.Flyout>
+                                                <Flyout>
+                                                    <Flyout.Content>
+                                                        <Grid Padding="10,10,10,10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="1*" />
+                                                                <ColumnDefinition Width="1*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="1*" />
+                                                                <RowDefinition Height="1*" />
+                                                                <RowDefinition Height="1*" />
+                                                                <RowDefinition Height="1*" />
+                                                                <RowDefinition Height="1*" />
+                                                            </Grid.RowDefinitions>
+                                                            <TextBlock FontSize="20pt" Text="{Binding Titel}" Grid.Row="0" Grid.ColumnSpan="2" TextAlignment="Center"></TextBlock>
+
+                                                            <TextBlock Margin="8" Text="Titel" Grid.Row="1"></TextBlock>
+                                                            <TextBox x:Name="titel" Text="{Binding Titel, Mode=TwoWay}" Margin="8" PlaceholderText="Titel" Grid.Row="1" Grid.Column="1" Width="250"></TextBox>
+
+                                                            <TextBlock Margin="8" Text="Omschrijving" Grid.Row="2"></TextBlock>
+                                                            <TextBox x:Name="omschrijving" Text="{Binding Omschrijving, Mode=TwoWay}" Margin="8" PlaceholderText="Omschrijving" Grid.Row="2" Grid.Column="1" Height="100"></TextBox>
+
+                                                            <TextBlock Margin="8" Text="Categorie" Grid.Row="3"></TextBlock>
+                                                            <ComboBox x:Name="categorie" ItemsSource="{Binding CategorieLijst}" SelectedItem="{Binding Categorie, Mode=TwoWay}" Margin="8" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="Kies categorie"></ComboBox>
+
+                                                            <Button Margin="8" CommandParameter="{Binding ElementName=ListViewWensen, Path=SelectedItem}" Click="EditTapped" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right">
+                                                                <!--<interactivity:Interaction.Behaviors>
+                                                                    <behaviors:MultiBindingBehavior Converter="{StaticResource MultiBindingConverter}"
+                                                                                                    PropertyName="Text"
+                                                                                                    ConverterParameter="FormatTitelOmschrCategorie">
+                                                                        <behaviors:MultiBindingItem Value="{Binding ElementName=kaas Text }"/>
+                                                                        <behaviors:MultiBindingItem Value="{Binding ElementName=omschrijving Text }"/>
+                                                                        <behaviors:MultiBindingItem Value="{Binding ElementName=categorie Text}"/>
+                                                                    </behaviors:MultiBindingBehavior>
+                                                                </interactivity:Interaction.Behaviors>-->
+                                                            </Button>
+                                                        </Grid>
+                                                    </Flyout.Content>
+                                                </Flyout>
+                                            </Button.Flyout>
+                                        </Button>
+                                        <Button Margin="8">
+                                            <SymbolIcon Symbol="Clear" Tapped="RemoveTapped"></SymbolIcon>
+                                        </Button>
+                                        <Button Margin="8">
+                                            <SymbolIcon Symbol="View" Tapped="ViewTapped"></SymbolIcon>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <TextBlock Text="Nog niet gekocht"></TextBlock>
                                     </StackPanel>
                                 </Grid>
@@ -210,3 +267,4 @@
         </Pivot>
     </StackPanel>
 </Page>
+

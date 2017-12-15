@@ -31,7 +31,9 @@ namespace WishlistApp.Viewmodels
         public RelayCommand OpenRequestDialogCommand => new RelayCommand((request) => { ShowRequestDialog((Request)request); });
         public RelayCommand RequestAanvaarden => new RelayCommand((request) => { RequestBeantwoorden((Request)request, true); });
         public RelayCommand RequestAfwijzen => new RelayCommand((request) => { RequestBeantwoorden((Request)request, false); });
-        public RelayCommand AddNewWens { get; set; }
+        public RelayCommand AddNewWens => new RelayCommand(WensToevoegen);
+        public RelayCommand EditCommand => new RelayCommand((wens) => MainPage.Frame.Navigate(typeof(WensWijzigen), wens));
+        public RelayCommand RemoveCommand => new RelayCommand((wens) => { WensVerwijderen((Wens)wens); });
 
 
         private string _nieuweWensTitel;
@@ -97,7 +99,6 @@ namespace WishlistApp.Viewmodels
         public WishlistDetailViewModel()
         {
             CategorieLijst = Enum.GetValues(typeof(Categorie)).Cast<Categorie>().ToList();
-            AddNewWens = new RelayCommand(WensToevoegen);
             Client = new HttpClient();
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
@@ -118,6 +119,11 @@ namespace WishlistApp.Viewmodels
             Wensen.Add(newWens);
         }
 
+        private async void WensVerwijderen(Wens wens)
+        {
+            var res = await Client.DeleteAsync(new Uri("http://localhost:58253/api/Wensen/" + wens.Id));
+            Wensen.Remove(wens);
+        }
         public void InitData()
         {
             GetWishlist();
