@@ -53,20 +53,25 @@ namespace WishlistApp.Viewmodels
 
         public ProfielViewModel()
         {
-            //TODO: API CALLS
-            EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
-            OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
-            WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
-            Gebruiker = new Gebruiker { Username = "Koen" };
-            //GetGebruiker();
-            //GetEigenWishlistsVanProfiel();
-            //GetAndereWishlistsVanProfiel();
-            //GetWishlistsIngelogdeGebruiker();
 
+            //TODO: API CALLS
+            LoadPage();
+            //EigenWishlists = new ObservableCollection<Wishlist>(GenerateEigenWishlists());
+            //OntvangenWishlists = new ObservableCollection<Wishlist>(GenerateAndereWishlists());
+            //WishlistsIngelogdeGebruiker = new ObservableCollection<Wishlist>(GenerateWishlistsIngelogdeGebruiker());
+            //Gebruiker = new Gebruiker { Username = "Koen" };
 
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
             OpenContentDialogCommand = new RelayCommand((param) => OpenContentDialog(param as ContentDialog));
+        }
+
+        private async void LoadPage()
+        {
+            GetGebruiker();
+            GetEigenWishlistsVanProfiel();
+            GetAndereWishlistsVanProfiel();
+            GetWishlistsIngelogdeGebruiker();
         }
 
         private void NodigUit(Wishlist wishlist)
@@ -155,7 +160,7 @@ namespace WishlistApp.Viewmodels
             WishlistsIngelogdeGebruiker = lst;
         }
 
-        public async void GetGebruiker()
+        public void GetGebruiker()
         {
             //TODO vaste id aanpassen
             int id = 1;
@@ -164,7 +169,7 @@ namespace WishlistApp.Viewmodels
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
-            var json = await client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/" + id ));
+            var json = client.GetStringAsync(new Uri("http://localhost:58253/api/Gebruikers/" + id )).Result;
             var gebruiker = JsonConvert.DeserializeObject<Gebruiker>(json);
             Gebruiker = gebruiker;
         }
