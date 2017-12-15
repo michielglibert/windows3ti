@@ -9,12 +9,11 @@
     xmlns:utils="using:WishlistApp.Utils"
     mc:Ignorable="d"
     x:Name="Page">
-    
+
     <Page.DataContext>
         <viewmodels:ProfielViewModel x:Name="ProfielViewModel"/>
     </Page.DataContext>
-
-    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="VisualState">
@@ -27,77 +26,85 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <TextBlock Padding="40,30,20,20" Style="{StaticResource HeaderTextBlockStyle}">Profiel</TextBlock>
-        <TextBlock Padding="50,20,20,10" FontSize="36" FontWeight="Bold" Text="{Binding Naam}"/>
-        <Button Margin="50,10" Content="Uitnodigen..." 
+        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <TextBlock Padding="40,30,20,20" Style="{StaticResource HeaderTextBlockStyle}">Profiel</TextBlock>
+            <TextBlock Padding="50,20,20,10" FontSize="36" FontWeight="Bold" Text="{Binding Naam}"/>
+            <Button Margin="50,10" Content="Uitnodigen..." 
                 Command="{Binding OpenContentDialogCommand}" 
                 CommandParameter="{Binding ElementName=ContentDialog}"/>
-        <ContentDialog x:Name="ContentDialog" >
-            <ContentDialog.TitleTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Kies wishlist: "/>
-                    </StackPanel>
-                </DataTemplate>
-            </ContentDialog.TitleTemplate>
-            <StackPanel>
-                <ComboBox ItemsSource="{Binding WishlistsIngelogdeGebruiker}" 
-                          SelectedItem="{Binding SelectedWishlist, Mode=TwoWay}" x:Name="ComboBox" Width="200">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Naam}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Content="Nodig Uit" 
-                        Command="{Binding DataContext.NodigUitCommand, ElementName=ComboBox}" 
-                        CommandParameter="{Binding ElementName=ComboBox}"></Button>
-            </StackPanel>
-        </ContentDialog>
-        <StackPanel x:Name="stackPanel" Orientation="Vertical" Padding="50,30,50,50" HorizontalAlignment="Left">
-            <StackPanel Width="400">
-                <ListView ItemsSource="{Binding EigenWishlists}">
-                    <ListView.Header >
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,20,0,15">
+            <StackPanel x:Name="stackPanel" Orientation="Vertical" Padding="50,30,50,50" HorizontalAlignment="Left">
+                <StackPanel Width="400">
+                    <ListView ItemsSource="{Binding EigenWishlists}">
+                        <ListView.Header >
+                            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,20,0,15">
                             Eigen Wishlists
-                        </TextBlock>
-                    </ListView.Header>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
-                                <StackPanel Height="70">
-                                <TextBlock FontSize="20" Text="{Binding Naam}"/>
-                                <Button Content="{Binding JoinOrLeaveText}" 
+                            </TextBlock>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
+                                    <StackPanel Height="70">
+                                        <TextBlock FontSize="20" Text="{Binding Naam}"/>
+                                        <Button Content="{Binding JoinOrLeaveText}" 
                                         Command="{Binding Path=DataContext.JoinOrLeaveCommand, ElementName=stackPanel}"
                                         CommandParameter="{Binding}"/>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
-            <StackPanel Width="400">
-                <ListView ItemsSource="{Binding OntvangenWishlists}">
-                    <ListView.Header >
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,20,0,15">
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Width="400">
+                    <ListView ItemsSource="{Binding OntvangenWishlists}">
+                        <ListView.Header >
+                            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Margin="0,20,0,15">
                             Wishlists waarvan lid
-                        </TextBlock>
-                    </ListView.Header>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
-                                <StackPanel Height="70" >
-                                    <TextBlock FontSize="20" Text="{Binding Naam}"/>
-                                    <TextBlock FontSize="20" Text="{Binding Ontvanger.Naam}"/>
-                                </StackPanel>
-                             </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                            </TextBlock>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="DarkGray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch" Width="375">
+                                    <StackPanel Height="70" >
+                                        <TextBlock FontSize="20" Text="{Binding Naam}"/>
+                                        <TextBlock FontSize="20" Text="{Binding Ontvanger.Username}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
             </StackPanel>
+            <ContentDialog x:Name="ContentDialog"
+                           PrimaryButtonText="Nodig uit"
+                           PrimaryButtonCommand="{Binding NodigUitCommand}"
+                           PrimaryButtonCommandParameter="{Binding ElementName=ComboBox}"
+                           SecondaryButtonText="Annuleer"
+                           SecondaryButtonCommand="{Binding CloseContentDialogBox}"
+                           SecondaryButtonCommandParameter="{Binding ElementName=ContentDialog}">
+                <ContentDialog.TitleTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Kies wishlist: "/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ContentDialog.TitleTemplate>
+                <StackPanel>
+                    <ComboBox ItemsSource="{Binding WishlistsIngelogdeGebruiker}" 
+                              SelectedItem="{Binding SelectedWishlist, Mode=TwoWay}" x:Name="ComboBox" Width="200">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Naam}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <!--<Button Content="Nodig Uit" Margin="0,10"
+                            Command="{Binding DataContext.NodigUitCommand, ElementName=ComboBox}" 
+                            CommandParameter="{Binding ElementName=ComboBox}"></Button>-->
+                </StackPanel>
+            </ContentDialog>
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 </Page>
 

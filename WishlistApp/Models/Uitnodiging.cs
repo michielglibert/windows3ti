@@ -14,5 +14,10 @@ namespace WishlisApp.Models
         public Gebruiker Gebruiker { get; set; }
         public Wishlist Wishlist { get; set; }
 
+        public Uitnodiging(Wishlist wishlist, Gebruiker gebruiker)
+        {
+            this.Wishlist = wishlist;
+            this.Gebruiker = gebruiker;
+        }
     }
 }

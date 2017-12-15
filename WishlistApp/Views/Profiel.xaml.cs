@@ -23,7 +23,7 @@ namespace WishlistApp.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ProfielViewModel.Gebruiker = (Gebruiker) e.Parameter;
-            ProfielViewModel.initData();
+            ProfielViewModel.InitData();
             base.OnNavigatedTo(e);
         }
     }
