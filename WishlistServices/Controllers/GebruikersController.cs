@@ -81,7 +81,29 @@ namespace WishlistServices.Controllers
 
             return Ok(gebruiker);
         }
-        
+
+        /// <summary>
+        /// Gebruiker opvragen by username
+        /// </summary>
+        // GET: api/Gebruikers/ByUsername/Jef
+        [HttpGet("ByUsername/{username}")]
+        public async Task<IActionResult> GetGebruiker([FromRoute] string username)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var gebruiker = await _context.Gebruikers.SingleOrDefaultAsync(g => g.Username.Equals(username));
+
+            if (gebruiker == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(gebruiker);
+        }
+
         /// <summary>
         /// Gebruiker aanpassen
         /// </summary>

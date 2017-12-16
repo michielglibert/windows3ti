@@ -37,7 +37,7 @@
             <TextBlock Margin="8" Text="Categorie" Grid.Row="3"></TextBlock>
             <ComboBox ItemsSource="{Binding CategorieLijst}" SelectedItem="{Binding Categorie, Mode=TwoWay}" Margin="8" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="Kies categorie"></ComboBox>
 
-            <Button Margin="8" Command="EditCommand" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right">Wens wijzigen
+            <Button Margin="8" Command="{Binding EditCommand}" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right">Wens wijzigen
 
             </Button>
         </Grid>

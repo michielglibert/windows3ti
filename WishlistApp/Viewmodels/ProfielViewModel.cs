@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using WishlisApp.Models;
@@ -20,9 +21,38 @@ namespace WishlistApp.Viewmodels
     {
         #region Properties
 
-        public ObservableCollection<Wishlist> EigenWishlists { get; set; }
-        public ObservableCollection<Wishlist> OntvangenWishlists { get; set; }
-        public ObservableCollection<Wishlist> WishlistsIngelogdeGebruiker { get; set; }
+        private ObservableCollection<Wishlist> _eigenWishlists;
+        public ObservableCollection<Wishlist> EigenWishlists
+        {
+            get { return _eigenWishlists; }
+            set
+            {
+                _eigenWishlists = value;
+                RaisePropertyChanged("EigenWishlists");
+            }
+        }
+
+        private ObservableCollection<Wishlist> _ontvangenWishlists;
+        public ObservableCollection<Wishlist> OntvangenWishlists
+        {
+            get { return _ontvangenWishlists; }
+            set
+            {
+                _ontvangenWishlists = value;
+                RaisePropertyChanged("OntvangenWishlists");
+            }
+        }
+
+        private ObservableCollection<Wishlist> _wishlistsIngelogdeGebruiker;
+        public ObservableCollection<Wishlist> WishlistsIngelogdeGebruiker
+        {
+            get { return _wishlistsIngelogdeGebruiker; }
+            set
+            {
+                _wishlistsIngelogdeGebruiker = value;
+                RaisePropertyChanged("WishlistsIngelogdeGebruiker");
+            }
+        }
 
         private Gebruiker _gebruiker;
         public Gebruiker Gebruiker
@@ -54,7 +84,6 @@ namespace WishlistApp.Viewmodels
         public RelayCommand JoinOrLeaveCommand { get; set; }
         public RelayCommand NodigUitCommand { get; set; }
         public RelayCommand OpenContentDialogCommand { get; set; }
-        public RelayCommand CloseContentDialogCommand { get; set; }
 
         #endregion
 
@@ -68,7 +97,6 @@ namespace WishlistApp.Viewmodels
             JoinOrLeaveCommand = new RelayCommand((param) => JoinOrLeaveWishlist(param as Wishlist));
             NodigUitCommand = new RelayCommand(o => NodigUit(SelectedWishlist));
             OpenContentDialogCommand = new RelayCommand((param) => OpenContentDialog(param as ContentDialog));
-            CloseContentDialogCommand = new RelayCommand(param => CloseContentDialog(param as ContentDialog));
         }
 
         public void InitData()
@@ -80,63 +108,57 @@ namespace WishlistApp.Viewmodels
 
         private void NodigUit(Wishlist wishlist)
         {
-            //TODO: NodigUit() implementeren, check op nul (combobox = leeg) en controleren
             Debug.WriteLine("NodigUit werkt");
             if (wishlist != null)
             {
                 Debug.WriteLine(SelectedWishlist.Naam);
                 Uitnodiging uitnodiging = new Uitnodiging(wishlist, Gebruiker);
                 PostUitnodiging(uitnodiging);
+                BepaalJoinOrLeaveButtonString(wishlist);
             } 
         }
 
         private void OpenContentDialog(ContentDialog dialog)
         {
-            //TODO Andere dialoog tonen indien nog geen wishlist (kan dus niet uitnodigen)
             Debug.WriteLine("OpenContentDialogCommand werkt");
             dialog.ShowAsync();
         }
 
-        private void CloseContentDialog(ContentDialog dialog)
-        {
-            dialog.Hide();
-        }
-
         private void JoinOrLeaveWishlist(Wishlist wishlist)
         {
-            //TODO: JoinOrLeave() implementeren
             Debug.WriteLine("JoinOrLeave werkt");
             Debug.WriteLine(wishlist.Naam);
-            switch (wishlist.JoinOrLeaveText)
-            {
-                case "Verlaat wishlist":
-                    // Show popup
-                    ContentDialog dialog = new ContentDialog()
-                    {
-                        Title = "Verlaat wishlist",
-                        Content = "Bent u zeker dat u de wishlist " + wishlist.Naam + " wilt verlaten?",
-                        PrimaryButtonText = "Ja",
-                        PrimaryButtonCommand = new RelayCommand(param => VerlaatWishlist(wishlist)),
-                        SecondaryButtonText = "Annuleer"
-                    };
 
-                    dialog.ShowAsync();
-                    break;
-                case "Annuleer aanvraag":
-                    VerwijderAanvraag(wishlist);
-                    break;
-                case "Accepteer uitnodiging":
-                    AccepteerUitnodiging(wishlist);
-                    break;
-                case "Vraag aan":
-                    VoegAanvraagToe(wishlist);
-                    break;
+            if (IsHuidigeGebruikerDeelVanWishlist(wishlist))
+            {
+                // Show popup
+                ContentDialog dialog = new ContentDialog()
+                {
+                    Title = "Verlaat wishlist",
+                    Content = "Bent u zeker dat u de wishlist " + wishlist.Naam + " wilt verlaten?",
+                    PrimaryButtonText = "Ja",
+                    PrimaryButtonCommand = new RelayCommand(param => VerlaatWishlist(wishlist)),
+                    SecondaryButtonText = "Annuleer"
+                };
+
+                dialog.ShowAsync();
+            }
+            else if (HeeftHuidigeGebruikerReedsAanvraagIngediend(wishlist))
+            {
+                VerwijderAanvraag(wishlist);
+            }
+            else if (IsHuidigeGebruikerReedsUitgenodigd(wishlist))
+            {
+                AccepteerUitnodiging(wishlist);
+            }
+            else
+            {
+                VoegAanvraagToe(wishlist);
             }
         }
 
         private bool IsHuidigeGebruikerDeelVanWishlist(Wishlist wishlist)
         {
-            //TODO: is huidige gebruiker deel van wishlist? (controleren)
             List<string> usernames = new List<string>();
             wishlist.Kopers.ForEach(koper => usernames.Add(koper.Gebruiker.Username));
 
@@ -146,9 +168,8 @@ namespace WishlistApp.Viewmodels
             return usernames.Contains(ingelogdeGebruikerUsername);
         }
 
-        private bool IsHuigeGebruikerReedsUitgenodigd(Wishlist wishlist)
+        private bool IsHuidigeGebruikerReedsUitgenodigd(Wishlist wishlist)
         {
-            //TODO: is huidige gebruiker reeds uitgenodigd? (controleren)
             List<string> usernames = new List<string>();
             wishlist.VerzondenUitnodigingen.ForEach(uitnodiging => usernames.Add(uitnodiging.Gebruiker.Username));
 
@@ -160,7 +181,6 @@ namespace WishlistApp.Viewmodels
 
         private bool HeeftHuidigeGebruikerReedsAanvraagIngediend(Wishlist wishlist)
         {
-            //TODO: heeft huidige gebruiker reeds een aanvraag ingediend?
             List<string> usernames = new List<string>();
             wishlist.Requests.ForEach(request => usernames.Add(request.Gebruiker.Username));
 
@@ -170,23 +190,23 @@ namespace WishlistApp.Viewmodels
             return usernames.Contains(ingelogdeGebruikerUsername);
         }
 
-        private string BepaalJoinOrLeaveButtonString(Wishlist wishlist)
+        private void BepaalJoinOrLeaveButtonString(Wishlist wishlist)
         {
             if (IsHuidigeGebruikerDeelVanWishlist(wishlist))
             {
-                return "Verlaat wishlist";
+                wishlist.JoinOrLeaveText = "Verlaat wishlist";
             }
             else if (HeeftHuidigeGebruikerReedsAanvraagIngediend(wishlist))
             {
-                return "Annuleer aanvraag";
+                wishlist.JoinOrLeaveText = "Annuleer aanvraag";
             }
-            else if (IsHuigeGebruikerReedsUitgenodigd(wishlist))
+            else if (IsHuidigeGebruikerReedsUitgenodigd(wishlist))
             {
-                return "Accepteer uitnodiging";
+                wishlist.JoinOrLeaveText = "Accepteer uitnodiging";
             }
             else
             {
-                return "Vraag aan";
+                wishlist.JoinOrLeaveText = "Vraag aan";           
             }
         }
 
@@ -203,10 +223,9 @@ namespace WishlistApp.Viewmodels
 
             EigenWishlists = lst;
 
-            //TODO: controleren of dit werkt
             foreach (var eigenWishlist in EigenWishlists)
             {
-                eigenWishlist.JoinOrLeaveText = BepaalJoinOrLeaveButtonString(eigenWishlist);
+                BepaalJoinOrLeaveButtonString(eigenWishlist);
             }
         }
 
@@ -255,7 +274,13 @@ namespace WishlistApp.Viewmodels
                 new AuthenticationHeaderValue("Bearer", 
                 localSettings.Values["token"].ToString());
 
-            await client.DeleteAsync(new Uri("http://localhost:58253/api/Uitnodigingen/" + wishlist.Id));
+            var resp = await client.DeleteAsync(new Uri("http://localhost:58253/api/Wishlists/" + wishlist.Id + "/Verlaten"));
+
+            if (resp.IsSuccessStatusCode)
+            {
+                GetEigenWishlistsVanProfiel();
+                Debug.WriteLine("Wishlist verlaten");
+            }
 
         }
 
@@ -281,7 +306,8 @@ namespace WishlistApp.Viewmodels
 
             if (resp.StatusCode == HttpStatusCode.NoContent)
             {
-                wishlist.Requests.Remove(teVerwijderenRequest);
+                GetEigenWishlistsVanProfiel();
+                Debug.WriteLine("Aanvraag geannuleerd");
             }
         }
 
@@ -289,14 +315,35 @@ namespace WishlistApp.Viewmodels
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            Request request = new Request {Gebruiker = Gebruiker, Wishlist = wishlist};
+            Gebruiker gebruiker = await GetIngelogdeGebruiker();
+
+            Request request = new Request {Gebruiker = gebruiker, Wishlist = wishlist};
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
             var jsonRequest = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-            await client.PostAsync(new Uri("http://localhost:58253/api/Requests"), content);
+            var resp = await client.PostAsync(new Uri("http://localhost:58253/api/Requests"), content);
+
+            if (resp.IsSuccessStatusCode)
+            {
+               GetEigenWishlistsVanProfiel();
+                Debug.WriteLine("Aanvraag verstuurd");
+            }
+
+        }
+
+        private async Task<Gebruiker> GetIngelogdeGebruiker()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
+            var json = await client.GetStringAsync(
+                new Uri("http://localhost:58253/api/Gebruikers/ByUsername/" + localSettings.Values["username"]));
+
+            return JsonConvert.DeserializeObject<Gebruiker>(json);
 
         }
 
@@ -305,7 +352,7 @@ namespace WishlistApp.Viewmodels
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             string username = localSettings.Values["username"].ToString();
             Uitnodiging teAccepterenUitnodiging = wishlist.VerzondenUitnodigingen
-                .Find(uitnodiging => uitnodiging.Gebruiker.Username == username);
+                .Find(uitnodiging => uitnodiging.Gebruiker.Username.Equals(username));
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
@@ -323,7 +370,8 @@ namespace WishlistApp.Viewmodels
 
             if (resp.StatusCode == HttpStatusCode.NoContent)
             {
-                wishlist.VerzondenUitnodigingen.Remove(teAccepterenUitnodiging);
+                GetEigenWishlistsVanProfiel();
+                Debug.WriteLine("Uitnodiging aanvaard");
             }
         }
 

@@ -64,13 +64,12 @@ namespace WishlistServices.Controllers
         public IEnumerable<Wishlist> GetWishlistsFromGebruiker([FromRoute] int gebruikerId)
         {
             var gebruiker = _context.Gebruikers
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .Include(g => g.EigenWishlists).ThenInclude(w => w.Kopers).ThenInclude(gw => gw.Gebruiker)
+                .Include(g => g.EigenWishlists).ThenInclude(w => w.VerzondenUitnodigingen).ThenInclude(u => u.Gebruiker)
+                .Include(g => g.EigenWishlists).ThenInclude(w => w.Requests).ThenInclude(r => r.Gebruiker)
                 .SingleOrDefault(t => t.Id == gebruikerId);
 
-            List<Wishlist> wishlists = gebruiker.EigenWishlists;
-
-            return wishlists;
+            return gebruiker.EigenWishlists;
         }
 
         [HttpGet]
@@ -78,17 +77,10 @@ namespace WishlistServices.Controllers
         public IEnumerable<Wishlist> GetDeelnemendeWishlistsFromGebruiker([FromRoute] int gebruikerId)
         {
             var gebruiker = _context.Gebruikers
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Kopers)
-                .Include(t => t.Wishlists).ThenInclude(t => t.Wishlist).ThenInclude(t => t.Wensen)
+                .Include(g => g.Wishlists).ThenInclude(gw => gw.Wishlist).ThenInclude(w => w.Ontvanger)
                 .SingleOrDefault(t => t.Id == gebruikerId);
 
-            List<Wishlist> wishlists = new List<Wishlist>();
-            foreach (var gebruikerWishlist in gebruiker.Wishlists)
-            {
-                wishlists.Add(gebruikerWishlist.Wishlist);
-            }
-
-            return wishlists;
+            return gebruiker.Wishlists.Select(gebruikerWishlist => gebruikerWishlist.Wishlist).ToList();
         }
 
         /// <summary>
@@ -263,7 +255,7 @@ namespace WishlistServices.Controllers
         /// </summary>
         // DELETE: api/Wishlists/5
         [HttpDelete]
-        [Route("~/Wishlists/{wishlistId}/Verlaten")]
+        [Route("~/api/Wishlists/{wishlistId}/Verlaten")]
         public async Task<IActionResult> WishlistVerlaten([FromRoute] int wishlistId)
         {
             if (!ModelState.IsValid)
