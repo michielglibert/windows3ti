@@ -114,7 +114,6 @@ namespace WishlistApp.Viewmodels
                 Debug.WriteLine(SelectedWishlist.Naam);
                 Uitnodiging uitnodiging = new Uitnodiging(wishlist, Gebruiker);
                 PostUitnodiging(uitnodiging);
-                BepaalJoinOrLeaveButtonString(wishlist);
             } 
         }
 
