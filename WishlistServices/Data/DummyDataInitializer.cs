@@ -100,12 +100,12 @@ namespace WishlistServices.Data
                 wishlist1.Wensen.Add(new Wens("Hololens", "Ik wil een hololens zodat ik men windows app kan testen"));
                 wishlist1.Wensen.Add(new Wens("Appelsien", "Ik wil graag een verse appelsien"));
                 wishlist1.Wensen.Add(new Wens("Holy Meme Bible", "Moe maar ke googlen kwil diene haha"));
-                wishlist1.Wensen.Add(new Wens("Pussy", "Kwaliteit graag, kenners weten wel wat ik bedoel ;)"));
+                wishlist1.Wensen.Add(new Wens("Patatten", "Kwaliteit graag, kenners weten wel wat ik bedoel ;)"));
 
-                wishlist2.Wensen.Add(new Wens("Star wars","Ik wil graag de dvd's van star wars op blu ray"));
-                wishlist2.Wensen.Add(new Wens("Appelsien", "Ik wil graag een verse appelsien"));
-                wishlist2.Wensen.Add(new Wens("Holy Meme Bible", "Moe maar ke googlen kwil diene haha"));
-                wishlist2.Wensen.Add(new Wens("Pussy", "Kwaliteit graag, kenners weten wel wat ik bedoel"));
+                wishlist2.Wensen.Add(new Wens("Hoedje van papier","Ik wil graag een hoedje van papier"));
+                wishlist2.Wensen.Add(new Wens("Appel", "Ik wil graag een verse appel"));
+                wishlist2.Wensen.Add(new Wens("Xbox One", "Een xbox voor mijn windows UWP apps op te testen"));
+                wishlist2.Wensen.Add(new Wens("Nintendo Switch", "Nieuwe hype"));
 
                 #endregion
 

@@ -35,7 +35,7 @@
         <TextBlock FontSize="36pt" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  TextWrapping="Wrap" Text="Wishlists van andere gebruikers" VerticalAlignment="Center"/>
         <ListView x:Name="EigenWishlistLst" Grid.Row="1" Grid.Column="0" Margin="0,0,5,0"
                   ItemsSource="{Binding EigenWishlists}" IsItemClickEnabled="True"
-                  ItemClick="EigenWishlistLst_OnItemClick">
+                  ItemClick="WishlistLst_OnItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -65,7 +65,9 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <ListView x:Name="WishlistsLst" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" ItemsSource="{Binding Wishlists}">
+        <ListView x:Name="WishlistsLst" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"
+                  ItemsSource="{Binding Wishlists}"  IsItemClickEnabled="True"
+                  ItemClick="WishlistLst_OnItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

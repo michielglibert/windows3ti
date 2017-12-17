@@ -50,13 +50,7 @@ namespace WishlistApp
             mainFrame.Navigate(typeof(WishlistsOverzicht));
             NavigationPane.IsPaneOpen = false;
         }
-
-        private void Profiel_Click(object sender, TappedRoutedEventArgs e)
-        {
-            mainFrame.Navigate(typeof(Profiel));
-            NavigationPane.IsPaneOpen = false;
-        }
-
+        
         private void Uitnodigingen_Click(object sender, TappedRoutedEventArgs e)
         {
             mainFrame.Navigate(typeof(UitnodigingRequest));
