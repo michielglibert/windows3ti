@@ -112,11 +112,7 @@ namespace WishlistApp.Views
 
             return validationOk;
         }
-
-        private void Quicklogin_Click(object sender, RoutedEventArgs e)
-        {
-            _rootFrame.Navigate(typeof(MainPage), null, new DrillInNavigationTransitionInfo());
-        }
+        
     }
 }
 

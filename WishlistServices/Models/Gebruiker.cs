@@ -32,11 +32,12 @@ namespace WishlistServices.Models
             Password = password;
         }
 
-        public void WishlistMaken(string naam)
+        public Wishlist WishlistMaken(string naam)
         {
             Wishlist wishlist = new Wishlist(naam) {Ontvanger = this};
             EigenWishlists.Add(wishlist);
-            
+            return wishlist;
+
         }
 
         public void WishlistVerwijderen(Wishlist wishlist)

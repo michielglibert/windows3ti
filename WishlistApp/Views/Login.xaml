@@ -17,7 +17,6 @@
             <TextBlock Text="Verplicht" Foreground="Red"  Margin="0, 0, 0, 0" x:Name="PasswordError"  Visibility="Collapsed"/>
             <Button Content="Aanmelden" HorizontalAlignment="Stretch" Click="Login_Click" VerticalAlignment="Stretch" Margin="0, 30, 0, 0"/>
             <Button Content="Nieuwe account aanmaken" HorizontalAlignment="Stretch" Click="Registreer_Click" VerticalAlignment="Stretch" Margin="0, 15, 0, 0"/>
-            <Button Content="Quick login (temp)" HorizontalAlignment="Stretch" Click="Quicklogin_Click" VerticalAlignment="Stretch" Margin="0, 15, 0, 15"/>
         </StackPanel>
     </StackPanel>
 

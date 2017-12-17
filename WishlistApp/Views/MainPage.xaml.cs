@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
 using WishlistApp.Views;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -66,6 +67,11 @@ namespace WishlistApp
         {
             if (Window.Current.Content is Frame rootFrame)
             {
+                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                
+                localSettings.Values["username"] = null;
+                localSettings.Values["token"] = null;
+
                 rootFrame.ContentTransitions = new TransitionCollection {new NavigationThemeTransition()};
                 rootFrame.Navigate(typeof(Login), null, new ContinuumNavigationTransitionInfo());
             }

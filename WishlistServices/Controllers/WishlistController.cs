@@ -219,11 +219,11 @@ namespace WishlistServices.Controllers
                 return BadRequest(ModelState);
             }
 
-            gebruiker.WishlistMaken(wishlist.Naam);
+            var created = gebruiker.WishlistMaken(wishlist.Naam);
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWishlist", new { id = wishlist.Id }, wishlist);
+            return CreatedAtAction("GetWishlist", new { id = created.Id }, created);
         }
 
         /// <summary>

@@ -56,5 +56,6 @@ namespace WishlistApp.Views
         {
             Vm.GoToWens.Execute(ListViewWensen.SelectedItem);
         }
+        
     }
 }
