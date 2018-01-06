@@ -2,7 +2,7 @@
 
 This is a school project made by me and 2 other fellow students in order to show our skills that we have developed during the classes. In this project we used C# for the front-end with UWP and a C# .Net Core Web api back-end.
 
-**Caution: This is an unfinished project. It WILL crash and lacks some of the functionality**
+**Caution: This is an unfinished project. It WILL crash and it lacks some of the functionality**
 
 ## Getting Started
 
@@ -18,9 +18,9 @@ After opening the project in visual studio, make sure that before you run that y
 
 ## Authors
 
-*Niels Blanckaert (https://github.com/nielsblanckaert)
-*Giel De Clercq (https://github.com/gieldeclercq)
-*Michiel Glibert (https://github.com/michielglibert)
+* Niels Blanckaert (https://github.com/nielsblanckaert)
+* Giel De Clercq (https://github.com/gieldeclercq)
+* Michiel Glibert (https://github.com/michielglibert)
 
 ## License
 
